@@ -52,7 +52,12 @@ public class Application {
                     "('fidget spinner', '4'), " +
                     "('gamecube', '100');");
             ps6.executeUpdate();
-
+            PreparedStatement ps7 = conn.prepareStatement("drop table if exists treasurebox;");
+            ps7.executeUpdate();
+            PreparedStatement ps8 = conn.prepareStatement("create table treasurebox(" +
+                    "account_id_fk int references account(account_id)," +
+                    "toy_id_fk int references toy(toy_id));");
+            ps8.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
         }
