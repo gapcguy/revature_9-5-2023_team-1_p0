@@ -1,4 +1,4 @@
-package com.revature.utils;
+package org.revature.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
