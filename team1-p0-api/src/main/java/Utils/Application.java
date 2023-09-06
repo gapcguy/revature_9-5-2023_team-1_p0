@@ -29,7 +29,11 @@ public class Application {
             PreparedStatement ps2 = conn.prepareStatement("create table account(" +
                     "account_id serial primary key, " +
                     "username text unique not null, " +
-                    "password text not null);");
+                    "password text not null," +
+                    "coin_balance int Default 50 not null," +
+                    "coin_income int Default 50 not null," +
+                    "coin_outcome int Default 0 not null" +
+                    ");");
             ps2.executeUpdate();
             PreparedStatement ps3 = conn.prepareStatement("insert into account (username, password) values " +
                     "('user1', 'dallas')," +
