@@ -1,15 +1,12 @@
 package org.revature;
 
-import org.revature.utils.ConnectionUtil;
-import java.sql.Connection;
-import java.sql.SQLException;
+import Controller.GotchaController;
+import io.javalin.Javalin;
 
 public class Main {
     public static void main(String[] args) {
-        try(Connection con = ConnectionUtil.getConnection()) {
-            System.out.println("connection successful");
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        GotchaController controller = new GotchaController();
+        Javalin app = controller.startAPI();
+        app.start(8080);
     }
 }
