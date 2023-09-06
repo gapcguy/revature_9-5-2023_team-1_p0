@@ -9,7 +9,7 @@ public class AccountService {
     AccountDAO accountDAO;
     public AccountService() { accountDAO = new AccountDAO(); }
     public Account createAccount(Account account) { return accountDAO.createAccount(account); }
-    public Account login(Account account) { return accountDAO.getUserAccount(account); }
+    public Account getUserAccount(Account account) { return accountDAO.getUserAccount(account); }
 
     public Account addToCoinBalance(Account account) {
         AccountDAO accountDAO = new AccountDAO();
