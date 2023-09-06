@@ -30,19 +30,27 @@ public class AccountDAO {
         return null;
     }
 
-    public String getUserAccountByUserName(String username) {
+    public Account getUserAccount(Account account) {
         try(Connection connection = ConnectionUtil.getConnection()) {
-            String sql = "SELECT account_id, username, coin_balance FROM Account where username = ?";
+            String sql = "SELECT account_id, username, coin_balance FROM Account where username = ? AND password = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
+            ps.setString(1, account.getUsername());
+            ps.setString(2, account.getPassword());
+
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                String user_name = rs.getString("username");
-                return user_name;
+                int accountId = rs.getInt("account_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int coin_balance = rs.getInt("coin_balance");
+                return new Account(accountId, username, password, coin_balance);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
+
     }
 }
 
