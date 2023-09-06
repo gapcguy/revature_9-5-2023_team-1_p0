@@ -1,6 +1,6 @@
 package Controller;
 
-
+import Utils.Application;
 import Utils.ConnectionUtil;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,5 +14,6 @@ public class Driver {
             e.printStackTrace();
             System.out.println("Fail");
         }
+        Application.databaseSetup();
     }
 }
