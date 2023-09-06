@@ -11,12 +11,12 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 
-public class GotchaController {
+public class GatchaController {
     // Object Service instances
 
 
     // Default constructor.
-    public GotchaController() {
+    public GatchaController() {
 
     }
     public Javalin startAPI() {
