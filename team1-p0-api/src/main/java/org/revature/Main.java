@@ -1,6 +1,6 @@
 package org.revature;
 
-import Controller.GotchaController;
+import Controller.GatchaController;
 import io.javalin.Javalin;
 
 public class Main {

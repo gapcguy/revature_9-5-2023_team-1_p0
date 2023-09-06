@@ -8,7 +8,6 @@ package Controller;
 
 // javalin packages
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 
 
 public class GatchaController {
