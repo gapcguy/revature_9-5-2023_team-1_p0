@@ -27,8 +27,8 @@ public class ConnectionUtil {
         //I'm going to put the credentials in Strings, and use those strings in a method that gets connections
 
         /* these values get changed */
-        String url = "p0demodatabase.ccn4nz832krl.us-east-2.rds.amazonaws.com";
-        String username = "postgres";
+        String url = "jdbc:postgresql://p0demodatabase.ccn4nz832krl.us-east-2.rds.amazonaws.com:5432/postgres";
+        String username = "team1";
         String password = "password";
 
         //the above variables^^ aren't completely necessary, I'm just laying them out for clarity
