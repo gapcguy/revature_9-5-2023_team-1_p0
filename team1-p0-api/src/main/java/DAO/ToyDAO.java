@@ -43,15 +43,33 @@ public class ToyDAO {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
-            while(rs.next()){
+            if(rs.next()){
                 Toy toy = new Toy(rs.getInt("toy_id"),
                         rs.getString("name"),
                         rs.getInt("quantity"));
-                return toy.quantity == prevQuantity-1;
+                        toy.setQuantity(prevQuantity-1);
+                        return true;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public Toy getToyByID(int id){
+        try {
+            Connection connection = ConnectionUtil.getConnection();
+            String sql = "SELECT * FROM toy WHERE toy_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                return new Toy(rs.getInt("toy_id"),rs.getString("name"), rs.getInt("quantity"), rs.getInt("cost"));
+            }
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+
     }
 }

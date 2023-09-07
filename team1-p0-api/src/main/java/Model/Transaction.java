@@ -2,9 +2,29 @@ package Model;
 
 public class Transaction {
 
+<<<<<<< Updated upstream
     private int transaction_id,account_id,toy_id;
     private String toyName;
     static final int pullCost = 10;
+=======
+    public int getTransaction_id() {
+        return transaction_id;
+    }
+
+    private int transaction_id;
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    private int account_id;
+
+    public int getToy_id() {
+        return toy_id;
+    }
+
+    private int toy_id;
+>>>>>>> Stashed changes
 
     public Transaction(int transaction_id,int account_id,int toy_id, String toyName){
         this.transaction_id = transaction_id;
