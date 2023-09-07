@@ -6,6 +6,7 @@ import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import Service.AccountService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,14 +51,15 @@ public class UserRegistrationTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user10\", " +
+                        "\"username\": \"user13\", " +
                         "\"password\": \"password\" }"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assert.assertEquals(200, status);
-        Account expectedAccount = new Account(10,"user10", "password");
+        AccountService as = new AccountService();
+        Account expectedAccount = as.getUserAccount(new Account("user13", "password"));
         Account actualAccount = objectMapper.readValue(response.body().toString(), Account.class);
         Assert.assertEquals(expectedAccount, actualAccount);
     }
@@ -71,7 +73,7 @@ public class UserRegistrationTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user10\", " +
+                        "\"username\": \"user12\", " +
                         "\"password\": \"password\" }"))
                 .header("Content-Type", "application/json")
                 .build();
