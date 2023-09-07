@@ -14,10 +14,9 @@ public class AccountService {
     }
     public Account getUserAccount(Account account) { return accountDAO.getUserAccount(account); }
 
-    public Account addToCoinBalance(Account account) {
+    public Account addToCoinBalance(Account account, int amountToAdd) {
         AccountDAO accountDAO = new AccountDAO();
         Account userAccount = new Account(account.getUsername(), account.getPassword());
-        int amountToAdd = 100;
         boolean success = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
 
         if (success) {

@@ -25,16 +25,13 @@ public class Application {
     public static void databaseSetup() {
         try {
             Connection conn = ConnectionUtil.getConnection();
-            PreparedStatement ps1 = conn.prepareStatement("drop table if exists account, treasurebox;");
+            PreparedStatement ps1 = conn.prepareStatement("drop table if exists transaction, account, toy;");
             ps1.executeUpdate();
             PreparedStatement ps2 = conn.prepareStatement("create table account(" +
                     "account_id serial primary key, " +
                     "username text unique not null, " +
                     "password text not null," +
-                    "coin_balance int Default 50 not null," +
-                    "coin_income int Default 50 not null," +
-                    "coin_outcome int Default 0 not null" +
-                    ");");
+                    "coin_balance int Default 50 not null);");
             ps2.executeUpdate();
             PreparedStatement ps3 = conn.prepareStatement("insert into account (username, password) values " +
                     "('user1', 'dallas')," +
@@ -58,9 +55,9 @@ public class Application {
                     "('fidget spinner', '4'), " +
                     "('gamecube', '100');");
             ps6.executeUpdate();
-
+            /*
             PreparedStatement ps7 = conn.prepareStatement("drop table if exists transaction;");
-            ps7.executeUpdate();
+            ps7.executeUpdate(); */
             PreparedStatement ps8 = conn.prepareStatement("create table transaction(" +
                     "transaction_id serial primary key, " +
                     "account_id_fk int references account(account_id)," +
