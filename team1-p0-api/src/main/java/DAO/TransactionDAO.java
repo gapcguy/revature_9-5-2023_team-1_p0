@@ -63,12 +63,12 @@ public class TransactionDAO {
     }
 
     public Transaction pull(Account account) throws Exception {
-        accountDAO.decreaseCoinBalance(account,Transaction.getPullCost());
         Toy newToy = chooseRandomToy();
         boolean working = toyDAO.decrementQuantity(newToy.getToy_id(), newToy.getQuantity());
         if(!working){ throw new Exception("not able to pull toy :(");};
         Transaction curr = new Transaction(account.getAccount_id(),newToy.getToy_id(),newToy.getToyName());
         if(curr == null){ throw new Exception("not able to add transaction");};
+        accountDAO.decreaseCoinBalance(account,Transaction.getPullCost());
         return curr;
     }
 
