@@ -34,7 +34,7 @@ public class TransactionDAO {
 
 
 
-    private Transaction addTransaction(Transaction transaction){
+    public Transaction addTransaction(Transaction transaction){
         try ( Connection connection = ConnectionUtil.getConnection() ){
             String sql = "INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk) VALUES (?,?, ?, ?);";
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
