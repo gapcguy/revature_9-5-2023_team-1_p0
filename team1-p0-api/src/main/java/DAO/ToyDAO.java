@@ -71,4 +71,26 @@ public class ToyDAO {
         return null;
 
     }
+
+    public void deleteToyById(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from toy where toy_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteToyByName(String id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from toy where name = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
