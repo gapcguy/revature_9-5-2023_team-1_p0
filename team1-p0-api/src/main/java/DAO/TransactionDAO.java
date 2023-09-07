@@ -77,12 +77,12 @@ public class TransactionDAO {
         List<Toy> toys = new ArrayList<>();
         try {
             Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT toy_id_fk,toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_id_fk";
+            String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_id_fk";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             preparedStatement.setInt(1,account.getAccount_id());
             while(rs.next()){
-                Toy toy = new Toy(rs.getInt("toy_id_fk"),
+                Toy toy = new Toy(
                         rs.getString("toy_name"),
                         rs.getInt("COUNT(transaction_id)"));
                 toys.add(toy);

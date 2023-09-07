@@ -63,6 +63,13 @@ public class Toy {
 
     @Override
     public String toString() {
+        if(toy_id==0){
+            return "Toy{" +
+                    "toyName='" + toyName +
+                    ", quantity=" + quantity +
+                    '\'' +
+                    '}';
+        }
         return "Toy{" +
                 "toy_id=" + toy_id +
                 ", quantity=" + quantity +
