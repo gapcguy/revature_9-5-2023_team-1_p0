@@ -4,13 +4,20 @@ public class Toy {
 
     public int toy_id,quantity;
     public String toyName;
-    static final int cost = 10;
+    //Kinda confused why was this a final static?
+    //Cost isn't fixed. There's sales and each toy is supposed to have a different cost.
+    //    static final int cost = 10;
+    //Changing to public for now. Ideally it's private.
+    public int cost;
+
+    static final int def_cost = 50;
 
     public Toy() {}
 
     public Toy(String toyName, int quantity ) {
         this.quantity = quantity;
         this.toyName = toyName;
+        cost.
     }
 
     public Toy(int toy_id, String toyName,int quantity) {
