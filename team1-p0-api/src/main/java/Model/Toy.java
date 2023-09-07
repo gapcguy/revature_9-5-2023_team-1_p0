@@ -72,8 +72,9 @@ public class Toy {
         }
         return "Toy{" +
                 "toy_id=" + toy_id +
+                ", toyName='" + toyName +
                 ", quantity=" + quantity +
-                ", toyName='" + toyName + '\'' +
+                 '\'' +
                 '}';
     }
 }
