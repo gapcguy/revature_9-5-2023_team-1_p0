@@ -13,7 +13,7 @@ public class Transaction {
         this.toyName = ToyName;
     }
     public Transaction(int account_id,int toy_id, String toyName){
-        this.transaction_id = transaction_id;
+        this.transaction_id = -1;
         this.account_id = account_id;
         this.toy_id = toy_id;
         this.toyName = toyName;
