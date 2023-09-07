@@ -15,6 +15,12 @@ public class Account {
         this.password = password;
     }
 
+    public Account(int account_id, String username, String password) {
+        this.account_id = account_id;
+        this.username = username;
+        this.password = password;
+    }
+
     /* Constructor overload - used for when retrieving an account. */
     public Account(int account_id, String username, String password, int coin_balance) {
         this.account_id = account_id;
