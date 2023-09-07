@@ -1,7 +1,8 @@
 package Utils;
+
 import Controller.GatchaController;
-import Utils.ConnectionUtil;
 import io.javalin.Javalin;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
