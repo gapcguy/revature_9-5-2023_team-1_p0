@@ -41,9 +41,10 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.post("/login",                      this::loginHandler);
-        app.post("/register",                   this::registrationHandler);
-        app.patch("/users/{user_id}/{toy_id}/buy",   this::pull);
+        app.post("/login",                          this::loginHandler);
+        app.post("/register",                       this::registrationHandler);
+        app.post("/{user_id}/toybox",               this::viewToybox);
+        app.patch("/users/{user_id}/{toy_id}/buy",  this::pull);
 
         return app;
     }
@@ -95,6 +96,10 @@ public class GatchaController {
         //now create the transaction
         //Generate a random toy from the pool of available options.
         //subtract the cost (either a default or specific by search a table of pulls
+
+    }
+
+    public void viewToybox(Context ctx) throws JsonProcessingException {
 
     }
 }
