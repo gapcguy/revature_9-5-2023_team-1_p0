@@ -38,7 +38,7 @@ public class ToyDAO {
             preparedStatement.executeUpdate();
 
 
-            sql = "SELECT * FROM message WHERE message_id = ?";
+            sql = "SELECT * FROM toy WHERE toy_id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
@@ -48,6 +48,35 @@ public class ToyDAO {
                         rs.getString("name"),
                         rs.getInt("quantity"));
                 return toy.getQuantity() == prevQuantity-1;
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean updateToy(Toy toy){
+        try {
+            Connection connection = ConnectionUtil.getConnection();
+            String sql = "UPDATE toy SET name = ?, quantity = ?, cost = ?, WHERE toy_id = ?" ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,toy.getToyName());
+            preparedStatement.setInt(2, toy.getQuantity());
+            preparedStatement.setInt(3, toy.getCost());
+            preparedStatement.setInt(4, toy.getToy_id());
+            preparedStatement.executeUpdate();
+
+
+            sql = "SELECT * FROM toy WHERE toy_id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, toy.getToy_id());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if(rs.next()){
+                Toy toyU = new Toy(rs.getInt("toy_id"),
+                        rs.getString("name"),
+                        rs.getInt("quantity"));
+                return (toyU.getToy_id() == toy.getToy_id() && toyU.getToyName().equals(toy.getToyName()) && toy.getQuantity() == toyU.getQuantity());
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -70,5 +99,27 @@ public class ToyDAO {
         }
         return null;
 
+    }
+
+    public void deleteToyById(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from toy where toy_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteToyByName(String id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from toy where name = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

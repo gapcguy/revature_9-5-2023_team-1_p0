@@ -27,6 +27,7 @@ public class GatchaController {
     TransactionService transactionService;
     ToyService toyService;
 
+
     Account Login;
 
     // Default constructor.

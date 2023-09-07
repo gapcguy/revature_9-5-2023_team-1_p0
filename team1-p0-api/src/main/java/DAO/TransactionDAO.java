@@ -77,7 +77,7 @@ public class TransactionDAO {
         List<Toy> toys = new ArrayList<>();
         try {
             Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_id_fk";
+            String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_name";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             preparedStatement.setInt(1,account.getAccount_id());
@@ -94,7 +94,42 @@ public class TransactionDAO {
     }
 
 
-    /*public boolean AddTransaction(Transaction t){
+    public void deleteTransaction(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from transaction where transaction_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean updateTransaction(Transaction t){
+        boolean b = false;
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Update transaction set account_id_fk = ?, toy_id_fk = ?, where transaction_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, t.getAccount_id());
+            ps.setInt(2, t.getToy_id());
+            ps.setInt(3, t.getTransaction_id());
+            ps.executeUpdate();
+            b = true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return b;
+    }
+    /*public boolean Apublic void deleteToyById(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from toy where toy_is = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }ddTransaction(Transaction t){
         try {
             Connection connection = ConnectionUtil.getConnection();
             String sql = "Insert into transaction values (?, ?)";

@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Account;
+import Model.Toy;
 import Utils.ConnectionUtil;
 
 import javax.xml.transform.Result;
@@ -85,5 +86,57 @@ public class AccountDAO {
         return false;
     }
 
+    public void deleteAccountById(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from Account where account_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void deleteAccountByName(String Name){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from Account where account_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, Name);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean updateAccount(Account account){
+        try {
+            Connection connection = ConnectionUtil.getConnection();
+            String sql = "UPDATE account SET username = ?, password = ?, coin_balance = ? WHERE toy_id = ?" ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
+            preparedStatement.setInt(3, account.getCoinBalance());
+            preparedStatement.executeUpdate();
+
+
+            sql = "SELECT * FROM toy WHERE toy_id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, account.getAccount_id());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if(rs.next()){
+                Account account1 = new Account(rs.getInt("account_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("coin_balance"));
+                return (account1.getAccount_id() == account.getAccount_id() &&
+                        account1.getUsername().equals(account.getUsername()) &&
+                        account1.getPassword().equals(account.getPassword()) &&
+                        account1.getCoinBalance() == account.getCoinBalance());
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }
 
