@@ -49,8 +49,8 @@ public class UserLoginTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"testuser1\", " +
-                        "\"password\": \"password\" }"))
+                        "\"username\": \"user1\", " +
+                        "\"password\": \"dallas\" }"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -59,7 +59,7 @@ public class UserLoginTest {
 
         Assert.assertEquals(200, status);
         ObjectMapper om = new ObjectMapper();
-        Account expectedResult = new Account(1, "testuser1", "password");
+        Account expectedResult = new Account(1, "user1", "dallas");
         Account actualResult = om.readValue(response.body().toString(), Account.class);
         Assert.assertEquals(expectedResult, actualResult);
     }
