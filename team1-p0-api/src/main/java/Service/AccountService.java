@@ -8,13 +8,19 @@ public class AccountService {
 
     AccountDAO accountDAO;
     public AccountService() { accountDAO = new AccountDAO(); }
+
+    //Needs testing
     public Account createAccount(Account account) {
         if (account.getUsername().length() <1 || account.getPassword().length() <1) return null;
         return accountDAO.createAccount(account);
     }
+
+    //covered
     public Account getUserAccount(Account account) { return accountDAO.getUserAccount(account); }
 
-    public Account addToCoinBalance(Account account, int amountToAdd) {
+
+    //covered
+    public Account changeCoinBalance(Account account, int amountToAdd) {
         AccountDAO accountDAO = new AccountDAO();
         Account userAccount = new Account(account.getUsername(), account.getPassword());
         boolean success = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
@@ -23,19 +29,6 @@ public class AccountService {
             System.out.println("Coin balance increased successfully.");
         } else {
             System.out.println("Failed to increase coin balance.");
-        }
-        return null;
-    }
-
-    public Account removeFromCoinBalance(Account account, int amount) {
-        AccountDAO accountDAO = new AccountDAO();
-        Account userAccount = new Account(account.getUsername(), account.getPassword());
-
-        if (amount < userAccount.getCoinBalance()) {
-            accountDAO.decreaseCoinBalance(userAccount, amount);
-            System.out.println("Coin balance decreased");
-        } else {
-            System.out.println("Insufficient balance");
         }
         return null;
     }

@@ -1,13 +1,21 @@
 import Model.Account;
+import Model.Toy;
+import Model.Transaction;
 import Service.AccountService;
+import Service.ToyService;
+import Service.TransactionService;
 import Utils.Application;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+<<<<<<< Updated upstream
 import java.sql.SQLException;
+import java.util.List;
 
+=======
+>>>>>>> Stashed changes
 public class ServiceTests {
 
     @Before
@@ -33,9 +41,41 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-        as.addToCoinBalance(b, -100);
+        as.changeCoinBalance(b, -100);
         a = as.getUserAccount(b);
         assert(b.getCoinBalance()-100 == a.getCoinBalance());
 
+    }
+
+
+    @Test
+    public void getAvailableToys(){
+        ToyService toyService = new ToyService();
+        List<Toy> toys = toyService.getAvailableToys();
+        Assert.assertEquals(4,toys.size());
+
+    }
+
+    @Test
+    public void pull() throws Exception {
+        TransactionService transactionService = new TransactionService();
+        AccountService as = new AccountService();
+        Account a = new Account("user1", "dallas");
+        Account b = as.getUserAccount(a);
+
+        int beforBal = b.getCoinBalance();
+        int beforeSize = transactionService.getToysForAccount(b).size();
+
+        ToyService toyService = new ToyService();
+        List<Toy> toys = toyService.getAvailableToys();
+        Transaction trans = transactionService.pull(b);
+
+        int afterBal = as.getUserAccount(a).getCoinBalance();
+        int afterSize = transactionService.getToysForAccount(b).size();
+        System.out.println(beforBal);
+        System.out.println(afterBal);
+
+        assert(afterBal<beforBal);
+        assert(afterSize>beforeSize);
     }
 }

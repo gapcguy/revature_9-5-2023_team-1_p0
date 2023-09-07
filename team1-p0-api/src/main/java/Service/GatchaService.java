@@ -20,6 +20,7 @@ public class GatchaService {
         accountDAO = new AccountDAO();
     }
 
+    //covered
     public List<Toy> getToys(){
         return toyDAO.getAvailableToys();
     }

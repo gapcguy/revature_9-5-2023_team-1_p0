@@ -21,7 +21,8 @@ public class TransactionService {
 
     public Transaction pull(Account account) throws Exception {
         if(account.getCoinBalance()<Transaction.getPullCost()){ throw new Exception("insufficient funds");};
-        accountDAO.decreaseCoinBalance(account,Transaction.getPullCost());
+        Boolean decr = accountDAO.decreaseCoinBalance(account,Transaction.getPullCost());
+        if(!decr)throw new Exception("unable to withdraw");
         Toy newToy = toyDAO.chooseRandomToy();
         boolean working = toyDAO.decrementQuantity(newToy);
         if(!working){ throw new Exception("not able to pull toy :(");};
