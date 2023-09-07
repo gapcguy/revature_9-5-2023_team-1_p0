@@ -26,4 +26,17 @@ public class AccountService {
         }
         return null;
     }
+
+    public Account removeFromCoinBalance(Account account, int amount) {
+        AccountDAO accountDAO = new AccountDAO();
+        Account userAccount = new Account(account.getUsername(), account.getPassword());
+
+        if (amount < userAccount.getCoinBalance()) {
+            accountDAO.decreaseCoinBalance(userAccount, amount);
+            System.out.println("Coin balance decreased");
+        } else {
+            System.out.println("Insufficient balance");
+        }
+        return null;
+    }
 }

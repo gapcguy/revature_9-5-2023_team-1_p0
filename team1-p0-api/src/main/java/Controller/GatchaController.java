@@ -41,9 +41,9 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.post("/login",      this::loginHandler);
-        app.post("/register",        this::registrationHandler);
-
+        app.post("/login",                      this::loginHandler);
+        app.post("/register",                   this::registrationHandler);
+        app.patch("/users/{user_id}/{toy_id}/buy",   this::pull);
 
         return app;
     }
@@ -83,7 +83,11 @@ public class GatchaController {
         }
     }
 
-    public void pull(){
+    public void pull(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+
+
         //initiate
         //check_account_balance
         //if balance is enough decrement balance service
