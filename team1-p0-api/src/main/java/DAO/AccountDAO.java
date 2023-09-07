@@ -68,5 +68,11 @@ public class AccountDAO {
         }
         return false;
     }
+
+    //TODO
+    public boolean decreaseCoinBalance(Account account, int costToPull){
+        return false;
+    }
+
 }
 

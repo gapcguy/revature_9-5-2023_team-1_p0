@@ -2,11 +2,10 @@ package Controller;
 
 // Model Packages
 import Model.Account;
-import Model.Toy;
 
 // Service Packages
 import Service.AccountService;
-import Service.TreasureBoxService;
+import Service.TransactionService;
 import Service.ToyService;
 
 // JSON-Related packages
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 // SQL packages
-import java.sql.SQLException;
-import java.util.List;
 
 
 // javalin packages
@@ -27,13 +24,13 @@ import io.javalin.http.Context;
 public class GatchaController {
     // Object Service instances
     AccountService accountService;
-    TreasureBoxService treasureBoxService;
+    TransactionService transactionService;
     ToyService toyService;
 
     // Default constructor.
     public GatchaController() {
         accountService = new AccountService();
-        treasureBoxService = new TreasureBoxService();
+        transactionService = new TransactionService();
         toyService = new ToyService();
 
     }

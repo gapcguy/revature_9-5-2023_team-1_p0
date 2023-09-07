@@ -4,15 +4,16 @@ public class Toy {
 
     public int toy_id,quantity;
     public String toyName;
+    static final int cost = 10;
 
     public Toy() {}
 
-    public Toy(int quantity, String toyName) {
+    public Toy(String toyName, int quantity ) {
         this.quantity = quantity;
         this.toyName = toyName;
     }
 
-    public Toy(int quantity, String toyName,int toy_id) {
+    public Toy(int toy_id, String toyName,int quantity) {
         this.quantity = quantity;
         this.toyName = toyName;
         this.toy_id = toy_id;

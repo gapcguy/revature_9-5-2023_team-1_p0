@@ -48,9 +48,9 @@ public class Application {
             PreparedStatement ps5 = conn.prepareStatement("create table toy(" +
                     "toy_id serial primary key, " +
                     "name text unique not null, " +
-                    "value int not null);");
+                    "quantity int not null);");
             ps5.executeUpdate();
-            PreparedStatement ps6 = conn.prepareStatement("insert into toy (name, value) Values" +
+            PreparedStatement ps6 = conn.prepareStatement("insert into toy (name, quantity) Values" +
                     "('barbie', 10)," +
                     "('spongebob', 25), " +
                     "('fidget spinner', '4'), " +
@@ -59,6 +59,7 @@ public class Application {
             PreparedStatement ps7 = conn.prepareStatement("drop table if exists treasurebox;");
             ps7.executeUpdate();
             PreparedStatement ps8 = conn.prepareStatement("create table treasurebox(" +
+                    "transaction_id serial primary key, " +
                     "account_id_fk int references account(account_id)," +
                     "toy_id_fk int references toy(toy_id));");
             ps8.executeUpdate();
