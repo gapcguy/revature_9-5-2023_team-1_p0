@@ -34,6 +34,8 @@ public class Toy {
         this.cost = cost;
     }
 
+
+
     public int getQuantity() {
         return quantity;
     }

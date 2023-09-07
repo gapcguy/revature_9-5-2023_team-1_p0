@@ -13,12 +13,23 @@ public class Transaction {
         this.toyName = "";
     }
 
+<<<<<<< Updated upstream
     public Transaction(int transaction_id,int account_id,int toy_id, String ToyName){
         this.transaction_id = transaction_id;
         this.account_id = account_id;
         this.toy_id = toy_id;
         this.toyName = ToyName;
     }
+=======
+    public Transaction(int account_id,int toy_id, String toyName){
+        this.transaction_id = transaction_id;
+        this.account_id = account_id;
+        this.toy_id = toy_id;
+        this.toyName = toyName;
+
+    }
+
+>>>>>>> Stashed changes
     public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }
@@ -53,5 +64,15 @@ public class Transaction {
 
     public int getToy_id() {
         return toy_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transaction_id=" + transaction_id +
+                ", account_id=" + account_id +
+                ", toy_id=" + toy_id +
+                ", toyName='" + toyName + '\'' +
+                '}';
     }
 }

@@ -58,7 +58,11 @@ public class Application {
                     "('fidget spinner', '4'), " +
                     "('gamecube', '100');");
             ps6.executeUpdate();
+<<<<<<< Updated upstream
             PreparedStatement ps7 = conn.prepareStatement("drop table if exists treasurebox, transaction;");
+=======
+            PreparedStatement ps7 = conn.prepareStatement("drop table if exists transaction;");
+>>>>>>> Stashed changes
             ps7.executeUpdate();
             PreparedStatement ps8 = conn.prepareStatement("create table transaction(" +
                     "transaction_id serial primary key, " +
