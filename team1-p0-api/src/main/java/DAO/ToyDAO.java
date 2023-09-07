@@ -37,7 +37,10 @@ public class ToyDAO {
     }
 
 
-    public boolean decrementQuantity(int id,int prevQuantity){
+    public boolean decrementQuantity(Toy toy){
+        int id = toy.getToy_id();
+        int prevQuantity = toy.getQuantity();
+
         try {
             Connection connection = ConnectionUtil.getConnection();
             String sql = "UPDATE toy SET quantity = quantity-1 WHERE toy_id = ?" ;
@@ -52,10 +55,10 @@ public class ToyDAO {
             ResultSet rs = preparedStatement.executeQuery();
 
             if(rs.next()){
-                Toy toy = new Toy(rs.getInt("toy_id"),
+                Toy postSub = new Toy(rs.getInt("toy_id"),
                         rs.getString("name"),
                         rs.getInt("quantity"));
-                return toy.getQuantity() == prevQuantity-1;
+                return postSub.getQuantity() == prevQuantity-1;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
