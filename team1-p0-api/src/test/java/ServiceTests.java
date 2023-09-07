@@ -10,12 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-<<<<<<< Updated upstream
 import java.sql.SQLException;
 import java.util.List;
 
-=======
->>>>>>> Stashed changes
 public class ServiceTests {
 
     @Before

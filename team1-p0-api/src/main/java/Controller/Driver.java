@@ -15,5 +15,7 @@ public class Driver {
             System.out.println("Fail");
         }
         Application.databaseSetup();
+
+        GatchaController gc = new GatchaController();
     }
 }
