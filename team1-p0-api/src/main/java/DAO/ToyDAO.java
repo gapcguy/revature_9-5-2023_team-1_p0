@@ -7,6 +7,7 @@ import Utils.ConnectionUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ToyDAO {
     public List<Toy> getAvailableToys(){
@@ -26,6 +27,13 @@ public class ToyDAO {
             System.out.println(e.getMessage());
         }
         return toys;
+    }
+
+    public Toy chooseRandomToy(){
+        List<Toy> treasureChest = getAvailableToys();
+        int upperbound = treasureChest.size();
+        Random rand = new Random();
+        return treasureChest.get(rand.nextInt(upperbound));
     }
 
 

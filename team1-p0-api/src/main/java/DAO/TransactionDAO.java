@@ -32,12 +32,7 @@ public class TransactionDAO {
         this.toyDAO = new ToyDAO();
     }
 
-    private Toy chooseRandomToy(){
-        List<Toy> treasureChest = toyDAO.getAvailableToys();
-        int upperbound = treasureChest.size();
-        Random rand = new Random();
-        return treasureChest.get(rand.nextInt(upperbound));
-    }
+
 
     private Transaction addTransaction(Transaction transaction){
         try ( Connection connection = ConnectionUtil.getConnection() ){
@@ -60,16 +55,6 @@ public class TransactionDAO {
         }
 
         return null;
-    }
-
-    public Transaction pull(Account account) throws Exception {
-        Toy newToy = chooseRandomToy();
-        boolean working = toyDAO.decrementQuantity(newToy.getToy_id(), newToy.getQuantity());
-        if(!working){ throw new Exception("not able to pull toy :(");};
-        Transaction curr = new Transaction(account.getAccount_id(),newToy.getToy_id(),newToy.getToyName());
-        if(curr == null){ throw new Exception("not able to add transaction");};
-        accountDAO.decreaseCoinBalance(account,Transaction.getPullCost());
-        return curr;
     }
 
     public List<Toy> myToys(Account account){
