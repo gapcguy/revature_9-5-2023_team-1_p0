@@ -6,6 +6,7 @@ import Model.Account;
 // Service Packages
 import Service.AccountService;
 import Service.TransactionService;
+import Service.ToyService;
 
 // JSON-Related packages
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +25,7 @@ public class GatchaController {
     // Object Service instances
     AccountService accountService;
     TransactionService transactionService;
+    ToyService toyService;
 
 
     Account Login;
@@ -32,6 +34,7 @@ public class GatchaController {
     public GatchaController() {
         accountService = new AccountService();
         transactionService = new TransactionService();
+        toyService = new ToyService();
         Login = null;
     }
     public Javalin startAPI() {
