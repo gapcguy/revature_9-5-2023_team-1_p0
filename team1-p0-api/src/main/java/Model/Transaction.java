@@ -2,8 +2,8 @@ package Model;
 
 public class Transaction {
 
-    int transaction_id,account_id,toy_id;
-    String toyName;
+    private int transaction_id,account_id,toy_id;
+    private String toyName;
     static final int pullCost = 10;
 
     public Transaction(int transaction_id,int account_id,int toy_id, String toyName){

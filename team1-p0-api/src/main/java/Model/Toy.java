@@ -2,8 +2,8 @@ package Model;
 
 public class Toy {
 
-    public int toy_id,quantity;
-    public String toyName;
+    private int toy_id,quantity;
+    private String toyName;
 
     public Toy() {}
 
