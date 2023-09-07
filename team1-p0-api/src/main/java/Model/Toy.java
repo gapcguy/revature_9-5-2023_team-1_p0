@@ -4,8 +4,6 @@ public class Toy {
 
     private int toy_id,quantity;
     private String toyName;
-<<<<<<< Updated upstream
-=======
 
     //Kinda confused why was this a final static?
     //Cost isn't fixed. There's sales and each toy is supposed to have a different cost.
@@ -14,17 +12,13 @@ public class Toy {
     private int cost;
 
     static final int def_cost = 50;
->>>>>>> Stashed changes
 
     public Toy() {}
 
     public Toy(String toyName, int quantity ) {
         this.quantity = quantity;
         this.toyName = toyName;
-<<<<<<< Updated upstream
-=======
         this.cost = def_cost;
->>>>>>> Stashed changes
     }
 
     public Toy(int toy_id, String toyName,int quantity) {

@@ -1,10 +1,9 @@
 package DAO;
 
-<<<<<<< Updated upstream
+
 import Model.Account;
 import Model.Transaction;
 
-=======
 import Model.Toy;
 import Model.Transaction;
 import Utils.ConnectionUtil;
@@ -14,12 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
->>>>>>> Stashed changes
+
 import java.util.List;
 
 public class TransactionDAO {
 
-<<<<<<< Updated upstream
     public Transaction pull(Account account){
         return null;
     }
@@ -27,7 +25,6 @@ public class TransactionDAO {
     public List<Transaction> myToys(Account account){
         return null;
     }
-=======
     public TransactionDAO(){
     }
 
@@ -101,6 +98,5 @@ public class TransactionDAO {
         return null;
     }
 
->>>>>>> Stashed changes
 
 }
