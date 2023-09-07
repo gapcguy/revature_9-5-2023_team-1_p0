@@ -14,7 +14,7 @@ public class AccountDAO {
 
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
-            ps.setInt(3, account.getCoinBalance());
+            ps.setInt(3, 50);
 
             ps.executeUpdate();
             ResultSet key = ps.getGeneratedKeys();
