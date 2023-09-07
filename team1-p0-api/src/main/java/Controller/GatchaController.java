@@ -13,10 +13,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
+// SQL packages
+
+
 // javalin packages
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 
 
 public class GatchaController {
@@ -25,21 +27,22 @@ public class GatchaController {
     TransactionService transactionService;
     ToyService toyService;
 
+    Account Login;
+
     // Default constructor.
     public GatchaController() {
         accountService = new AccountService();
         transactionService = new TransactionService();
         toyService = new ToyService();
-
+        Login = null;
     }
     public Javalin startAPI() {
         Javalin app = Javalin.create();
 
         // routes
-        app.post("/login",          this::loginHandler);
-        app.post("/register",       this::registrationHandler);
-        app.post("/account",        this::accountHandler);
-        app.post("/account/add-balance", this::addBalanceHandler);
+        app.post("/login",      this::loginHandler);
+        app.post("/register",        this::registrationHandler);
+
 
         return app;
     }
@@ -50,12 +53,9 @@ public class GatchaController {
         Account         account         = mapper.readValue(ctx.body(), Account.class);
         Account         loginAccount    = accountService.getUserAccount(account);
 
-
         if ( (loginAccount != null)
                 && loginAccount.getUsername().equals(account.getUsername())
                 && loginAccount.getPassword().equals(account.getPassword())) {
-
-            ctx.sessionAttribute("user", loginAccount);
 
             account.setAccount_id( loginAccount.getAccount_id() );
             account.setUsername  ( loginAccount.getUsername()   );
@@ -82,12 +82,14 @@ public class GatchaController {
         }
     }
 
-    public void accountHandler(Context ctx) throws JsonProcessingException {
-
-    }
-
-    public void addBalanceHandler(Context ctx) throws JsonProcessingException {
-
+    public void pull(){
+        //initiate
+        //check_account_balance
+        //if balance is enough decrement balance service
+        //else end
+        //now create the transaction
+        //Generate a random toy from the pool of available options.
+        //subtract the cost (either a default or specific by search a table of pulls
 
     }
 }
