@@ -62,6 +62,7 @@ public class Application {
             PreparedStatement ps8 = conn.prepareStatement("create table treasurebox(" +
                     "transaction_id serial primary key, " +
                     "account_id_fk int references account(account_id)," +
+                    "toy_name text unique not null, " +
                     "toy_id_fk int references toy(toy_id));");
             ps8.executeUpdate();
         }catch(SQLException e){
