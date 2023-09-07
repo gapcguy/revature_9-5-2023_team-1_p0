@@ -85,5 +85,26 @@ public class AccountDAO {
         return false;
     }
 
+    public void deleteAccountById(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from Account where account_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void deleteAccountByName(String Name){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from Account where account_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, Name);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 
