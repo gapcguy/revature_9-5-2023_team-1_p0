@@ -33,7 +33,7 @@ public class AccountDAO {
 
     public Account getUserAccount(Account account) {
         try(Connection connection = ConnectionUtil.getConnection()) {
-            String sql = "SELECT account_id, username, coin_balance FROM Account where username = ? AND password = ?";
+            String sql = "SELECT * FROM Account where username = ? AND password = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());

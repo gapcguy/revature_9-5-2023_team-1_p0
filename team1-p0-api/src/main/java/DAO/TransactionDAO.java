@@ -64,8 +64,9 @@ public class TransactionDAO {
             Connection connection = ConnectionUtil.getConnection();
             String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_name";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
             preparedStatement.setInt(1,account.getAccount_id());
+            ResultSet rs = preparedStatement.executeQuery();
+
             while(rs.next()){
                 Toy toy = new Toy(
                         rs.getString("toy_name"),
