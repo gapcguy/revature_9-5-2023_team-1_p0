@@ -68,7 +68,7 @@ public class AccountDAO {
         }
         return false;
     }
-    
+
     public boolean decreaseCoinBalance(Account account, int costToPull){
         try (Connection connection = ConnectionUtil.getConnection()) {
             String sql = "UPDATE Account SET coin_balance = coin_balance - ? WHERE username = ?";
