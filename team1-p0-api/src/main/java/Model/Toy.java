@@ -4,7 +4,6 @@ public class Toy {
 
     public int toy_id,quantity;
     public String toyName;
-    static final int cost = 10;
 
     public Toy() {}
 
