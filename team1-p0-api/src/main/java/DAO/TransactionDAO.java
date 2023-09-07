@@ -105,6 +105,21 @@ public class TransactionDAO {
         }
     }
 
+    public boolean updateTransaction(Transaction t){
+        boolean b = false;
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Update transaction set account_id_fk = ?, toy_id_fk = ?, where transaction_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, t.getAccount_id());
+            ps.setInt(2, t.getToy_id());
+            ps.setInt(3, t.getTransaction_id());
+            ps.executeUpdate();
+            b = true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return b;
+    }
     /*public boolean Apublic void deleteToyById(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from toy where toy_is = ?";
