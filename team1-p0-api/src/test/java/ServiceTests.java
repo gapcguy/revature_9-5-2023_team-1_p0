@@ -5,15 +5,17 @@ import Service.AccountService;
 import Service.ToyService;
 import Service.TransactionService;
 import Utils.Application;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+<<<<<<< Updated upstream
 import java.sql.SQLException;
 import java.util.List;
 
+=======
+>>>>>>> Stashed changes
 public class ServiceTests {
 
     @Before
@@ -39,7 +41,7 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-        as.addToCoinBalance(b, -100);
+        as.changeCoinBalance(b, -100);
         a = as.getUserAccount(b);
         assert(b.getCoinBalance()-100 == a.getCoinBalance());
 
