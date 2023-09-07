@@ -97,7 +97,7 @@ public class TransactionDAO {
     /*public boolean AddTransaction(Transaction t){
         try {
             Connection connection = ConnectionUtil.getConnection();
-            String sql = "Insert into transaction values (?, ?, ?)";
+            String sql = "Insert into transaction values (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, t.getTransaction_id());
             preparedStatement.setInt(2, t.getAccount_id());

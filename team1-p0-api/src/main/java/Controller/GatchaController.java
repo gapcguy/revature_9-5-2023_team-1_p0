@@ -27,12 +27,14 @@ public class GatchaController {
     TransactionService transactionService;
     ToyService toyService;
 
+    Account Login;
+
     // Default constructor.
     public GatchaController() {
         accountService = new AccountService();
         transactionService = new TransactionService();
         toyService = new ToyService();
-
+        Login = null;
     }
     public Javalin startAPI() {
         Javalin app = Javalin.create();
@@ -78,5 +80,16 @@ public class GatchaController {
             ctx.json(mapper.writeValueAsString(addedAccount));
             ctx.status(200);
         }
+    }
+
+    public void pull(){
+        //initiate
+        //check_account_balance
+        //if balance is enough decrement balance service
+        //else end
+        //now create the transaction
+        //Generate a random toy from the pool of available options.
+        //subtract the cost (either a default or specific by search a table of pulls
+
     }
 }
