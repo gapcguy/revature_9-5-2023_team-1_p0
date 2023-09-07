@@ -71,7 +71,19 @@ public class AccountDAO {
     }
 
     public boolean decreaseCoinBalance(Account account, int costToPull){
-        return increaseCoinBalance(account,-costToPull);
+        try (Connection connection = ConnectionUtil.getConnection()) {
+            String sql = "UPDATE Account SET coin_balance = coin_balance - ? WHERE username = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, costToPull);
+            ps.setString(2, account.getUsername());
+
+            int rowsAffected = ps.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void deleteAccountById(int id){
