@@ -64,7 +64,7 @@ public class GatchaController {
             ctx.json             ( mapper.writeValueAsString(account));
             ctx.status           ( 200 );
         } else {
-            ctx.status( 400 );
+            ctx.status( 401 );
         }
     }
 

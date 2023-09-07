@@ -50,14 +50,14 @@ public class UserRegistrationTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user\", + " +
+                        "\"username\": \"user10\", " +
                         "\"password\": \"password\" }"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assert.assertEquals(200, status);
-        Account expectedAccount = new Account(2, "user", "password");
+        Account expectedAccount = new Account(10,"user10", "password");
         Account actualAccount = objectMapper.readValue(response.body().toString(), Account.class);
         Assert.assertEquals(expectedAccount, actualAccount);
     }
@@ -71,7 +71,7 @@ public class UserRegistrationTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user\", " +
+                        "\"username\": \"user10\", " +
                         "\"password\": \"password\" }"))
                 .header("Content-Type", "application/json")
                 .build();
@@ -92,7 +92,7 @@ public class UserRegistrationTest {
     public void registerUserNoUsername() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/register"))
-                .POST(HttpRequest.BodyPublishers.ofString("{ +" +
+                .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"\", " +
                         "\"password\": \"password\" }"))
                 .header("Content-Type", "application/json")
