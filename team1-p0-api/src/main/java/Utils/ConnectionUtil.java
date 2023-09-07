@@ -18,7 +18,7 @@ public class ConnectionUtil {
     private static final String password = "password";
 
     // Static object which represents the connection to RDS. Since this is static, any DAO interacting with this
-    // connection object refers back to here. 
+    // connection object refers back to here.
     private static Connection connection = null;
 
     //This method will eventually return an object of type Connection, which we'll use to connect to our databse

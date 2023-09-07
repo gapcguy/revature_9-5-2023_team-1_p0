@@ -5,6 +5,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.SQLException;
 
+import Service.AccountService;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
 import org.junit.Assert;
@@ -49,8 +50,8 @@ public class UserLoginTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"testuser1\", " +
-                        "\"password\": \"password\" }"))
+                        "\"username\": \"user4\", " +
+                        "\"password\": \"dallas\" }"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -59,9 +60,11 @@ public class UserLoginTest {
 
         Assert.assertEquals(200, status);
         ObjectMapper om = new ObjectMapper();
-        Account expectedResult = new Account(1, "testuser1", "password");
+        Assert.assertEquals(200, status);
+        AccountService as = new AccountService();
+        Account expectedAccount = as.getUserAccount(new Account("user4", "dallas"));
         Account actualResult = om.readValue(response.body().toString(), Account.class);
-        Assert.assertEquals(expectedResult, actualResult);
+        Assert.assertEquals(expectedAccount, actualResult);
     }
 
     @Test
