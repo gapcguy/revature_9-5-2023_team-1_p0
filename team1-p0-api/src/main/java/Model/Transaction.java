@@ -6,21 +6,12 @@ public class Transaction {
     private String toyName;
     static final int pullCost = 10;
 
-    public Transaction(int transaction_id,int account_id,int toy_id){
-        this.transaction_id = transaction_id;
-        this.account_id = account_id;
-        this.toy_id = toy_id;
-        this.toyName = "";
-    }
-
-<<<<<<< Updated upstream
     public Transaction(int transaction_id,int account_id,int toy_id, String ToyName){
         this.transaction_id = transaction_id;
         this.account_id = account_id;
         this.toy_id = toy_id;
         this.toyName = ToyName;
     }
-=======
     public Transaction(int account_id,int toy_id, String toyName){
         this.transaction_id = transaction_id;
         this.account_id = account_id;
@@ -29,7 +20,6 @@ public class Transaction {
 
     }
 
->>>>>>> Stashed changes
     public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }

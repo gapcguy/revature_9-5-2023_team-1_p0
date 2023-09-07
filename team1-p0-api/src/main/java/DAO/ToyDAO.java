@@ -47,12 +47,7 @@ public class ToyDAO {
                 Toy toy = new Toy(rs.getInt("toy_id"),
                         rs.getString("name"),
                         rs.getInt("quantity"));
-<<<<<<< Updated upstream
-                        toy.setQuantity(prevQuantity-1);
-                        return true;
-=======
                 return toy.getQuantity() == prevQuantity-1;
->>>>>>> Stashed changes
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());

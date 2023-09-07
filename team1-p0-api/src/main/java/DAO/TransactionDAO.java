@@ -6,7 +6,6 @@ import Model.Transaction;
 import Model.Toy;
 import Utils.ConnectionUtil;
 
-<<<<<<< Updated upstream
 import Model.Toy;
 import Model.Transaction;
 import Utils.ConnectionUtil;
@@ -17,14 +16,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-=======
 import java.sql.*;
-import java.util.ArrayList;
->>>>>>> Stashed changes
+
 import java.util.List;
 import java.util.Random;
 
-import DAO.AccountDAO;
 
 public class TransactionDAO {
 
@@ -96,10 +92,9 @@ public class TransactionDAO {
         }
         return toys;
     }
-    public TransactionDAO(){
-    }
 
-    public boolean AddTransaction(Transaction t){
+
+    /*public boolean AddTransaction(Transaction t){
         try {
             Connection connection = ConnectionUtil.getConnection();
             String sql = "Insert into transaction values (?, ?, ?)";
@@ -167,7 +162,7 @@ public class TransactionDAO {
             System.out.println(e.getMessage());
         }
         return null;
-    }
+    } */
 
 
 }
