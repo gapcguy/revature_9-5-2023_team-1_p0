@@ -2,9 +2,8 @@ package Model;
 
 public class Toy {
 
-    public int toy_id,quantity;
-    public String toyName;
-    static final int cost = 10;
+    private int toy_id,quantity;
+    private String toyName;
 
     public Toy() {}
 

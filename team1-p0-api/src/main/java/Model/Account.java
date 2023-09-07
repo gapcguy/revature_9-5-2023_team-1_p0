@@ -2,8 +2,8 @@ package Model;
 
 public class Account {
 
-    public int account_id, coin_balance;
-    public String username, password;
+    private int account_id, coin_balance;
+    private String username, password;
 
 
     // Default argument-free constructor.
