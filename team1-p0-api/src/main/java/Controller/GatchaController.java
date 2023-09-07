@@ -23,7 +23,7 @@ import io.javalin.http.Context;
 public class GatchaController {
     // Object Service instances
     AccountService accountService;
-    GatchaService transactionService;
+    GatchaService gatchaService;
 
 
     Account Login;
@@ -31,7 +31,7 @@ public class GatchaController {
     // Default constructor.
     public GatchaController() {
         accountService = new AccountService();
-        transactionService = new GatchaService();
+        gatchaService = new GatchaService();
         Login = null;
     }
     public Javalin startAPI() {
