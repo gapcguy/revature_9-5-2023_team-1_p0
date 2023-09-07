@@ -53,7 +53,8 @@ public class Application {
                     "('barbie', 10)," +
                     "('spongebob', 25), " +
                     "('fidget spinner', '4'), " +
-                    "('gamecube', '100');");
+                    "('gamecube', '100')" +
+                    ",('sandy','0');");
             ps6.executeUpdate();
             /*
             PreparedStatement ps7 = conn.prepareStatement("drop table if exists transaction;");

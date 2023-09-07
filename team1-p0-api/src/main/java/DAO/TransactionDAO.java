@@ -36,7 +36,7 @@ public class TransactionDAO {
 
     public Transaction addTransaction(Transaction transaction){
         try ( Connection connection = ConnectionUtil.getConnection() ){
-            String sql = "INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk) VALUES (?,?, ?, ?);";
+            String sql = "INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk) VALUES (?,?, ?);";
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             ps.setInt(1, transaction.getAccount_id());
@@ -62,7 +62,7 @@ public class TransactionDAO {
         List<Toy> toys = new ArrayList<>();
         try {
             Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_name";
+            String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_name;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,account.getAccount_id());
             ResultSet rs = preparedStatement.executeQuery();
@@ -70,7 +70,7 @@ public class TransactionDAO {
             while(rs.next()){
                 Toy toy = new Toy(
                         rs.getString("toy_name"),
-                        rs.getInt("COUNT(transaction_id)"));
+                        rs.getInt("COUNT"));
                 toys.add(toy);
             }
         }catch(SQLException e){
