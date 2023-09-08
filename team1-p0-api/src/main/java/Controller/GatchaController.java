@@ -75,6 +75,12 @@ public class GatchaController {
             account.setAccount_id( loginAccount.getAccount_id() );
             account.setUsername  ( loginAccount.getUsername()   );
             account.setPassword  ( loginAccount.getPassword()   );
+            if(ses == null){
+                ctx.req().getSession();
+                ses.setAttribute("account_id", loginAccount.getAccount_id());
+                ses.setAttribute("username", loginAccount.getUsername());
+                ses.setAttribute("password", loginAccount.getPassword());
+            }
 
             ctx.json             ( mapper.writeValueAsString(account));
             ctx.status           ( 200 );
@@ -93,6 +99,10 @@ public class GatchaController {
             || ( account.getPassword().length() < 4)) {
             ctx.status(400);
         } else {
+            ctx.req().getSession();
+            ses.setAttribute("account_id", addedAccount.getAccount_id());
+            ses.setAttribute("username",addedAccount.getUsername());
+            ses.setAttribute("password",addedAccount.getPassword());
             ctx.json(mapper.writeValueAsString(addedAccount));
             ctx.status(200);
         }
@@ -121,52 +131,64 @@ public class GatchaController {
     }
 
     public void viewUserToyboxHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        List<Toy> toys = transactionService.getToysForAccountID(Integer.parseInt(ctx.pathParam("user_id")));
-        if(!toys.isEmpty()) {
-            ctx.status(200);
-            ctx.json(mapper.writeValueAsString(toys));
-        } else {
-            ctx.status(400);
+        if(ses == null) { ctx.status(403); }
+        else {
+            ObjectMapper mapper = new ObjectMapper();
+            List<Toy> toys = transactionService.getToysForAccountID((int) ses.getAttribute("account_id"));
+            if(!toys.isEmpty()) {
+                ctx.status(200);
+                ctx.json(mapper.writeValueAsString(toys));
+            } else {
+                ctx.status(400);
+            }
         }
     }
 
     public void viewToyboxHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        List<Toy> toys = toyService.getAvailableToys();
-        if(!toys.isEmpty()) {
-            ctx.status(200);
-            ctx.json(mapper.writeValueAsString(toys));
-        } else {
-            ctx.status(400);
+        if(ses == null) { ctx.status(403); }
+        else {
+            ObjectMapper mapper = new ObjectMapper();
+            List<Toy> toys = toyService.getAvailableToys();
+            if(!toys.isEmpty()) {
+                ctx.status(200);
+                ctx.json(mapper.writeValueAsString(toys));
+            } else {
+                ctx.status(400);
+            }
         }
     }
 
     public void depositHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Integer amount = mapper.readValue(ctx.body(), Integer.class);
-        String memberName = ctx.pathParam("user_id");
-
-
-
+        if(ses == null) { ctx.status(403); }
+        else {
+            ObjectMapper mapper = new ObjectMapper();
+            Integer amount = mapper.readValue(ctx.body(), Integer.class);
+            String memberName = ctx.pathParam("user_id");
+        }
     }
 
     public void deleteUserHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        String memberName = ctx.pathParam("user_id");
-        Account deletedAccount = accountService.deleteAccount(memberName);
+        if(ses == null) { ctx.status(403); }
+        else {
+            ObjectMapper mapper = new ObjectMapper();
+            String memberName = (String) ses.getAttribute("username");
+            Account deletedAccount = accountService.deleteAccount(memberName);
 
-        ctx.status(200);
-        if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
-        else { ctx.status(400); }
+            ctx.status(200);
+            if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
+            else { ctx.status(400); }
+        }
     }
 
     public void getUsersHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        List<Account> al = accountService.getAllAccounts();
-        if(!al.isEmpty()) {
-            ctx.status(200);
-            ctx.json(mapper.writeValueAsString(al));
+        if(ses == null) { ctx.status(403); }
+        else {
+            ObjectMapper mapper = new ObjectMapper();
+            List<Account> al = accountService.getAllAccounts();
+            if(!al.isEmpty()) {
+                ctx.status(200);
+                ctx.json(mapper.writeValueAsString(al));
+            }
         }
 
     }
