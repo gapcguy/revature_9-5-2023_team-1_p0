@@ -34,7 +34,6 @@ public class AccountService {
     }
 
     public Account deleteAccount(String username){
-        Account account = accountDAO.deleteAccountByName(username);
-        return account;
+        return accountDAO.deleteAccountByName(username);
     }
 }
