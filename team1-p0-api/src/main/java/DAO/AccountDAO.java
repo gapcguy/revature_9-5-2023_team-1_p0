@@ -98,7 +98,7 @@ public class AccountDAO {
     }
     public void deleteAccountByName(String Name){
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "Delete from Account where account_id = ?";
+            String sql = "Delete from Account where username = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, Name);
             ps.executeUpdate();

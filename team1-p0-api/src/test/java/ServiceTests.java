@@ -75,4 +75,13 @@ public class ServiceTests {
         assert(afterBal<beforBal);
         assert(afterSize>beforeSize);
     }
+
+    @Test
+    public void deleteTest(){
+        AccountService as = new AccountService();
+        Account a = as.getUserAccount(new Account("user1", "dallas"));
+        as.deleteAccount(a);
+        a = as.getUserAccount(a);
+        assert(a==null);
+    }
 }
