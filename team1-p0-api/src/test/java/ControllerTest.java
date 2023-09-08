@@ -40,7 +40,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void loginSuccessful() throws IOException, InterruptedException {
+    public void getUsers() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/users"))
                 .GET()
