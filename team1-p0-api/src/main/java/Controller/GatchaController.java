@@ -7,6 +7,7 @@ import Model.Transaction;
 // Service Packages
 import Model.Toy;
 import Service.AccountService;
+import Service.AuthService;
 import Service.TransactionService;
 import Service.ToyService;
 
@@ -94,23 +95,25 @@ public class GatchaController {
     }
 
     public void pullHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Account account = mapper.readValue(ctx.body(), Account.class);
-        TransactionService transactionService = new TransactionService();
-        int userId = Integer.parseInt(ctx.pathParam("user_id"));
+        if(AuthController.ses == null) { ctx.status(403); }
+        else {
+            ObjectMapper mapper = new ObjectMapper();
+            Account account = mapper.readValue(ctx.body(), Account.class);
+            TransactionService transactionService = new TransactionService();
+            int userId = Integer.parseInt(ctx.pathParam("user_id"));
 
-        try {
-            // Check if the account has sufficient balance and perform the pull
-            Transaction transaction = transactionService.pull(account);
+            try {
+                // Check if the account has sufficient balance and perform the pull
+                Transaction transaction = transactionService.pull(account);
 
-            // If the pull operation is successful, return a response.
-            ctx.status(200); // HTTP(OK)
-            ctx.json(transaction); // Return the transaction object as a JSON response.
-        } catch (Exception e) {
-            ctx.status(400);
-            ctx.result(e.getMessage());
+                // If the pull operation is successful, return a response.
+                ctx.status(200); // HTTP(OK)
+                ctx.json(transaction); // Return the transaction object as a JSON response.
+            } catch (Exception e) {
+                ctx.status(400);
+                ctx.result(e.getMessage());
+            }
         }
-
     }
 
     public void viewUserToyboxHandler(Context ctx) throws JsonProcessingException {
