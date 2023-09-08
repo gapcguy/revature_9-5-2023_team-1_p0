@@ -6,6 +6,8 @@ import Utils.ConnectionUtil;
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDAO {
     public Account createAccount(Account account) {
@@ -140,6 +142,25 @@ public class AccountDAO {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public List<Account> getAllUsers(){
+        try(Connection c = ConnectionUtil.getConnection()){
+            PreparedStatement ps = c.prepareStatement("select * from account");
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Account> al = new ArrayList<Account>();
+            while(rs.next()) {
+                al.add(new Account(rs.getInt("account_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("coin_balance")));
+            }
+            return al;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+            return null;
+
     }
 }
 

@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class GatchaController {
     // Object Service instances
@@ -44,8 +47,9 @@ public class GatchaController {
         app.post("/login",                          this::loginHandler);
         app.post("/register",                       this::registrationHandler);
         app.post("/{user_id}/toybox",               this::viewToybox);
-        app.get("/users/{user_id}/{toy_id}/buy",  this::pull);
-        app.delete("/users/{username}", this::deleteUser);
+        app.patch("/users/{user_id}/{toy_id}/buy",  this::pull);
+        app.delete("/users/{user_id}", this::deleteUser);
+        app.get("/users", this::getUsers);
 
         return app;
     }
@@ -112,5 +116,15 @@ public class GatchaController {
         ctx.status(200);
         if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
         else { ctx.status(400); }
+    }
+
+    public void getUsers(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Account> al = accountService.getAllAccounts();
+        if(!al.isEmpty()) {
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(al));
+        }
+
     }
 }
