@@ -33,8 +33,8 @@ public class AccountService {
         return null;
     }
 
-    public void deleteAccount(Account account){
-        AccountDAO ad= new AccountDAO();
-        ad.deleteAccountByName(account.getUsername());
+    public Account deleteAccount(String username){
+        Account account = accountDAO.deleteAccountByName(username);
+        return account;
     }
 }

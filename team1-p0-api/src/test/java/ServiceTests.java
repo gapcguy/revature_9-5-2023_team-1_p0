@@ -80,7 +80,7 @@ public class ServiceTests {
     public void deleteTest(){
         AccountService as = new AccountService();
         Account a = as.getUserAccount(new Account("user1", "dallas"));
-        as.deleteAccount(a);
+        as.deleteAccount(String.valueOf(a));
         a = as.getUserAccount(a);
         assert(a==null);
     }

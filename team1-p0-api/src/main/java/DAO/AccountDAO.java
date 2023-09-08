@@ -86,6 +86,7 @@ public class AccountDAO {
         return false;
     }
 
+    // May not be used. We may want to consider removing this on a final/cleanup push.
     public void deleteAccountById(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from Account where account_id = ?";
@@ -96,7 +97,7 @@ public class AccountDAO {
             throw new RuntimeException(e);
         }
     }
-    public void deleteAccountByName(String Name){
+    public Account deleteAccountByName(String Name){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from Account where username = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -105,6 +106,7 @@ public class AccountDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     public boolean updateAccount(Account account){

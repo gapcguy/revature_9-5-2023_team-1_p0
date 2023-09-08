@@ -45,6 +45,7 @@ public class GatchaController {
         app.post("/register",                       this::registrationHandler);
         app.post("/{user_id}/toybox",               this::viewToybox);
         app.patch("/users/{user_id}/{toy_id}/buy",  this::pull);
+        app.delete("/users/{user_id}", this::deleteUser);
 
         return app;
     }
@@ -101,5 +102,15 @@ public class GatchaController {
 
     public void viewToybox(Context ctx) throws JsonProcessingException {
 
+    }
+
+    public void deleteUser(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String memberName = ctx.pathParam("username");
+        Account deletedAccount = accountService.deleteAccount(memberName);
+
+        ctx.status(200);
+        if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
+        else { ctx.status(200); }
     }
 }
