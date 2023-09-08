@@ -69,8 +69,6 @@ public class ServiceTests {
 
         int afterBal = as.getUserAccount(a).getCoinBalance();
         int afterSize = transactionService.getToysForAccount(b).size();
-        System.out.println(beforBal);
-        System.out.println(afterBal);
 
         assert(afterBal<beforBal);
         assert(afterSize>beforeSize);
@@ -80,7 +78,7 @@ public class ServiceTests {
     public void deleteTest(){
         AccountService as = new AccountService();
         Account a = as.getUserAccount(new Account("user1", "dallas"));
-        as.deleteAccount(String.valueOf(a));
+        as.deleteAccount(a.getUsername());
         a = as.getUserAccount(a);
         assert(a==null);
     }

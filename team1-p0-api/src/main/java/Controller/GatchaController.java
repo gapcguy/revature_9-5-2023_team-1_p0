@@ -44,8 +44,8 @@ public class GatchaController {
         app.post("/login",                          this::loginHandler);
         app.post("/register",                       this::registrationHandler);
         app.post("/{user_id}/toybox",               this::viewToybox);
-        app.patch("/users/{user_id}/{toy_id}/buy",  this::pull);
-        app.delete("/users/{user_id}", this::deleteUser);
+        app.get("/users/{user_id}/{toy_id}/buy",  this::pull);
+        app.delete("/users/{username}", this::deleteUser);
 
         return app;
     }
@@ -111,6 +111,6 @@ public class GatchaController {
 
         ctx.status(200);
         if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
-        else { ctx.status(200); }
+        else { ctx.status(400); }
     }
 }

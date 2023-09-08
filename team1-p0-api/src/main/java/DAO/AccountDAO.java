@@ -103,8 +103,9 @@ public class AccountDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, Name);
             ps.executeUpdate();
+            return new Account();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return null;
     }
