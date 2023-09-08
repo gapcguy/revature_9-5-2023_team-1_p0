@@ -2,6 +2,7 @@ package Controller;
 
 // Model Packages
 import Model.Account;
+import Model.Transaction;
 
 // Service Packages
 import Service.AccountService;
@@ -46,12 +47,12 @@ public class GatchaController {
         // routes
         app.post("/login",                          this::loginHandler);
         app.post("/register",                       this::registrationHandler);
-        app.get("/toybox",               this::viewToyboxHandler);
-        app.get("/toybox/{user_id}",               this::viewUserToyboxHandler);
-        app.patch("/users/{user_id}/buy",  this::pullHandler);
-        app.delete("/users/{user_id}", this::deleteUserHandler);
-        app.get("/users", this::getUsersHandler);
-        app.patch("/users/{user_id}/deposit", this::depositHandler);
+        app.get("/toybox",                          this::viewToyboxHandler);
+        app.get("/toybox/{user_id}",                this::viewUserToyboxHandler);
+        app.patch("/users/{user_id}/buy",           this::pullHandler);
+        app.delete("/users/{user_id}",              this::deleteUserHandler);
+        app.get("/users",                           this::getUsersHandler);
+        app.patch("/users/{user_id}/deposit",       this::depositHandler);
 
         return app;
     }
@@ -94,7 +95,20 @@ public class GatchaController {
     public void pullHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
+        TransactionService transactionService = new TransactionService();
+        int userId = Integer.parseInt(ctx.pathParam("user_id"));
 
+        try {
+            // Check if the account has sufficient balance and perform the pull
+            Transaction transaction = transactionService.pull(account);
+
+            // If the pull operation is successful, return a response.
+            ctx.status(200); // HTTP(OK)
+            ctx.json(transaction); // Return the transaction object as a JSON response.
+        } catch (Exception e) {
+            ctx.status(400);
+            ctx.result(e.getMessage());
+        }
 
     }
 
