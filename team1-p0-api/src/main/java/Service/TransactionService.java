@@ -36,4 +36,6 @@ public class TransactionService {
     public List<Toy> getToysForAccount(Account account){
         return transactionDAO.myToys(account);
     }
+
+    public List<Toy> getToysForAccountID(int id){ return transactionDAO.getToysFromAccountId(id);}
 }

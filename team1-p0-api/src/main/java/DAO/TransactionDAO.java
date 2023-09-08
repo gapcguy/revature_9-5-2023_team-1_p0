@@ -106,6 +106,38 @@ public class TransactionDAO {
         }
         return b;
     }
+
+    public List<Toy> getToysFromAccountId(int id){
+        List<Toy> Ts = new ArrayList<Toy>();
+        try {
+            Connection connection = ConnectionUtil.getConnection();
+            String sql = "SELECT " +
+                    "t.toy_id_fk, " +
+                    "COUNT(t.transaction_id) AS transaction_count," +
+                    "toys.name, " +
+                    "toys.cost," +
+                    "toys.quantity " +
+                    "FROM " +
+                    "transaction AS t " +
+                    "JOIN " +
+                    "toy AS toys " +
+                    "ON t.toy_id_fk = toys.toy_id WHERE " +
+                    "t.account_id_fk = ? " +
+                    "GROUP BY " +
+                    "t.toy_id_fk, toys.name, toys.quantity, toys.cost;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                Toy t = new Toy(rs.getInt("toy_id_fk"), rs.getString("name"), rs.getInt("quantity"), rs.getInt("cost"));
+                Ts.add(t);
+            }
+            return Ts;
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return Ts;
+    }
     /*public boolean Apublic void deleteToyById(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from toy where toy_is = ?";
@@ -150,24 +182,7 @@ public class TransactionDAO {
         return Ts;
     }
 
-    public List<Transaction> GetTransactionsByToyID(int id){
-        List<Transaction> Ts = new ArrayList<Transaction>();
-        try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT * FROM transaction WHERE toy_id_fk = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()) {
-                Transaction t = new Transaction(rs.getInt("transaction_id"), rs.getInt("account_id_fk"), rs.getInt("toy_id_fk"));
-                Ts.add(t);
-            }
-            return Ts;
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return Ts;
-    }
+
 
     public Transaction GetTransactionByID(int id){
         try {

@@ -82,4 +82,15 @@ public class ServiceTests {
         a = as.getUserAccount(a);
         assert(a==null);
     }
+
+    @Test
+    public void getToysTest() throws Exception {
+        AccountService as = new AccountService();
+        TransactionService ts = new TransactionService();
+        List<Toy> tl = ts.getToysForAccountID(1);
+        assert(tl.isEmpty());
+        ts.pull(as.getUserAccount(new Account("user1", "dallas")));
+        tl = ts.getToysForAccountID(1);
+        assert(!tl.isEmpty());
+    }
 }

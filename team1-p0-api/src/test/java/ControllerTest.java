@@ -1,6 +1,8 @@
 import Controller.GatchaController;
 import Model.Account;
+import Model.Toy;
 import Service.AccountService;
+import Service.TransactionService;
 import Utils.Application;
 import Utils.ConnectionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +59,25 @@ public class ControllerTest {
         List<Account> expectedList = as.getAllAccounts();
         List<Account> actualResult = om.readValue(response.body().toString(), om.getTypeFactory().constructCollectionType(List.class, Account.class));
         Assert.assertEquals(expectedList, actualResult);
+    }
+
+    @Test
+    public void getToysForUserId() throws Exception {
+        TransactionService ts = new TransactionService();
+        AccountService as = new AccountService();
+        Account c = as.getUserAccount(new Account("user2", "reston"));
+        ts.pull(c);
+        HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/toybox/2"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        int status = response.statusCode();
+        Assert.assertEquals(status, 200);
+        ObjectMapper om = new ObjectMapper();
+        List<Toy> expectedList = om.readValue(response.body().toString(), om.getTypeFactory().constructCollectionType(List.class, Toy.class));
+        assert(!expectedList.isEmpty());
     }
 
 

@@ -5,6 +5,7 @@ import Model.Account;
 import Model.Transaction;
 
 // Service Packages
+import Model.Toy;
 import Service.AccountService;
 import Service.TransactionService;
 import Service.ToyService;
@@ -113,11 +114,25 @@ public class GatchaController {
     }
 
     public void viewUserToyboxHandler(Context ctx) throws JsonProcessingException {
-
+        ObjectMapper mapper = new ObjectMapper();
+        List<Toy> toys = transactionService.getToysForAccountID(Integer.parseInt(ctx.pathParam("user_id")));
+        if(!toys.isEmpty()) {
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(toys));
+        } else {
+            ctx.status(400);
+        }
     }
 
     public void viewToyboxHandler(Context ctx) throws JsonProcessingException {
-
+        ObjectMapper mapper = new ObjectMapper();
+        List<Toy> toys = toyService.getAvailableToys();
+        if(!toys.isEmpty()) {
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(toys));
+        } else {
+            ctx.status(400);
+        }
     }
 
     public void depositHandler(Context ctx) throws JsonProcessingException {
@@ -126,7 +141,7 @@ public class GatchaController {
 
     public void deleteUserHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String memberName = ctx.pathParam("username");
+        String memberName = ctx.pathParam("user_id");
         Account deletedAccount = accountService.deleteAccount(memberName);
 
         ctx.status(200);
