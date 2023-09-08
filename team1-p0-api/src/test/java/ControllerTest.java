@@ -63,9 +63,18 @@ public class ControllerTest {
 
     @Test
     public void getToysForUserId() throws Exception {
+        HttpRequest postRequest = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/account/login"))
+            .POST(HttpRequest.BodyPublishers.ofString("{" +
+                    "\"username\": \"user6\", " +
+                    "\"password\": \"tampa\" }"))
+            .header("Content-Type", "application/json")
+            .build();
+
+        httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         TransactionService ts = new TransactionService();
         AccountService as = new AccountService();
-        Account c = as.getUserAccount(new Account("user2", "reston"));
+        Account c = as.getUserAccount(new Account("user6", "tampa"));
         ts.pull(c);
         HttpRequest getRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/toybox/myToys"))
@@ -74,7 +83,7 @@ public class ControllerTest {
                 .build();
         HttpResponse response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
-        Assert.assertEquals(status, 200);
+        Assert.assertEquals(200, status);
         ObjectMapper om = new ObjectMapper();
         List<Toy> expectedList = om.readValue(response.body().toString(), om.getTypeFactory().constructCollectionType(List.class, Toy.class));
         assert(!expectedList.isEmpty());

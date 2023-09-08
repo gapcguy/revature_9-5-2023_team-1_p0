@@ -75,12 +75,10 @@ public class GatchaController {
             account.setAccount_id( loginAccount.getAccount_id() );
             account.setUsername  ( loginAccount.getUsername()   );
             account.setPassword  ( loginAccount.getPassword()   );
-            if(ses == null){
-                ses = ctx.req().getSession();
-                ses.setAttribute("account_id", loginAccount.getAccount_id());
-                ses.setAttribute("username", loginAccount.getUsername());
-                ses.setAttribute("password", loginAccount.getPassword());
-            }
+            ses = ctx.req().getSession();
+            ses.setAttribute("account_id", loginAccount.getAccount_id());
+            ses.setAttribute("username", loginAccount.getUsername());
+            ses.setAttribute("password", loginAccount.getPassword());
 
             ctx.json             ( mapper.writeValueAsString(account));
             ctx.status           ( 200 );
@@ -171,9 +169,11 @@ public class GatchaController {
         if(ses == null) { ctx.status(403); }
         else {
             ObjectMapper mapper = new ObjectMapper();
-            String memberName = (String) ses.getAttribute("username");
-            Account deletedAccount = accountService.deleteAccount(memberName);
 
+            String memberName = (String) ses.getAttribute("username");
+            System.out.println(memberName);
+            Account deletedAccount = accountService.deleteAccount(memberName);
+            System.out.println("Not gonna reach it.");
             ctx.status(200);
             if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
             else { ctx.status(400); }

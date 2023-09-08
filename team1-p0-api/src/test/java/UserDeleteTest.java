@@ -74,12 +74,12 @@ public class UserDeleteTest {
         status = response.statusCode();
 
         Assert.assertEquals(200, status);
-
+        //testing a fail
         postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user4\", " +
-                        "\"password\": \"dallas\" }"))
+                        "\"username\": \"user1\", " +
+                        "\"password\": \"reston\" }"))
                 .header("Content-Type", "application/json")
                 .build();
 
