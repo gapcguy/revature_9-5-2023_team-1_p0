@@ -76,7 +76,7 @@ public class GatchaController {
             account.setUsername  ( loginAccount.getUsername()   );
             account.setPassword  ( loginAccount.getPassword()   );
             if(ses == null){
-                ctx.req().getSession();
+                ses = ctx.req().getSession();
                 ses.setAttribute("account_id", loginAccount.getAccount_id());
                 ses.setAttribute("username", loginAccount.getUsername());
                 ses.setAttribute("password", loginAccount.getPassword());
@@ -99,7 +99,7 @@ public class GatchaController {
             || ( account.getPassword().length() < 4)) {
             ctx.status(400);
         } else {
-            ctx.req().getSession();
+            ses = ctx.req().getSession();
             ses.setAttribute("account_id", addedAccount.getAccount_id());
             ses.setAttribute("username",addedAccount.getUsername());
             ses.setAttribute("password",addedAccount.getPassword());
