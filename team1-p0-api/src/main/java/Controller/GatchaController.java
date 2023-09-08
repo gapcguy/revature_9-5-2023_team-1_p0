@@ -50,14 +50,14 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.post("account/login",                          this::loginHandler);
-        app.post("account/register",                       this::registrationHandler);
+        app.post("/account/login",                          this::loginHandler);
+        app.post("/account/register",                       this::registrationHandler);
         app.get("/toybox",               this::viewToyboxHandler);
         app.get("/toybox/myToys",               this::viewUserToyboxHandler);
         app.patch("/toyboy/pull",  this::pullHandler);
         app.delete("/account", this::deleteUserHandler);
-        app.get("account/allUsers", this::getUsersHandler);
-        app.patch("account/deposit", this::depositHandler);
+        app.get("/account/allUsers", this::getUsersHandler);
+        app.patch("/account/deposit", this::depositHandler);
 
         return app;
     }

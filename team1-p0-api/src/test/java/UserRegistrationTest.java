@@ -49,7 +49,7 @@ public class UserRegistrationTest {
     @Test
     public void registerUserTest() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/register"))
+                .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"user13\", " +
                         "\"password\": \"password\" }"))
@@ -71,7 +71,7 @@ public class UserRegistrationTest {
     @Test
     public void registerUserAlreadyExists() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/register"))
+                .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"user12\", " +
                         "\"password\": \"password\" }"))
@@ -93,7 +93,7 @@ public class UserRegistrationTest {
     @Test
     public void registerUserNoUsername() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/register"))
+                .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"\", " +
                         "\"password\": \"password\" }"))
@@ -112,7 +112,7 @@ public class UserRegistrationTest {
     @Test
     public void RegisterUserPasswordUnderFourCharacters() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/register"))
+                .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"username\", " +
                         "\"password\": \"asd\" }"))
