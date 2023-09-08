@@ -16,12 +16,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
+
 // SQL packages
 
 
 // javalin packages
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ public class GatchaController {
     AccountService accountService;
     TransactionService transactionService;
     ToyService toyService;
+
+    public static HttpSession ses;
 
 
     Account Login;
@@ -47,14 +51,14 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.post("/login",                          this::loginHandler);
-        app.post("/register",                       this::registrationHandler);
-        app.get("/toybox",                          this::viewToyboxHandler);
-        app.get("/toybox/{user_id}",                this::viewUserToyboxHandler);
-        app.patch("/users/{user_id}/buy",           this::pullHandler);
-        app.delete("/users/{user_id}",              this::deleteUserHandler);
-        app.get("/users",                           this::getUsersHandler);
-        app.patch("/users/{user_id}/deposit",       this::depositHandler);
+        app.post("account/login",                          this::loginHandler);
+        app.post("account/register",                       this::registrationHandler);
+        app.get("/toybox",               this::viewToyboxHandler);
+        app.get("/toybox/myToys",               this::viewUserToyboxHandler);
+        app.patch("/toyboy/pull",  this::pullHandler);
+        app.delete("/account", this::deleteUserHandler);
+        app.get("account/allUsers", this::getUsersHandler);
+        app.patch("account/deposit", this::depositHandler);
 
         return app;
     }
@@ -72,6 +76,7 @@ public class GatchaController {
             account.setAccount_id( loginAccount.getAccount_id() );
             account.setUsername  ( loginAccount.getUsername()   );
             account.setPassword  ( loginAccount.getPassword()   );
+
             ctx.json             ( mapper.writeValueAsString(account));
             ctx.status           ( 200 );
         } else {
@@ -139,6 +144,11 @@ public class GatchaController {
     }
 
     public void depositHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Integer amount = mapper.readValue(ctx.body(), Integer.class);
+        String memberName = ctx.pathParam("user_id");
+
+
 
     }
 
