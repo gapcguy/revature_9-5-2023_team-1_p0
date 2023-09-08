@@ -46,10 +46,12 @@ public class GatchaController {
         // routes
         app.post("/login",                          this::loginHandler);
         app.post("/register",                       this::registrationHandler);
-        app.post("/{user_id}/toybox",               this::viewToybox);
-        app.patch("/users/{user_id}/{toy_id}/buy",  this::pull);
-        app.delete("/users/{user_id}", this::deleteUser);
-        app.get("/users", this::getUsers);
+        app.get("/toybox",               this::viewToyboxHandler);
+        app.get("/toybox/{user_id}",               this::viewUserToyboxHandler);
+        app.patch("/users/{user_id}/buy",  this::pullHandler);
+        app.delete("/users/{user_id}", this::deleteUserHandler);
+        app.get("/users", this::getUsersHandler);
+        app.patch("/users/{user_id}/deposit", this::depositHandler);
 
         return app;
     }
@@ -89,26 +91,26 @@ public class GatchaController {
         }
     }
 
-    public void pull(Context ctx) throws JsonProcessingException {
+    public void pullHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
 
 
-        //initiate
-        //check_account_balance
-        //if balance is enough decrement balance service
-        //else end
-        //now create the transaction
-        //Generate a random toy from the pool of available options.
-        //subtract the cost (either a default or specific by search a table of pulls
+    }
+
+    public void viewUserToyboxHandler(Context ctx) throws JsonProcessingException {
 
     }
 
-    public void viewToybox(Context ctx) throws JsonProcessingException {
+    public void viewToyboxHandler(Context ctx) throws JsonProcessingException {
 
     }
 
-    public void deleteUser(Context ctx) throws JsonProcessingException {
+    public void depositHandler(Context ctx) throws JsonProcessingException {
+
+    }
+
+    public void deleteUserHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String memberName = ctx.pathParam("username");
         Account deletedAccount = accountService.deleteAccount(memberName);
@@ -118,7 +120,7 @@ public class GatchaController {
         else { ctx.status(400); }
     }
 
-    public void getUsers(Context ctx) throws JsonProcessingException {
+    public void getUsersHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         List<Account> al = accountService.getAllAccounts();
         if(!al.isEmpty()) {
