@@ -1,4 +1,4 @@
-package Service;
+/* package Service;
 
 import Model.Account;
 import Model.LoginDTO;
@@ -19,4 +19,4 @@ public class AuthService {
             return null;
         }
     }
-}
+} */

@@ -44,7 +44,7 @@ public class ControllerTest {
     @Test
     public void getUsers() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/users"))
+                .uri(URI.create("http://localhost:8080/account/allUsers"))
                 .GET()
                 .header("Content-Type", "application/json")
                 .build();
@@ -68,7 +68,7 @@ public class ControllerTest {
         Account c = as.getUserAccount(new Account("user2", "reston"));
         ts.pull(c);
         HttpRequest getRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/toybox/2"))
+                .uri(URI.create("http://localhost:8080/toybox/myToys"))
                 .GET()
                 .header("Content-Type", "application/json")
                 .build();

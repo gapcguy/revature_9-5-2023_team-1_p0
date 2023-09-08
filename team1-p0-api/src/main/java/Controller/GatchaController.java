@@ -7,7 +7,6 @@ import Model.Transaction;
 // Service Packages
 import Model.Toy;
 import Service.AccountService;
-import Service.AuthService;
 import Service.TransactionService;
 import Service.ToyService;
 
@@ -100,7 +99,7 @@ public class GatchaController {
     }
 
     public void pullHandler(Context ctx) throws JsonProcessingException {
-        if(AuthController.ses == null) { ctx.status(403); }
+        if(ses == null) { ctx.status(403); }
         else {
             ObjectMapper mapper = new ObjectMapper();
             Account account = mapper.readValue(ctx.body(), Account.class);

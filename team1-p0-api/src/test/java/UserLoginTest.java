@@ -48,7 +48,7 @@ public class UserLoginTest {
     @Test
     public void loginSuccessful() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/login"))
+                .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"user4\", " +
                         "\"password\": \"dallas\" }"))
@@ -70,7 +70,7 @@ public class UserLoginTest {
     @Test
     public void loginInvalidUsername() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/login"))
+                .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"testuser4\", " +
                         "\"password\": \"password\" }"))
@@ -86,7 +86,7 @@ public class UserLoginTest {
     @Test
     public void loginInvalidPassword() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/login"))
+                .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString( "{" +
                         "\"username\": \"testuser1\", " +
                         "\"password\": \"pass123\" }"))

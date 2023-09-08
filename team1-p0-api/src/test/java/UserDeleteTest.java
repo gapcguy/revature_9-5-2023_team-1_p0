@@ -47,7 +47,7 @@ public class UserDeleteTest {
     @Test
     public void deleteSuccessful() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/login"))
+                .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"user4\", " +
                         "\"password\": \"dallas\" }"))
@@ -66,7 +66,7 @@ public class UserDeleteTest {
         Assert.assertEquals(expectedAccount, actualResult);
 
         HttpRequest deleteRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/users/user4"))
+                .uri(URI.create("http://localhost:8080/account"))
                 .DELETE()
                 .build();
 
@@ -76,7 +76,7 @@ public class UserDeleteTest {
         Assert.assertEquals(200, status);
 
         postRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/login"))
+                .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
                         "\"username\": \"user4\", " +
                         "\"password\": \"dallas\" }"))

@@ -1,4 +1,4 @@
-package Model;
+/* package Model;
 // DATA TRANSFER OBJECT for login credentials
 public class LoginDTO {
     private String username;
@@ -19,4 +19,4 @@ public class LoginDTO {
         return password;
     }
 
-}
+} */
