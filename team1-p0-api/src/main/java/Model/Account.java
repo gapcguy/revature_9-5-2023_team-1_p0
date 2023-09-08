@@ -56,6 +56,7 @@ public class Account {
     /* Setter method for coin balance */
     public void setCoinBalance(int coin_balance) { this.coin_balance = coin_balance; }
 
+
     // Override of the default equals() function. Checks when two objects are identical. Allows Assert.assertEquals
     // and List.contains to function.
     @Override

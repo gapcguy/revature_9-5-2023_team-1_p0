@@ -4,6 +4,8 @@ package Service;
 import Model.Account;
 import DAO.AccountDAO;
 
+import java.util.List;
+
 public class AccountService {
 
     AccountDAO accountDAO;
@@ -35,5 +37,9 @@ public class AccountService {
 
     public Account deleteAccount(String username){
         return accountDAO.deleteAccountByName(username);
+    }
+
+    public List<Account> getAllAccounts(){
+        return accountDAO.getAllUsers();
     }
 }
