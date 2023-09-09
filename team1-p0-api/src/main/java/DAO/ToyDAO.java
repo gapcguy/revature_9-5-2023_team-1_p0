@@ -66,6 +66,7 @@ public class ToyDAO {
         return false;
     }
 
+    // 0 usage-- Remove if tests reveal it's not used.
     public boolean updateToy(Toy toy){
         try {
             Connection connection = ConnectionUtil.getConnection();
@@ -112,6 +113,7 @@ public class ToyDAO {
 
     }
 
+     // 0 usage. -- Remove if tests reveal it's not used.
     public void deleteToyById(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from toy where toy_id = ?";
@@ -123,6 +125,7 @@ public class ToyDAO {
         }
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void deleteToyByName(String id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from toy where name = ?";

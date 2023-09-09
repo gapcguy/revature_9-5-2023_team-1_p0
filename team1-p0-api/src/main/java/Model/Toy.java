@@ -48,6 +48,7 @@ public class Toy {
         return toyName;
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
@@ -56,6 +57,7 @@ public class Toy {
         return cost;
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void setCost(int cost) {
         this.cost = cost;
     }

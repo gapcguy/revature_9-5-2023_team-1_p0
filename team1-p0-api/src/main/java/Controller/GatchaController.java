@@ -24,7 +24,7 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import jakarta.servlet.http.HttpSession;
 
-import java.util.ArrayList;
+//import java.util.ArrayList; -- Remove if tests reveal it's not used.
 import java.util.List;
 
 

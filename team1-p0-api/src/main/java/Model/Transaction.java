@@ -20,18 +20,22 @@ public class Transaction {
 
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void setTransaction_id(int transaction_id) {
         this.transaction_id = transaction_id;
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void setToy_id(int toy_id) {
         this.toy_id = toy_id;
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void setToyName(String toyName) {
         this.toyName = toyName;
     }
@@ -40,6 +44,7 @@ public class Transaction {
         return toyName;
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public int getAccount_id() {
         return account_id;
     }

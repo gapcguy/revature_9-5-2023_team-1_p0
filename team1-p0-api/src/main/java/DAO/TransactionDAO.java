@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.sql.*;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Random;      // 0 usage. -- Remove if tests reveal it's not used.
 
 
 public class TransactionDAO {
@@ -79,7 +79,7 @@ public class TransactionDAO {
         return toys;
     }
 
-
+    // 0 usage. -- Remove if tests reveal it's not used.
     public void deleteTransaction(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from transaction where transaction_id = ?";
@@ -91,6 +91,7 @@ public class TransactionDAO {
         }
     }
 
+    // 0 usage. -- Remove if tests reveal it's not used.
     public boolean updateTransaction(Transaction t){
         boolean b = false;
         try(Connection conn = ConnectionUtil.getConnection()){
@@ -138,6 +139,8 @@ public class TransactionDAO {
         }
         return Ts;
     }
+
+    // 0 usage. -- Remove if tests reveal it's not used.
     /*public boolean Apublic void deleteToyById(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from toy where toy_is = ?";
@@ -163,6 +166,7 @@ public class TransactionDAO {
         return false;
     }
 
+     // 0 usage. -- Remove if tests reveal it's not used.
     public List<Transaction> GetTransactionsByAccountID(int id){
         List<Transaction> Ts = new ArrayList<Transaction>();
         try {
@@ -183,7 +187,7 @@ public class TransactionDAO {
     }
 
 
-
+     // 0 usage. -- Remove if tests reveal it's not used.
     public Transaction GetTransactionByID(int id){
         try {
             Connection connection = ConnectionUtil.getConnection();

@@ -8,13 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 public class Application {
     public static void main(String[] args) {
-        databaseSetup();
+        databaseSetup(); // Cleanup suggestion: Read the comment block above the function definition pertaining to this.
         GatchaController gatchaControllerController = new GatchaController();
         Javalin app = gatchaControllerController.startAPI();
         app.start(8080);
     }
 
-
+    // 0 usage. -- Remove if tests reveal it's not used.
     /*  public Account(int account_id, String username, String password, int coin_balance) {
         this.account_id = account_id;
         this.username   = username;
@@ -22,6 +22,17 @@ public class Application {
         this.coin_balance = coin_balance;
 
     }*/
+
+    /* Cleanup suggestion:
+     *
+     * As what's in resources/Gatcha.sql is a duplicate of the SQL queries, perhaps it might be worth it to
+     * either replace the references to this function with Utils.ConnectionUtil.resetTestDatabase() (since its sole
+     * existence is to read the SQL file, or just use this as a convenience function and reference
+     * Utils.ConnectionUtil.resetTestDatabase() here (possibly refactoring the function definition to a more
+     * appropriate "setupDatabase()." Thoughts?
+     *
+     * - Michael
+     */
     public static void databaseSetup() {
         try {
             Connection conn = ConnectionUtil.getConnection();

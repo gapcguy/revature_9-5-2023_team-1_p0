@@ -1,10 +1,10 @@
 package DAO;
 
 import Model.Account;
-import Model.Toy;
+//import Model.Toy; -- Remove if tests reveal it's not used.
 import Utils.ConnectionUtil;
 
-import javax.xml.transform.Result;
+//import javax.xml.transform.Result; -- Remove if tests reveal it's not used.
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +112,7 @@ public class AccountDAO {
         return null;
     }
 
+     // 0 usage. -- Remove if tests reveal it's not used.
     public boolean updateAccount(Account account){
         try {
             Connection connection = ConnectionUtil.getConnection();
