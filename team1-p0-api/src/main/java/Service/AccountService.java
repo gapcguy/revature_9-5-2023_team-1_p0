@@ -13,8 +13,11 @@ public class AccountService {
 
     //Needs testing
     public Account createAccount(Account account) throws Exception {
-        if (account.getUsername().isEmpty() || account.getPassword().isEmpty()) throw new Exception("Username and Password cannot be empty");
-        return accountDAO.createAccount(account);
+        if (account.getUsername().length() < minLength || account.getPassword().length() < minLength) throw new Exception("Username or Password too short");
+        Account daoValue = accountDAO.createAccount(account);
+        if(daoValue != null){
+            return daoValue;
+        } else throw new Exception("account couldn't be created");
     }
 
     //covered

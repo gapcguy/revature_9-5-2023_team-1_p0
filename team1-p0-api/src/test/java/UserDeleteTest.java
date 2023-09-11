@@ -62,8 +62,8 @@ public class UserDeleteTest {
         Assert.assertEquals(200, status);
         AccountService as = new AccountService();
         Account expectedAccount = as.getUserAccount(new Account("user4", "dallas"));
-        String actualResult = response.body().toString();
-        Assert.assertEquals("Welcome user4\n Your new balance is: 50", actualResult);
+        Account actualResult = om.readValue(response.body().toString(), Account.class);
+        Assert.assertEquals(expectedAccount, actualResult);
 
         HttpRequest deleteRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account"))
@@ -78,8 +78,8 @@ public class UserDeleteTest {
         postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user1\", " +
-                        "\"password\": \"reston\" }"))
+                        "\"username\": \"user4\", " +
+                        "\"password\": \"dallas\" }"))
                 .header("Content-Type", "application/json")
                 .build();
 

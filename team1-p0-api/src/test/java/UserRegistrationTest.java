@@ -83,7 +83,7 @@ public class UserRegistrationTest {
         int status2 = response2.statusCode();
         Assert.assertEquals(200, status1);
         Assert.assertEquals(400, status2);
-        Assert.assertEquals("", response2.body().toString());
+        Assert.assertEquals("account couldn't be created", response2.body().toString());
     }
 
     // Sends an HTTP Request to POST localhost:8080/register when no username is provided
@@ -99,10 +99,11 @@ public class UserRegistrationTest {
                         "\"password\": \"password\" }"))
                 .header("Content-Type", "application/json")
                 .build();
+
         HttpResponse response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assert.assertEquals(400, status);
-        Assert.assertEquals("", response.body().toString());
+        Assert.assertEquals("Username or Password too short", response.body().toString());
     }
 
     // Sends an HTTP Request to POST localhost:8080/register when the password is less than 4 characters
@@ -121,6 +122,6 @@ public class UserRegistrationTest {
         HttpResponse response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assert.assertEquals(400, status);
-        Assert.assertEquals("", response.body().toString());
+        Assert.assertEquals("Username or Password too short", response.body().toString());
     }
 }

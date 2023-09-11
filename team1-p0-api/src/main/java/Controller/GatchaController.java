@@ -76,8 +76,10 @@ public class GatchaController {
             /*
             ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
             ctx.status(200); */
-                ctx.json(mapper.writeValueAsString(account));
+                ctx.json(mapper.writeValueAsString(loginAccount));
                 ctx.status(200);
+            } else {
+                ctx.status(401);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,12 +94,16 @@ public class GatchaController {
 
         try {
             Account addedAccount = accountService.createAccount(account);
-            ses = ctx.req().getSession();
-            ses.setAttribute("account_id", addedAccount.getAccount_id());
-            ses.setAttribute("username", addedAccount.getUsername());
-            ses.setAttribute("password", addedAccount.getPassword());
-            ctx.json(mapper.writeValueAsString(addedAccount));
-            ctx.status(200);
+            if(addedAccount == null) {
+                throw new Exception("account couldn't be created");
+            } else {
+                ses = ctx.req().getSession();
+                ses.setAttribute("account_id", addedAccount.getAccount_id());
+                ses.setAttribute("username", addedAccount.getUsername());
+                ses.setAttribute("password", addedAccount.getPassword());
+                ctx.json(mapper.writeValueAsString(addedAccount));
+                ctx.status(200);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             ctx.result(e.getMessage());
