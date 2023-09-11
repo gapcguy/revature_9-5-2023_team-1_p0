@@ -67,16 +67,12 @@ public class GatchaController {
         Account         loginAccount    = accountService.getUserAccount(account);
 
         if ( (loginAccount != null)) {
-
-            account.setAccount_id( loginAccount.getAccount_id() );
-            account.setUsername  ( loginAccount.getUsername()   );
-            account.setPassword  ( loginAccount.getPassword()   );
             ses = ctx.req().getSession();
             ses.setAttribute("account_id", loginAccount.getAccount_id());
             ses.setAttribute("username", loginAccount.getUsername());
             ses.setAttribute("password", loginAccount.getPassword());
 
-            ctx.json             ( mapper.writeValueAsString(account));
+            ctx.json             ( mapper.writeValueAsString(loginAccount));
             ctx.status           ( 200 );
         } else {
             ctx.status( 401 );
