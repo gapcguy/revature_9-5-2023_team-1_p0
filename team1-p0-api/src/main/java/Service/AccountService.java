@@ -7,13 +7,13 @@ import DAO.AccountDAO;
 import java.util.List;
 
 public class AccountService {
-
+    public final static int minLength = 4;
     AccountDAO accountDAO;
     public AccountService() { accountDAO = new AccountDAO(); }
 
     //Needs testing
     public Account createAccount(Account account) {
-        if (account.getUsername().isEmpty() || account.getPassword().isEmpty()) return null;
+        if (account.getUsername().length() < minLength || account.getPassword().length() < minLength) return null;
         return accountDAO.createAccount(account);
     }
 
@@ -23,7 +23,6 @@ public class AccountService {
 
     //covered
     public Account deposit(Account account, int amountToAdd) {
-        if(amountToAdd<0)return null;
         Account userAccount = new Account(account.getUsername(), account.getPassword());
         boolean success = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
 

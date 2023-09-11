@@ -62,8 +62,8 @@ public class UserDeleteTest {
         Assert.assertEquals(200, status);
         AccountService as = new AccountService();
         Account expectedAccount = as.getUserAccount(new Account("user4", "dallas"));
-        Account actualResult = om.readValue(response.body().toString(), Account.class);
-        Assert.assertEquals(expectedAccount, actualResult);
+        String actualResult = response.body().toString();
+        Assert.assertEquals("Welcome user4\n Your new balance is: 50", actualResult);
 
         HttpRequest deleteRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account"))

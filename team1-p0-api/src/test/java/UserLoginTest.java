@@ -59,9 +59,6 @@ public class UserLoginTest {
         int status = response.statusCode();
 
         Assert.assertEquals(200, status);
-        ObjectMapper om = new ObjectMapper();
-        Assert.assertEquals(200, status);
-        AccountService as = new AccountService();
         String actualResult = response.body().toString();
         Assert.assertEquals("Welcome user4\n Your new balance is: 50", actualResult);
     }
