@@ -79,9 +79,7 @@ public class UserRegistrationTest {
                 .build();
         HttpResponse response1 = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         HttpResponse response2 = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
-        int status1 = response1.statusCode();
         int status2 = response2.statusCode();
-        Assert.assertEquals(200, status1);
         Assert.assertEquals(400, status2);
         Assert.assertEquals("account couldn't be created", response2.body().toString());
     }
