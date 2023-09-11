@@ -73,7 +73,7 @@ public class ServiceTests {
     public void pull() throws Exception {
         TransactionService transactionService = new TransactionService();
         AccountService as = new AccountService();
-        Account a = new Account("user1", "dallas");
+        Account a = new Account("user2", "reston");
         Account b = as.getUserAccount(a);
 
         int beforBal = b.getCoinBalance();
