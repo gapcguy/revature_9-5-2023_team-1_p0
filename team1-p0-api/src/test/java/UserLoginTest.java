@@ -50,7 +50,7 @@ public class UserLoginTest {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
-                        "\"username\": \"user4\", " +
+                        "\"username\": \"user5\", " +
                         "\"password\": \"dallas\" }"))
                 .header("Content-Type", "application/json")
                 .build();

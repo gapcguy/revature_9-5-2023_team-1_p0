@@ -27,8 +27,8 @@ VALUES ('user1', 'dallas'),
        ('user6', 'tampa');
 
 INSERT INTO toy (name, quantity)
-VALUES ('barbie', 10),
-       ('spongebob', 25),
+VALUES ('barbie', '10'),
+       ('spongebob', '25'),
        ('fidget spinner', '4'),
        ('gamecube', '100');
 
