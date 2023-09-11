@@ -114,7 +114,7 @@ public class ServiceTests {
             e.printStackTrace();
         }
         assert(testSize == 0);
-        ts.pull(as.getUserAccount(new Account("user1", "dallas")));
+        ts.pull(as.getUserAccount(new Account("user3", "morgantown")));
         List<Toy> tl = ts.getToysForAccountID(1);
         assert(!tl.isEmpty());
     }
