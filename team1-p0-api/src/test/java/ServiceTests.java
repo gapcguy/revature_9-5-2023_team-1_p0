@@ -45,11 +45,11 @@ public class ServiceTests {
     }
 
     @Test
-    public void addCurrencyFailOnNeg(){
+    public void addCurrencyFailOnNeg() throws Exception {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-        a = as.deposit(b, -100);
+        int c = as.deposit(b, -100);
 
         assert(a == null);
 

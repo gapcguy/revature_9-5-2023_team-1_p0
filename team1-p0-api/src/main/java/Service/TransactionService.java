@@ -36,13 +36,13 @@ public class TransactionService {
     public List<Toy> getToysForAccount(Account account) throws Exception {
 
         List toys = transactionDAO.myToys(account);
-        if (toys == null || toys.isEmpty()) throw new Exception("No toys found");
+        if (toys == null) throw new Exception("No toys found");
         return toys;
     }
 
     public List<Toy> getToysForAccountID(int id) throws Exception {
         List toys = transactionDAO.getToysFromAccountId(id);
-        if (toys == null || toys.isEmpty()) throw new Exception("No toys found");
+        if (toys == null) throw new Exception("No toys found");
         return toys;
     }
 }
