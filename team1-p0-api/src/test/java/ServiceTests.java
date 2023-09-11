@@ -111,7 +111,7 @@ public class ServiceTests {
             e.printStackTrace();
         }
         assert(testSize == 0);
-        Account a = as.getUserAccount(new Account("user3", "morgantown"))
+        Account a = as.getUserAccount(new Account("user3", "morgantown"));
         ts.pull(a);
         List<Toy> tl = ts.getToysForAccountID(a.getAccount_id());
         assert(!tl.isEmpty());
