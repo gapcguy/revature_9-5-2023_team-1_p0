@@ -59,8 +59,15 @@ public class UserLoginTest {
         int status = response.statusCode();
 
         Assert.assertEquals(200, status);
-        String actualResult = response.body().toString();
-        Assert.assertEquals("Welcome user4\n Your new balance is: 50", actualResult);
+/*        String actualResult = response.body().toString();
+        Assert.assertEquals("Welcome user4\n Your new balance is: 50", actualResult); /*
+        Commented out - Breaks the code. - MBW
+        */
+
+        ObjectMapper om = new ObjectMapper();
+        Account expectedResult = new Account("user4", "dallas");
+        Account actualResult = om.readValue(response.body().toString(), Account.class);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test

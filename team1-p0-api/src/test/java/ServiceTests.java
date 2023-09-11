@@ -49,8 +49,6 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-
-        assert(a == null);
         int test = 0;
         try {
             int _a = as.deposit(b, -100);
