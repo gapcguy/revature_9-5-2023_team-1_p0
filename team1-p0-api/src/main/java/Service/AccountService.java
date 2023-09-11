@@ -7,7 +7,7 @@ import DAO.AccountDAO;
 import java.util.List;
 
 public class AccountService {
-
+    public final static int minLength = 4;
     AccountDAO accountDAO;
     public AccountService() { accountDAO = new AccountDAO(); }
 

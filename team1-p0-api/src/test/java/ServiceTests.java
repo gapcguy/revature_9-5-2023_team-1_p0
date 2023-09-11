@@ -38,9 +38,20 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-        as.deposit(b, -100);
+        as.deposit(b, 100);
         a = as.getUserAccount(b);
-        assert(b.getCoinBalance()-100 == a.getCoinBalance());
+        assert(b.getCoinBalance()+100 == a.getCoinBalance());
+
+    }
+
+    @Test
+    public void addCurrencyFailOnNeg(){
+        AccountService as = new AccountService();
+        Account a = new Account("user1", "dallas");
+        Account b = as.getUserAccount(a);
+        a = as.deposit(b, -100);
+
+        assert(a == null);
 
     }
 
