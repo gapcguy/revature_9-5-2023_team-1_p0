@@ -13,7 +13,7 @@ public class AccountService {
 
     //Needs testing
     public Account createAccount(Account account) {
-        if (account.getUsername().length() <1 || account.getPassword().length() <1) return null;
+        if (account.getUsername().isEmpty() || account.getPassword().isEmpty()) return null;
         return accountDAO.createAccount(account);
     }
 
@@ -22,8 +22,8 @@ public class AccountService {
 
 
     //covered
-    public Account changeCoinBalance(Account account, int amountToAdd) {
-        AccountDAO accountDAO = new AccountDAO();
+    public Account deposit(Account account, int amountToAdd) {
+        if(amountToAdd<0)return null;
         Account userAccount = new Account(account.getUsername(), account.getPassword());
         boolean success = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
 

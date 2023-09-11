@@ -37,14 +37,12 @@ public class GatchaController {
     public static HttpSession ses;
 
 
-    Account Login;
 
     // Default constructor.
     public GatchaController() {
         accountService = new AccountService();
         transactionService = new TransactionService();
         toyService = new ToyService();
-        Login = null;
     }
     public Javalin startAPI() {
         Javalin app = Javalin.create();
@@ -68,9 +66,7 @@ public class GatchaController {
         Account         account         = mapper.readValue(ctx.body(), Account.class);
         Account         loginAccount    = accountService.getUserAccount(account);
 
-        if ( (loginAccount != null)
-                && loginAccount.getUsername().equals(account.getUsername())
-                && loginAccount.getPassword().equals(account.getPassword())) {
+        if ( (loginAccount != null)) {
 
             account.setAccount_id( loginAccount.getAccount_id() );
             account.setUsername  ( loginAccount.getUsername()   );
@@ -92,9 +88,7 @@ public class GatchaController {
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account addedAccount = accountService.createAccount(account);
 
-        if (( addedAccount == null)
-            || ( account.getUsername().isEmpty() )
-            || ( account.getPassword().length() < 4)) {
+        if (( addedAccount == null)) {
             ctx.status(400);
         } else {
             ses = ctx.req().getSession();
@@ -110,9 +104,7 @@ public class GatchaController {
         if(ses == null) { ctx.status(403); }
         else {
             ObjectMapper mapper = new ObjectMapper();
-            Account account = mapper.readValue(ctx.body(), Account.class);
-            TransactionService transactionService = new TransactionService();
-            int userId = Integer.parseInt(ctx.pathParam("user_id"));
+            Account account = new Account((int) ses.getAttribute("account_id"),(String)ses.getAttribute("username"),(String)ses.getAttribute("password"));
 
             try {
                 // Check if the account has sufficient balance and perform the pull
@@ -161,7 +153,16 @@ public class GatchaController {
         else {
             ObjectMapper mapper = new ObjectMapper();
             Integer amount = mapper.readValue(ctx.body(), Integer.class);
-            String memberName = ctx.pathParam("user_id");
+            Account account = new Account((int) ses.getAttribute("account_id"),(String)ses.getAttribute("username"),(String)ses.getAttribute("password"));
+
+            try {
+                accountService.deposit(account,amount);
+                ctx.status(200); // HTTP(OK)
+                ctx.result("New Balance:" + Integer.toString(amount + account.getCoinBalance()));
+            } catch (Exception e) {
+                ctx.status(400);
+                ctx.result(e.getMessage());
+            }
         }
     }
 
@@ -171,9 +172,7 @@ public class GatchaController {
             ObjectMapper mapper = new ObjectMapper();
 
             String memberName = (String) ses.getAttribute("username");
-            System.out.println(memberName);
             Account deletedAccount = accountService.deleteAccount(memberName);
-            System.out.println("Not gonna reach it.");
             ctx.status(200);
             if(deletedAccount != null) { ctx.json(mapper.writeValueAsString(deletedAccount)); }
             else { ctx.status(400); }
