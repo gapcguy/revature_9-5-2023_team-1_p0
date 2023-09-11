@@ -23,7 +23,7 @@ public class AccountService {
 
     //covered
     public int deposit(Account account, int amountToAdd) throws Exception {
-        if(amountToAdd<0) throw new Exception("Cannot deposit negative ammount");
+        if(amountToAdd<0) throw new Exception("Cannot deposit negative amount");
         Account userAccount = new Account(account.getUsername(), account.getPassword());
         boolean success = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
         if(!success) throw new Exception("Transaction Unable to Complete");
@@ -40,4 +40,6 @@ public class AccountService {
         if(accounts == null || accounts.isEmpty()) throw new Exception("no accounts found");
         return accounts;
     }
+
+
 }

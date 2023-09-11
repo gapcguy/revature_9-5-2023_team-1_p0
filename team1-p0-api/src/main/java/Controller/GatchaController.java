@@ -72,8 +72,12 @@ public class GatchaController {
             ses.setAttribute("username", loginAccount.getUsername());
             ses.setAttribute("password", loginAccount.getPassword());
 
+            /*
             ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
-            ctx.status(200);
+            ctx.status(200); */
+            ctx.json             (  mapper.writeValueAsString (account) );
+            ctx.status           (               200                    );
+
         } catch (Exception e) {
             e.printStackTrace();
             ctx.result(e.getMessage());
