@@ -34,7 +34,7 @@ public class ServiceTests {
     }
 
     @Test
-    public void addCurrency(){
+    public void addCurrency() throws Exception {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);

@@ -12,8 +12,8 @@ public class AccountService {
     public AccountService() { accountDAO = new AccountDAO(); }
 
     //Needs testing
-    public Account createAccount(Account account) {
-        if (account.getUsername().isEmpty() || account.getPassword().isEmpty()) return null;
+    public Account createAccount(Account account) throws Exception {
+        if (account.getUsername().isEmpty() || account.getPassword().isEmpty()) throw new Exception("Username and Password cannot be empty");
         return accountDAO.createAccount(account);
     }
 
@@ -22,24 +22,22 @@ public class AccountService {
 
 
     //covered
-    public Account deposit(Account account, int amountToAdd) {
-        if(amountToAdd<0)return null;
+    public int deposit(Account account, int amountToAdd) throws Exception {
+        if(amountToAdd<0) throw new Exception("Cannot deposit negative ammount");
         Account userAccount = new Account(account.getUsername(), account.getPassword());
         boolean success = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
-
-        if (success) {
-            System.out.println("Coin balance increased successfully.");
-        } else {
-            System.out.println("Failed to increase coin balance.");
-        }
-        return null;
+        if(!success) throw new Exception("Transaction Unable to Complete");
+        return account.getCoinBalance() + amountToAdd;
     }
 
     public Account deleteAccount(String username){
         return accountDAO.deleteAccountByName(username);
     }
 
-    public List<Account> getAllAccounts(){
-        return accountDAO.getAllUsers();
+    public List<Account> getAllAccounts() throws Exception {
+
+        List accounts = accountDAO.getAllUsers();
+        if(accounts == null || accounts.isEmpty()) throw new Exception("no accounts found");
+        return accounts;
     }
 }

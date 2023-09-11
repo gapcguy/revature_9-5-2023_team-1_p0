@@ -74,24 +74,25 @@ public class TransactionDAO {
                 toys.add(toy);
             }
         }catch(SQLException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return toys;
     }
 
     // 0 usage. -- Remove if tests reveal it's not used.
-    public void deleteTransaction(int id){
+    public boolean deleteTransaction(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from transaction where transaction_id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return false;
     }
 
-    // 0 usage. -- Remove if tests reveal it's not used.
     public boolean updateTransaction(Transaction t){
         boolean b = false;
         try(Connection conn = ConnectionUtil.getConnection()){
@@ -108,7 +109,7 @@ public class TransactionDAO {
         return b;
     }
 
-    public List<Toy> getToysFromAccountId(int id){
+    public List<Toy> getToysFromAccountId(int id) {
         List<Toy> Ts = new ArrayList<Toy>();
         try {
             Connection connection = ConnectionUtil.getConnection();
@@ -129,80 +130,16 @@ public class TransactionDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Toy t = new Toy(rs.getInt("toy_id_fk"), rs.getString("name"), rs.getInt("quantity"), rs.getInt("cost"));
                 Ts.add(t);
             }
             return Ts;
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return Ts;
-    }
-
-    // 0 usage. -- Remove if tests reveal it's not used.
-    /*public boolean Apublic void deleteToyById(int id){
-        try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "Delete from toy where toy_is = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }ddTransaction(Transaction t){
-        try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "Insert into transaction values (?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, t.getTransaction_id());
-            preparedStatement.setInt(2, t.getAccount_id());
-            preparedStatement.setInt(3, t.getToy_id());
-            ResultSet rs = preparedStatement.executeQuery();
-            return true;
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
-     // 0 usage. -- Remove if tests reveal it's not used.
-    public List<Transaction> GetTransactionsByAccountID(int id){
-        List<Transaction> Ts = new ArrayList<Transaction>();
-        try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT * FROM transaction WHERE account_id_fk = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()) {
-                Transaction t = new Transaction(rs.getInt("transaction_id"), rs.getInt("account_id_fk"), rs.getInt("toy_id_fk"));
-                Ts.add(t);
-            }
-            return Ts;
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return Ts;
-    }
-
-
-     // 0 usage. -- Remove if tests reveal it's not used.
-    public Transaction GetTransactionByID(int id){
-        try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT * FROM transaction WHERE transaction_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()) {
-                return new Transaction(rs.getInt("transaction_id"), rs.getInt("account_id_fk"), rs.getInt("toy_id_fk"));
-            }
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
-    } */
+    }
 
 
 }
