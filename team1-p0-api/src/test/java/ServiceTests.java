@@ -13,6 +13,8 @@ import org.junit.Test;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.Assert.assertThrows;
+
 public class ServiceTests {
 
     @Before
@@ -49,10 +51,8 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-        int c = as.deposit(b, -100);
 
-        assert(a == null);
-
+        assertThrows(Exception.class,()->as.deposit(b, -100));
     }
 
 
