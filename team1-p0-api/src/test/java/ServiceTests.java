@@ -104,14 +104,10 @@ public class ServiceTests {
     public void getToysTest() throws Exception {
         AccountService as = new AccountService();
         TransactionService ts = new TransactionService();
-        int testSize = 0;
-        try {
-            testSize = ts.getToysForAccountID(1).size();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        assert(testSize == 0);
         Account a = as.getUserAccount(new Account("user3", "morgantown"));
+        int testSize = ts.getToysForAccountID(a.getAccount_id()).size();
+        assert(testSize == 0);
+
         ts.pull(a);
         List<Toy> tl = ts.getToysForAccountID(a.getAccount_id());
         assert(!tl.isEmpty());

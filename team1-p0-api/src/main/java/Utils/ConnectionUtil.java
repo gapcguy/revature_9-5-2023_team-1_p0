@@ -26,12 +26,22 @@ public class ConnectionUtil {
 
         //For compatibility with other technologies/frameworks, we'll need to register our PostgreSQL driver
         //This process makes the application aware of what Driver class we're using
-        try {
+        if(connection == null){
+            try {
+                connection = DriverManager.getConnection(url, username, password);
+                resetTestDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return connection;
+        /* try {
             Class.forName("org.postgresql.Driver"); //searching for the postgres driver, which we have as a dependency
         } catch (ClassNotFoundException e) {
             e.printStackTrace(); //This tells in the console us what went wrong
             System.out.println("problem occurred locating driver");
-        }
+        } */
 
 
         //Use our database credentials to establish a database connection
@@ -46,7 +56,6 @@ public class ConnectionUtil {
 
         //This return statement is what returns out actual database Connection object
         //Note how this getConnection() method has a return type of Connection
-        return DriverManager.getConnection(url, username, password);
 
     }
 
