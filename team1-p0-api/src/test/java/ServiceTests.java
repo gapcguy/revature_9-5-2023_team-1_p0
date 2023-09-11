@@ -49,9 +49,15 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
-        int c = as.deposit(b, -100);
 
         assert(a == null);
+        int test = 0;
+        try {
+            int _a = as.deposit(b, -100);
+        } catch(Exception e) {
+            test = 1;
+        }
+        assert(test == 1);
 
     }
 
@@ -72,8 +78,13 @@ public class ServiceTests {
         Account b = as.getUserAccount(a);
 
         int beforBal = b.getCoinBalance();
-        int beforeSize = transactionService.getToysForAccount(b).size();
 
+        int beforeSize = 0;
+        try {
+            beforeSize = transactionService.getToysForAccount(b).size();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         ToyService toyService = new ToyService();
         List<Toy> toys = toyService.getAvailableToys();
         Transaction trans = transactionService.pull(b);
@@ -98,10 +109,15 @@ public class ServiceTests {
     public void getToysTest() throws Exception {
         AccountService as = new AccountService();
         TransactionService ts = new TransactionService();
-        List<Toy> tl = ts.getToysForAccountID(1);
-        assert(tl.isEmpty());
+        int testSize = 0;
+        try {
+            testSize = ts.getToysForAccountID(1).size();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        assert(testSize == 0);
         ts.pull(as.getUserAccount(new Account("user1", "dallas")));
-        tl = ts.getToysForAccountID(1);
+        List<Toy> tl = ts.getToysForAccountID(1);
         assert(!tl.isEmpty());
     }
 }

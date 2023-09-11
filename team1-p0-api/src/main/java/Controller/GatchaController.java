@@ -67,13 +67,17 @@ public class GatchaController {
 
         try {
             Account loginAccount = accountService.getUserAccount(account);
-            ses = ctx.req().getSession();
-            ses.setAttribute("account_id", loginAccount.getAccount_id());
-            ses.setAttribute("username", loginAccount.getUsername());
-            ses.setAttribute("password", loginAccount.getPassword());
+            if(loginAccount != null) {
+                ses = ctx.req().getSession();
+                ses.setAttribute("account_id", loginAccount.getAccount_id());
+                ses.setAttribute("username", loginAccount.getUsername());
+                ses.setAttribute("password", loginAccount.getPassword());
 
-            ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
-            ctx.status(200);
+                ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
+                ctx.status(200);
+            } else {
+                ctx.status(401);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             ctx.result(e.getMessage());

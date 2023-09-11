@@ -90,7 +90,7 @@ public class UserLoginTest {
                 .build();
         HttpResponse response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
-
+        System.out.println(response.body().toString());
         Assert.assertEquals(401, status);
         Assert.assertEquals("", response.body().toString());
 
