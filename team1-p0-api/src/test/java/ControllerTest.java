@@ -3,7 +3,7 @@ import Model.Account;
 import Model.Toy;
 import Service.AccountService;
 import Service.TransactionService;
-import Utils.Application;
+
 import Utils.ConnectionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;

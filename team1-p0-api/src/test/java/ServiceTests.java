@@ -1,15 +1,19 @@
+import Controller.GatchaController;
 import Model.Account;
 import Model.Toy;
 import Model.Transaction;
 import Service.AccountService;
 import Service.ToyService;
 import Service.TransactionService;
-import Utils.Application;
+
+import Utils.ConnectionUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.http.HttpClient;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,7 +23,11 @@ public class ServiceTests {
 
     @Before
     public void setUp() {
-        Application.databaseSetup();
+        try {
+            ConnectionUtil.resetTestDatabase();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @After

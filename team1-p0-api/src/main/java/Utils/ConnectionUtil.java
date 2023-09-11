@@ -46,21 +46,22 @@ public class ConnectionUtil {
 
         //This return statement is what returns out actual database Connection object
         //Note how this getConnection() method has a return type of Connection
-        return DriverManager.getConnection(url, username, password);
 
+        connection = DriverManager.getConnection(url, username, password);
+        return connection;
     }
 
     public static void resetTestDatabase() throws SQLException {
         // If no connection exists, use the getConnection method to set it up.
         if(connection == null) {
             getConnection();
-        } else {
-            try {
-                FileReader sqlRead = new FileReader("src/main/resources/Gatcha.sql");
-                RunScript.execute(connection, sqlRead);
-            } catch (SQLException | FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        }
+        try {
+            FileReader sqlRead = new FileReader("src/main/resources/Gatcha.sql");
+            System.out.println(sqlRead.toString());
+            RunScript.execute(connection, sqlRead);
+        } catch (SQLException | FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }
