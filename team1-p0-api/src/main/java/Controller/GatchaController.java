@@ -99,7 +99,6 @@ public class GatchaController {
     public void pullHandler(Context ctx) throws JsonProcessingException {
         if(ses == null) { ctx.status(403); }
         else {
-            ObjectMapper mapper = new ObjectMapper();
             Account account = new Account((int) ses.getAttribute("account_id"),(String)ses.getAttribute("username"),(String)ses.getAttribute("password"));
 
             try {
