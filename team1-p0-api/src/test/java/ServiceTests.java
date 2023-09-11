@@ -4,7 +4,7 @@ import Model.Transaction;
 import Service.AccountService;
 import Service.ToyService;
 import Service.TransactionService;
-import Utils.Application;
+import Utils.ConnectionUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,8 +18,8 @@ import static org.junit.Assert.assertThrows;
 public class ServiceTests {
 
     @Before
-    public void setUp() {
-        Application.databaseSetup();
+    public void setUp() throws Exception {
+        ConnectionUtil.resetTestDatabase();
     }
 
     @After
