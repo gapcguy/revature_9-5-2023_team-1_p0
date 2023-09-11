@@ -65,7 +65,7 @@ public class UserLoginTest {
         */
         AccountService as = new AccountService();
         ObjectMapper om = new ObjectMapper();
-        Account expectedResult = as.getUserAccount(new Account("user4", "dallas"));
+        Account expectedResult = as.getUserAccount(new Account("user5", "dallas"));
         Account actualResult = om.readValue(response.body().toString(), Account.class);
         Assert.assertEquals(expectedResult, actualResult);
     }
