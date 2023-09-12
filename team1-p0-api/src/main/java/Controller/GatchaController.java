@@ -1,225 +1,183 @@
 package Controller;
 
-// Model Packages
+// Imports
+import Model.Toy;
 import Model.Account;
 import Model.Transaction;
 
-// Service Packages
-import Model.Toy;
+import Service.ToyService;
 import Service.AccountService;
 import Service.TransactionService;
-import Service.ToyService;
 
-// JSON-Related packages
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 
-
-
-// SQL packages
-
-
-// javalin packages
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import jakarta.servlet.http.HttpSession;
-
-//import java.util.ArrayList; -- Remove if tests reveal it's not used.
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 public class GatchaController {
     // Object Service instances
-    AccountService accountService;
+    ToyService         toyService;
+    AccountService     accountService;
     TransactionService transactionService;
-    ToyService toyService;
 
     public static HttpSession ses;
 
-
     // Default constructor.
     public GatchaController() {
-        accountService = new AccountService();
+        toyService         = new ToyService();
+        accountService     = new AccountService();
         transactionService = new TransactionService();
-        toyService = new ToyService();
     }
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
 
         // routes
-        app.post("/account/login", this::loginHandler);
-        app.post("/account/register", this::registrationHandler);
-        app.get("/toybox", this::viewToyboxHandler);
-        app.get("/toybox/myToys", this::viewUserToyboxHandler);
-        app.patch("/toyboy/pull", this::pullHandler);
-        app.delete("/account", this::deleteUserHandler);
-        app.get("/account/allUsers", this::getUsersHandler);
-        app.patch("/account/deposit", this::depositHandler);
+        app.get   ( "/toybox", 		  this::viewToyboxHandler     );
+        app.delete( "/account", 	      this::deleteUserHandler     );
+        app.patch ( "/toyboy/pull", 	  this::pullHandler	          );
+        app.post  ( "/account/login", 	  this::loginHandler	      );
+        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler );
+        app.patch ( "/account/deposit",  this::depositHandler	      );
+        app.post  ( "/account/register", this::registrationHandler   );
+        app.get   ( "/account/allUsers", this::getUsersHandler	      );
 
         return app;
     }
 
-    // Handlers go here
-    public void loginHandler(Context ctx) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Account account = mapper.readValue(ctx.body(), Account.class);
+    // Handlers
+    public void loginHandler( Context ctx ) throws JsonProcessingException {
+        ObjectMapper mapper  = new ObjectMapper();
+        Account      account = mapper.readValue( ctx.body(), Account.class );
 
         try {
-            Account loginAccount = accountService.getUserAccount(account);
+
+            Account loginAccount = accountService.getUserAccount( account );
+
             if(loginAccount != null) {
                 ses = ctx.req().getSession();
-                ses.setAttribute("account_id", loginAccount.getAccount_id());
-                ses.setAttribute("username", loginAccount.getUsername());
-                ses.setAttribute("password", loginAccount.getPassword());
 
-            /*
-            ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
-            ctx.status(200); */
-                ctx.json(mapper.writeValueAsString(loginAccount));
-                ctx.status(200);
-            } else {
-                ctx.status(401);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ctx.result(e.getMessage());
-            ctx.status(401);
-        }
+                ses.setAttribute( "account_id", loginAccount.getAccount_id() );
+                ses.setAttribute( "username",   loginAccount.getUsername()   );
+                ses.setAttribute( "password",   loginAccount.getPassword()   );
+
+                ctx.json  ( mapper.writeValueAsString( loginAccount ) );
+                ctx.status( 200 );
+            } else { ctx.status( 401 ); }
+
+        } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status( 401 ); }
     }
 
     public void registrationHandler(Context ctx) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        Account account = mapper.readValue(ctx.body(), Account.class);
+        ObjectMapper mapper  = new ObjectMapper();
+        Account      account = mapper.readValue( ctx.body(), Account.class );
 
         try {
-            Account addedAccount = accountService.createAccount(account);
-            if(addedAccount == null) {
-                throw new Exception("account couldn't be created");
-            } else {
+
+            Account addedAccount = accountService.createAccount( account );
+
+            if(addedAccount == null) { throw new Exception( "account couldn't be created" ); }
+            else {
                 ses = ctx.req().getSession();
-                ses.setAttribute("account_id", addedAccount.getAccount_id());
-                ses.setAttribute("username", addedAccount.getUsername());
-                ses.setAttribute("password", addedAccount.getPassword());
-                ctx.json(mapper.writeValueAsString(addedAccount));
-                ctx.status(200);
+                ses.setAttribute("account_id", addedAccount.getAccount_id() );
+                ses.setAttribute("username",   addedAccount.getUsername()   );
+                ses.setAttribute("password",   addedAccount.getPassword()   );
+
+                ctx.json  ( mapper.writeValueAsString(addedAccount)    );
+                ctx.status( 200 );
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ctx.result(e.getMessage());
-            ctx.status(400);
+
+        } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
+    }
+
+    public void pullHandler( Context ctx ) {
+        if (ses == null) { ctx.status( 403 ); }
+        else {
+
+            Account account = new Account(
+                    (int)    ses.getAttribute("account_id"),
+                    (String) ses.getAttribute("username"),
+                    (String) ses.getAttribute("password")  );
+
+            try {
+                Transaction transaction = transactionService.pull(account);			                                    // Check if the account has sufficient balance and perform the pull
+
+                ctx.status( 200 ); 									                                                    // HTTP(OK) if we can pull, then
+                ctx.json  ( transaction ); 									                                            // return the transaction object as a JSON response.
+            } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
         }
     }
 
-    public void pullHandler(Context ctx) throws JsonProcessingException {
-        if (ses == null) {
-            ctx.status(403);
-        } else {
-            Account account = new Account((int) ses.getAttribute("account_id"), (String) ses.getAttribute("username"), (String) ses.getAttribute("password"));
+    public void viewUserToyboxHandler( Context ctx ) {
+        if ( ses == null ) { ctx.status( 403 ); }
+        else {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                List<Toy>    toys   =     transactionService.getToysForAccountID((int) ses.getAttribute( "account_id" ) );
+                ctx.status( 200 );
+                ctx.result( mapper.writeValueAsString( toys ) );
+            } catch ( Exception e ) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
+        }
+    }
+
+    public void viewToyboxHandler( Context ctx ) {
+        if   (ses == null) { ctx.status( 403 ); }
+        else {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                List<Toy>    toys   = toyService.getAvailableToys();
+                ctx.status( 200 );
+                ctx.json  ( mapper.writeValueAsString( toys ) );
+            } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
+        }
+    }
+
+    public void depositHandler( Context ctx ) throws JsonProcessingException {
+        if (ses == null) { ctx.status( 403 ); }
+        else {
+            ObjectMapper mapper  = new ObjectMapper();
+            Integer      amount  = mapper.readValue( ctx.body(), Integer.class );
+            Account      account = new Account(
+                    (int)    ses.getAttribute("account_id"),
+                    (String) ses.getAttribute("username"  ),
+                    (String) ses.getAttribute("password"  )
+            );
 
             try {
-                // Check if the account has sufficient balance and perform the pull
-                Transaction transaction = transactionService.pull(account);
-
-                // If the pull operation is successful, return a response.
+                int newBalance = accountService.deposit(account, amount);
                 ctx.status(200); // HTTP(OK)
-                ctx.json(transaction); // Return the transaction object as a JSON response.
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.result(e.getMessage());
-                ctx.status(400);
-            }
+                ctx.result("New Balance:" + Integer.toString(newBalance));
+            } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
         }
     }
 
-    public void viewUserToyboxHandler(Context ctx) throws Exception {
+    public void deleteUserHandler(Context ctx) {
+        if (ses == null) { ctx.status(403); }
+        else {
+            try {
+                ObjectMapper mapper         = new ObjectMapper();
+                String       memberName     = (String) ses.getAttribute("username");
+                Account      deletedAccount = accountService.deleteAccount(memberName);
+                ctx.status( 200 );
+                ctx.json( mapper.writeValueAsString( deletedAccount ) );
+            } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
+        }
+    }
+
+    public void getUsersHandler(Context ctx) {
         if (ses == null) {
             ctx.status(403);
         } else {
             try {
-                ObjectMapper mapper = new ObjectMapper();
-                List<Toy> toys = transactionService.getToysForAccountID((int) ses.getAttribute("account_id"));
-                ctx.status(200);
-                ctx.result(mapper.writeValueAsString(toys));
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.result(e.getMessage());
-                ctx.status(400);
-            }
-        }
-    }
-
-    public void viewToyboxHandler(Context ctx) throws JsonProcessingException {
-        if (ses == null) {
-            ctx.status(403);
-        } else {
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                List<Toy> toys = toyService.getAvailableToys();
-                ctx.status(200);
-                ctx.json(mapper.writeValueAsString(toys));
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.result(e.getMessage());
-                ctx.status(400);
-            }
-        }
-    }
-
-    public void depositHandler(Context ctx) throws JsonProcessingException {
-        if (ses == null) {
-            ctx.status(403);
-        } else {
-            ObjectMapper mapper = new ObjectMapper();
-            Integer amount = mapper.readValue(ctx.body(), Integer.class);
-            Account account = new Account((int) ses.getAttribute("account_id"), (String) ses.getAttribute("username"), (String) ses.getAttribute("password"));
-
-            try {
-                int newBAlance = accountService.deposit(account, amount);
-                ctx.status(200); // HTTP(OK)
-                ctx.result("New Balance:" + Integer.toString(newBAlance));
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.result(e.getMessage());
-                ctx.status(400);
-            }
-        }
-    }
-
-    public void deleteUserHandler(Context ctx) throws JsonProcessingException {
-        if (ses == null) {
-            ctx.status(403);
-        } else {
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                String memberName = (String) ses.getAttribute("username");
-                Account deletedAccount = accountService.deleteAccount(memberName);
-                ctx.status(200);
-                ctx.json(mapper.writeValueAsString(deletedAccount));
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.result(e.getMessage());
-                ctx.status(400);
-
-            }
-        }
-    }
-
-    public void getUsersHandler(Context ctx) throws Exception {
-        if (ses == null) {
-            ctx.status(403);
-        } else {
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                List<Account> al = accountService.getAllAccounts();
+                ObjectMapper  mapper = new ObjectMapper();
+                List<Account> al     = accountService.getAllAccounts();
                 ctx.status(200);
                 ctx.json(mapper.writeValueAsString(al));
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.result(e.getMessage());
-                ctx.status(400);
-            }
-
+            } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
         }
     }
 }

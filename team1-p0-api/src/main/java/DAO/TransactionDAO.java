@@ -1,58 +1,47 @@
 package DAO;
 
-
+import Model.Toy;
 import Model.Account;
 import Model.Transaction;
-import Model.Toy;
 import Utils.ConnectionUtil;
-
-import Model.Toy;
-import Model.Transaction;
-import Utils.ConnectionUtil;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import java.sql.*;
 
 import java.util.List;
-import java.util.Random;      // 0 usage. -- Remove if tests reveal it's not used.
+import java.util.ArrayList;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 public class TransactionDAO {
 
     AccountDAO accountDAO;
     ToyDAO toyDAO;
 
-    public TransactionDAO(){
-        this.accountDAO = new AccountDAO();
-        this.toyDAO = new ToyDAO();
-    }
-
-
+    public TransactionDAO(){ this.accountDAO = new AccountDAO(); this.toyDAO = new ToyDAO(); }
 
     public Transaction addTransaction(Transaction transaction){
         try ( Connection connection = ConnectionUtil.getConnection() ){
-            String sql = "INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk) VALUES (?,?, ?);";
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk) VALUES (?,?, ?);",
+                    Statement.RETURN_GENERATED_KEYS
+            );
 
-            ps.setInt(1, transaction.getAccount_id());
-            ps.setString(2, transaction.getToyName());
-            ps.setInt(3, transaction.getToy_id());
+            ps.setInt   (1, transaction.getAccount_id());
+            ps.setString(2, transaction.getToyName()   );
+            ps.setInt   (3, transaction.getToy_id()    );
 
             ps.executeUpdate();
             ResultSet key = ps.getGeneratedKeys();
 
             if (key.next()) {
                 int id = (int) key.getLong(1);
-                return new Transaction(id, transaction.getAccount_id(), transaction.getToy_id(), transaction.getToyName());
+
+                return new Transaction(id, transaction.getAccount_id(), transaction.getToy_id(),
+                                       transaction.getToyName() );
             }
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
+        } catch(SQLException e) { e.printStackTrace(); }
 
         return null;
     }
@@ -61,52 +50,26 @@ public class TransactionDAO {
 
         List<Toy> toys = new ArrayList<>();
         try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT toy_name,COUNT(transaction_id) FROM transaction WHERE account_id_fk = ? GROUP BY toy_name;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            Connection               connection = ConnectionUtil.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT toy_name, COUNT(transaction_id) " +
+                        "FROM transaction " +
+                        "WHERE account_id_fk = ? " +
+                        "GROUP BY toy_name");
             preparedStatement.setInt(1,account.getAccount_id());
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()){
                 Toy toy = new Toy(
                         rs.getString("toy_name"),
-                        rs.getInt("COUNT"));
+                        rs.getInt("COUNT")
+                );
                 toys.add(toy);
             }
         }catch(SQLException e){
             e.printStackTrace();
         }
         return toys;
-    }
-
-    // 0 usage. -- Remove if tests reveal it's not used.
-    public boolean deleteTransaction(int id){
-        try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "Delete from transaction where transaction_id = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean updateTransaction(Transaction t){
-        boolean b = false;
-        try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "Update transaction set account_id_fk = ?, toy_id_fk = ?, where transaction_id = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, t.getAccount_id());
-            ps.setInt(2, t.getToy_id());
-            ps.setInt(3, t.getTransaction_id());
-            ps.executeUpdate();
-            b = true;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return b;
     }
 
     public List<Toy> getToysFromAccountId(int id) {
@@ -131,15 +94,35 @@ public class TransactionDAO {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Toy t = new Toy(rs.getInt("toy_id_fk"), rs.getString("name"), rs.getInt("quantity"), rs.getInt("cost"));
+                Toy t = new Toy(
+                        rs.getInt   ("toy_id_fk"),
+                        rs.getString("name"     ),
+                        rs.getInt   ("quantity" ),
+                        rs.getInt   ("cost"     )
+                );
                 Ts.add(t);
             }
             return Ts;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return null;
     }
 
+    /* unused functions:
 
+      public boolean deleteTransaction(int id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "Delete from transaction where transaction_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+
+    }
+
+     */
 }

@@ -3,6 +3,7 @@ package Utils;
 import org.h2.tools.RunScript;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -53,15 +54,16 @@ public class ConnectionUtil {
 
     public static void resetTestDatabase() throws SQLException {
         // If no connection exists, use the getConnection method to set it up.
-        if(connection == null) {
+        if (connection == null) {
             getConnection();
         }
         try {
             FileReader sqlRead = new FileReader("src/main/resources/Gatcha.sql");
-            System.out.println(sqlRead.toString());
+            // System.out.println(sqlRead);                                                                             // commented out. Unneeded for functionality.
             RunScript.execute(connection, sqlRead);
-        } catch (SQLException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            sqlRead.close();
+        } catch (SQLException | IOException e) {                                                                        // changed from FileNotFoundException to IOException.
+            e.printStackTrace();                                                                                        // IOException covers a slightly more broad scope of errors, and
+        }                                                                                                               // is necessary to close the file.
     }
 }

@@ -13,26 +13,26 @@ public class ToyDAO {
     public List<Toy> getAvailableToys(){
         List<Toy> toys = new ArrayList<>();
         try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT * FROM toy WHERE quantity > 0;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            Connection        connection        = ConnectionUtil.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM toy WHERE quantity > 0");
+            ResultSet         rs                = preparedStatement.executeQuery();
+
             while(rs.next()){
-                Toy toy = new Toy(rs.getInt("toy_id"),
-                        rs.getString("name"),
-                        rs.getInt("quantity"));
+                Toy toy = new Toy(
+                        rs.getInt   ("toy_id"  ),
+                        rs.getString("name"    ),
+                        rs.getInt   ("quantity")
+                );
                 toys.add(toy);
             }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
+        } catch(SQLException e) { System.out.println(e.getMessage()); }
         return toys;
     }
 
     public Toy chooseRandomToy(){
         List<Toy> treasureChest = getAvailableToys();
-        int upperbound = treasureChest.size();
-        Random rand = new Random();
+        int       upperbound    = treasureChest.size();
+        Random    rand          = new Random();
         return treasureChest.get(rand.nextInt(upperbound));
     }
 
@@ -42,31 +42,29 @@ public class ToyDAO {
         int prevQuantity = toy.getQuantity();
 
         try {
-            Connection connection = ConnectionUtil.getConnection();
-            String sql = "UPDATE toy SET quantity = quantity-1 WHERE toy_id = ?" ;
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            Connection        connection        = ConnectionUtil.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE toy SET quantity = quantity-1 WHERE toy_id = ?");
             preparedStatement.setInt(1,id);
             preparedStatement.executeUpdate();
 
-
-            sql = "SELECT * FROM toy WHERE toy_id = ?";
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement("SELECT * FROM toy WHERE toy_id = ?");
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if(rs.next()){
-                Toy postSub = new Toy(rs.getInt("toy_id"),
+                Toy postSub = new Toy(
+                        rs.getInt   ("toy_id"),
                         rs.getString("name"),
-                        rs.getInt("quantity"));
+                        rs.getInt   ("quantity"));
+
                 return postSub.getQuantity() == prevQuantity-1;
             }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
+        } catch(SQLException e){ System.out.println(e.getMessage()); }
         return false;
     }
 
-    // 0 usage-- Remove if tests reveal it's not used.
+    /*  -------- Currently unused - removal of this code does not affect testability. --------
+     // 0 usage-- Remove if tests reveal it's not used.
     public boolean updateToy(Toy toy){
         try {
             Connection connection = ConnectionUtil.getConnection();
@@ -136,4 +134,5 @@ public class ToyDAO {
             throw new RuntimeException(e);
         }
     }
+     */
 }

@@ -1,23 +1,22 @@
 package DAO;
 
 import Model.Account;
-//import Model.Toy; -- Remove if tests reveal it's not used.
 import Utils.ConnectionUtil;
 
-//import javax.xml.transform.Result; -- Remove if tests reveal it's not used.
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class AccountDAO {
     public Account createAccount(Account account) {
         try ( Connection connection = ConnectionUtil.getConnection() ){
-            String sql = "INSERT INTO Account (username, password, coin_balance) VALUES (?, ?, ?);";
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO account (username, password, coin_balance) VALUES (?, ?, ?);",
+                    Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
-            ps.setInt(3, 50);
+            ps.setInt   (3, 50);
 
             ps.executeUpdate();
             ResultSet key = ps.getGeneratedKeys();
@@ -26,69 +25,97 @@ public class AccountDAO {
                 int id = (int) key.getLong(1);
                 return new Account(id, account.getUsername(), account.getPassword(), account.getCoinBalance());
             }
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-
+        } catch(SQLException e) { e.printStackTrace(); }
         return null;
     }
 
     public Account getUserAccount(Account account) {
-        try(Connection connection = ConnectionUtil.getConnection()) {
-            String sql = "SELECT * FROM Account where username = ? AND password = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
+        try( Connection connection = ConnectionUtil.getConnection() ) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "SELECT * FROM account where username = ? AND password = ?"
+            );
+
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                int accountId = rs.getInt("account_id");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                int coin_balance = rs.getInt("coin_balance");
+                int    accountId    = rs.getInt   ("account_id"  );
+                String username     = rs.getString("username"    );
+                String password     = rs.getString("password"    );
+                int    coin_balance = rs.getInt   ("coin_balance");
+
                 return new Account(accountId, username, password, coin_balance);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return null;
-
     }
 
     public boolean increaseCoinBalance(Account account, int amountToAdd) {
         try (Connection connection = ConnectionUtil.getConnection()) {
-            String sql = "UPDATE Account SET coin_balance = coin_balance + ? WHERE username = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, amountToAdd);
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE account SET coin_balance = coin_balance + ? WHERE username = ?"
+            );
+
+            ps.setInt   (1, amountToAdd          );
             ps.setString(2, account.getUsername());
 
             int rowsAffected = ps.executeUpdate();
 
             return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
 
     public boolean decreaseCoinBalance(Account account, int costToPull){
         try (Connection connection = ConnectionUtil.getConnection()) {
-            String sql = "UPDATE Account SET coin_balance = coin_balance - ? WHERE username = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, costToPull);
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE account SET coin_balance = coin_balance - ? WHERE username = ?"
+            );
+
+            ps.setInt   (1, costToPull);
             ps.setString(2, account.getUsername());
 
             int rowsAffected = ps.executeUpdate();
 
             return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
 
-    // May not be used. We may want to consider removing this on a final/cleanup push.
+    public Account deleteAccountByName(String Name){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM account WHERE username = ?");
+            ps.setString(1, Name);
+            ps.executeUpdate();
+            return new Account();
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
+    }
+
+    public List<Account> getAllUsers(){
+        try(Connection c = ConnectionUtil.getConnection()){
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM account");
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Account> al = new ArrayList<Account>();
+            while(rs.next()) {
+                al.add(
+                        new Account(
+                                rs.getInt   ("account_id"  ),
+                                rs.getString("username"    ),
+                                rs.getString("password"    ),
+                                rs.getInt   ("coin_balance")
+                        )
+                );
+            }
+            return al;
+        } catch(SQLException e) { e.printStackTrace(); }
+        return null;
+    }
+
+    /* unused functions
+
     public void deleteAccountById(int id){
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "Delete from Account where account_id = ?";
@@ -99,21 +126,7 @@ public class AccountDAO {
             throw new RuntimeException(e);
         }
     }
-    public Account deleteAccountByName(String Name){
-        try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "Delete from Account where username = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, Name);
-            ps.executeUpdate();
-            return new Account();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-     // 0 usage. -- Remove if tests reveal it's not used.
-    public boolean updateAccount(Account account){
+       public boolean updateAccount(Account account){
         try {
             Connection connection = ConnectionUtil.getConnection();
             String sql = "UPDATE account SET username = ?, password = ?, coin_balance = ? WHERE toy_id = ?" ;
@@ -145,23 +158,5 @@ public class AccountDAO {
         return false;
     }
 
-    public List<Account> getAllUsers(){
-        try(Connection c = ConnectionUtil.getConnection()){
-            PreparedStatement ps = c.prepareStatement("select * from account");
-            ResultSet rs = ps.executeQuery();
-            ArrayList<Account> al = new ArrayList<Account>();
-            while(rs.next()) {
-                al.add(new Account(rs.getInt("account_id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getInt("coin_balance")));
-            }
-            return al;
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-            return null;
-
-    }
+     */
 }
-
