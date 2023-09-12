@@ -80,8 +80,8 @@ public class GatchaController {
             Account addedAccount = accountService.createAccount(account);
             ses = ctx.req().getSession();
             ses.setAttribute("account_id", addedAccount.getAccount_id());
-            ses.setAttribute("username", addedAccount.getUsername());
-            ses.setAttribute("password", addedAccount.getPassword());
+            ses.setAttribute("username",   addedAccount.getUsername());
+            ses.setAttribute("password",   addedAccount.getPassword());
             ctx.json(mapper.writeValueAsString(addedAccount));
             ctx.status(200);
         } catch (Exception e) {
