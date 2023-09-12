@@ -91,6 +91,29 @@ public class GatchaController {
         }
     }
 
+    public void pullHandler( Context ctx ) {
+        if (ses == null) {
+            ctx.status(403);
+        } else {
+
+            Account account = new Account(
+                    (int) ses.getAttribute("account_id"),
+                    (String) ses.getAttribute("username"),
+                    (String) ses.getAttribute("password"));
+
+            try {
+                Transaction transaction = transactionService.pull(account);                                                // Check if the account has sufficient balance and perform the pull
+
+                ctx.status(200);                                                                                        // HTTP(OK) if we can pull, then
+                ctx.json(transaction);                                                                                // return the transaction object as a JSON response.
+            } catch (Exception e) {
+                e.printStackTrace();
+                ctx.result(e.getMessage());
+                ctx.status(400);
+            }
+        }
+    }
+
     public void viewUserToyboxHandler( Context ctx ) {
         if ( ses == null ) { ctx.status( 403 ); }
         else {
