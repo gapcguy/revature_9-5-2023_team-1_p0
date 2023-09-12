@@ -159,4 +159,23 @@ public class GatchaController {
             } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
         }
     }
+
+    public void pullHandler(Context ctx) {
+        if (ses == null) {
+            ctx.status(403);
+        } else {
+            Account account = new Account((Integer)ses.getAttribute("account_id"), (String)ses.getAttribute("username"), (String)ses.getAttribute("password"));
+
+            try {
+                Transaction transaction = this.transactionService.pull(account);
+                ctx.status(200);
+                ctx.json(transaction);
+            } catch (Exception var4) {
+                var4.printStackTrace();
+                ctx.result(var4.getMessage());
+                ctx.status(400);
+            }
+        }
+
+    }
 }
