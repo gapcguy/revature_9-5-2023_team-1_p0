@@ -1,4 +1,3 @@
-import Controller.GatchaController;
 import Model.Account;
 import Model.Toy;
 import Model.Transaction;
@@ -7,17 +6,16 @@ import Service.ToyService;
 import Service.TransactionService;
 
 import Utils.ConnectionUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.http.HttpClient;
-import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+
 
 public class ServiceTests {
 
@@ -36,7 +34,7 @@ public class ServiceTests {
     }
 
     @Test
-    public void checkGetUserAccount(){
+    public void testCheckGetUserAccount(){
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
@@ -44,37 +42,38 @@ public class ServiceTests {
     }
 
     @Test
-    public void addCurrency() throws Exception {
+    public void testAddCurrency() throws Exception {
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
         int before = b.getCoinBalance();
-        as.deposit(b, 100);
+        int deposit = as.deposit(b, 100);
         a = as.getUserAccount(b);
         assert(before +100 == a.getCoinBalance());
-
+        assertEquals(deposit, 100);
     }
 
     @Test
-    public void addCurrencyFailOnNeg() throws Exception {
+    public void testAddCurrencyFailOnNeg() {
         AccountService as = new AccountService();
-        Account a = new Account("user1", "dallas");
-        Account b = as.getUserAccount(a);
+        Account        a  = new Account("user1", "dallas");
+/*        Account b = as.getUserAccount(a);
         assertThrows(Exception.class,()->as.deposit(b, -100));
-
+*/
+        Exception exception = assertThrows(Exception.class, () -> as.deposit(a, -100));
+        assertEquals("Cannot deposit negative amount", exception.getMessage());
     }
 
-
     @Test
-    public void getAvailableToys(){
+    public void testGetAvailableToys(){
         ToyService toyService = new ToyService();
         List<Toy> toys = toyService.getAvailableToys();
-        Assert.assertEquals(4,toys.size());
+        assertEquals(4,toys.size());
 
     }
 
     @Test
-    public void pull() throws Exception {
+    public void testPull() throws Exception {
         TransactionService transactionService = new TransactionService();
         AccountService as = new AccountService();
         Account a = new Account("user2", "reston");
@@ -100,7 +99,7 @@ public class ServiceTests {
     }
 
     @Test
-    public void deleteTest(){
+    public void testDeleteUser(){
         AccountService as = new AccountService();
         Account a = as.getUserAccount(new Account("user1", "dallas"));
         as.deleteAccount(a.getUsername());
@@ -109,7 +108,7 @@ public class ServiceTests {
     }
 
     @Test
-    public void getToysTest() throws Exception {
+    public void testGetToys() throws Exception {
         AccountService as = new AccountService();
         TransactionService ts = new TransactionService();
         int testSize = 0;

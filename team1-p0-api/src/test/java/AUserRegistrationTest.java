@@ -3,7 +3,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import Service.AccountService;
@@ -19,7 +18,7 @@ import Model.Account;
 import Utils.ConnectionUtil;
 import io.javalin.Javalin;
 
-public class UserRegistrationTest {
+public class AUserRegistrationTest {
     GatchaController gatchaController;
     HttpClient httpClient;
     ObjectMapper objectMapper;
@@ -47,7 +46,7 @@ public class UserRegistrationTest {
     //  Status Code: 200
     //  Response Body: JSON representation of a user object.
     @Test
-    public void registerUserTest() throws IOException, InterruptedException {
+    public void testUserRegistration() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
@@ -69,7 +68,7 @@ public class UserRegistrationTest {
     // Expected Response:
     //  Status Code: 400
     @Test
-    public void registerUserAlreadyExists() throws IOException, InterruptedException {
+    public void testThatUserAlreadyExists() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
@@ -89,7 +88,7 @@ public class UserRegistrationTest {
     // Expected Response:
     //  Status Code: 400
     @Test
-    public void registerUserNoUsername() throws IOException, InterruptedException {
+    public void testNoUserNameDuringRegistration() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
@@ -109,7 +108,7 @@ public class UserRegistrationTest {
     // Expected Response:
     //  Status Code: 400
     @Test
-    public void RegisterUserPasswordUnderFourCharacters() throws IOException, InterruptedException {
+    public void testUserRegistrationWithUserPasswordUnderFourCharacters() throws IOException, InterruptedException {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +

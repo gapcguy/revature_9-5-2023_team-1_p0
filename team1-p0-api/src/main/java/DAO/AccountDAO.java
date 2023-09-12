@@ -52,7 +52,7 @@ public class AccountDAO {
         return null;
     }
 
-    public boolean increaseCoinBalance(Account account, int amountToAdd) {
+    public static boolean increaseCoinBalance(Account account, int amountToAdd) {
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
                     "UPDATE account SET coin_balance = coin_balance + ? WHERE username = ?"

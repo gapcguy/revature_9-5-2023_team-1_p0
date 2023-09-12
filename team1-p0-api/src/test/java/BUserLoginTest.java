@@ -6,7 +6,6 @@ import java.net.http.HttpResponse;
 import java.sql.SQLException;
 
 import Service.AccountService;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +16,7 @@ import Model.Account;
 import Utils.ConnectionUtil;
 import io.javalin.Javalin;
 
-public class UserLoginTest {
+public class BUserLoginTest {
     GatchaController gatchaController;
     HttpClient httpClient;
     ObjectMapper objectMapper;

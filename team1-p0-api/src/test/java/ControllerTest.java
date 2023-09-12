@@ -42,7 +42,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void getUsers() throws Exception {
+    public void testGetUsers() throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/allUsers"))
                 .GET()
@@ -62,7 +62,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void getToysForUserId() throws Exception {
+    public void testGetToysForUserId() throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:8080/account/login"))
             .POST(HttpRequest.BodyPublishers.ofString("{" +
