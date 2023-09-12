@@ -46,7 +46,7 @@ public class UserLoginTest {
     //  Status Code: 200
     //  Response Body: JSON representation of a user object.
     @Test
-    public void loginSuccessful() throws IOException, InterruptedException {
+    public void loginSuccessful() throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +

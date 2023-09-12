@@ -47,7 +47,7 @@ public class UserRegistrationTest {
     //  Status Code: 200
     //  Response Body: JSON representation of a user object.
     @Test
-    public void registerUserTest() throws IOException, InterruptedException {
+    public void registerUserTest() throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/register"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +

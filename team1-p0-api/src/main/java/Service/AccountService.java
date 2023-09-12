@@ -21,7 +21,12 @@ public class AccountService {
     }
 
     //covered
-    public Account getUserAccount(Account account) { return accountDAO.getUserAccount(account); }
+    public Account getUserAccount(Account account) throws Exception {
+
+        Account daoValue =  accountDAO.getUserAccount(account);
+        if (daoValue == null) throw new Exception("account not found");
+        return daoValue;
+    }
 
 
     //covered

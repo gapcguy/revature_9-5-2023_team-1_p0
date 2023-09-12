@@ -45,7 +45,7 @@ public class UserDeleteTest {
     //  Status Code: 200
     //  Response Body: JSON representation of a user object.
     @Test
-    public void deleteSuccessful() throws IOException, InterruptedException {
+    public void deleteSuccessful() throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
