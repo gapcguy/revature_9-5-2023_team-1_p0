@@ -1,8 +1,14 @@
 package Utils;
 
+import Service.AccountService;
 import org.h2.tools.RunScript;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -63,5 +69,32 @@ public class ConnectionUtil {
         } catch (SQLException | FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void testLogin(HttpClient httpClient, String username, String password) throws IOException, InterruptedException {
+        AccountService as = new AccountService();
+        if (as.userExists(username)){
+            HttpRequest postRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/account/login"))
+                    .POST(HttpRequest.BodyPublishers.ofString("{" +
+                            "\"username\": \"" + username + "\", " +
+                            "\"password\": \"" + password + "\" }"))
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
+        }else{
+            HttpRequest postRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/account/register"))
+                    .POST(HttpRequest.BodyPublishers.ofString("{" +
+                            "\"username\": \"user13\", " +
+                            "\"password\": \"password\" }"))
+                    .header("Content-Type", "application/json")
+                    .build();
+            httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
+        }
+
+
+
     }
 }

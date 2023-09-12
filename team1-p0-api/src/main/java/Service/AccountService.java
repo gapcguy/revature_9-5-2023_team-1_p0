@@ -28,6 +28,7 @@ public class AccountService {
         return daoValue;
     }
 
+    public boolean userExists(String username){return accountDAO.checkUser(username);}
 
     //covered
     public int deposit(Account account, int amountToAdd) throws Exception {
