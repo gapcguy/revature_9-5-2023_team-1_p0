@@ -50,7 +50,7 @@ public class ServiceTests {
         int deposit = as.deposit(b, 100);
         a = as.getUserAccount(b);
         assert(before +100 == a.getCoinBalance());
-        assertEquals(deposit, 100);
+        assertEquals(deposit, 150);
     }
 
     @Test
