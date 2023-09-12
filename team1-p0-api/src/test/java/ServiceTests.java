@@ -58,7 +58,7 @@ public class ServiceTests {
     @Test
     public void addCurrencyFailOnNeg() throws Exception {
         AccountService as = new AccountService();
-        Account a = new Account("user1", "dallas");
+        Account a = new Account("user2", "reston");
         Account b = as.getUserAccount(a);
         assertThrows(Exception.class,()->as.deposit(b, -100));
 
@@ -104,8 +104,7 @@ public class ServiceTests {
         AccountService as = new AccountService();
         Account a = as.getUserAccount(new Account("user1", "dallas"));
         as.deleteAccount(a.getUsername());
-        a = as.getUserAccount(a);
-        assert(a==null);
+        assertThrows(Exception.class,()->as.getUserAccount(a));
     }
 
     @Test

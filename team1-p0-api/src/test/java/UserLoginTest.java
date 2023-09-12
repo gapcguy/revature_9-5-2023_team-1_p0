@@ -83,7 +83,7 @@ public class UserLoginTest {
         int status = response.statusCode();
 
         Assert.assertEquals(401, status);
-        Assert.assertEquals("", response.body().toString());
+        Assert.assertEquals("account not found", response.body().toString());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class UserLoginTest {
         int status = response.statusCode();
         System.out.println(response.body().toString());
         Assert.assertEquals(401, status);
-        Assert.assertEquals("", response.body().toString());
+        Assert.assertEquals("account not found", response.body().toString());
 
     }
 }
