@@ -10,6 +10,7 @@ import Utils.ConnectionUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.configuration.IMockitoConfiguration;
 
 import java.util.List;
 
@@ -111,15 +112,16 @@ public class ServiceTests {
         AccountService as = new AccountService();
         TransactionService ts = new TransactionService();
         int testSize = 0;
-        try {
-            testSize = ts.getToysForAccountID(1).size();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        assertThrows(Exception.class, ()->ts.getToysForAccountID(1));
         assert(testSize == 0);
-        Account a = as.getUserAccount(new Account("user3", "morgantown"));
+        Account a = as.getUserAccount(new Account("user5", "dallas"));
         ts.pull(a);
-        List<Toy> tl = ts.getToysForAccountID(a.getAccount_id());
-        assert(!tl.isEmpty());
+        assert(ts.getToysForAccountID(a.getAccount_id()).size()>0);
+        while(as.getUserAccount(a).getCoinBalance() >= Transaction.getPullCost()){
+            ts.pull(a);
+        }
+        assertThrows(Exception.class, ()->ts.pull(a));
+
+
     }
 }

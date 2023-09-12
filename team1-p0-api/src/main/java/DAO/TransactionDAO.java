@@ -97,7 +97,7 @@ public class TransactionDAO {
             }
             return Ts;
         } catch (SQLException e) { e.printStackTrace(); }
-        return null;
+        return Ts;
     }
 
     /* unused functions:

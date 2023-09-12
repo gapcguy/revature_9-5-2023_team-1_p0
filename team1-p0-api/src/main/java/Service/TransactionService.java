@@ -20,7 +20,8 @@ public class TransactionService {
     }
 
     public Transaction pull(Account account) throws Exception {
-        if(account.getCoinBalance() < Transaction.getPullCost() ) {
+        AccountService as = new AccountService();
+        if(as.getUserAccount(account).getCoinBalance() < Transaction.getPullCost() ) {
             throw new Exception("insufficient funds");
         }
 
@@ -49,15 +50,12 @@ public class TransactionService {
     }
 
     public List<Toy> getToysForAccount(Account account) throws Exception {
-
-        List<Toy> toys = transactionDAO.myToys(account);
-        if (toys == null) throw new Exception("No toys found");
-        return toys;
+       return transactionDAO.myToys(account);
     }
 
     public List<Toy> getToysForAccountID(int id) throws Exception {
         List<Toy> toys = transactionDAO.getToysFromAccountId(id);
-        if (toys == null) throw new Exception("No toys found");
+        if (toys == null || toys.isEmpty()) throw new Exception("No toys found");
         return toys;
     }
 }

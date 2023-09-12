@@ -35,5 +35,5 @@ VALUES ('barbie', 10),
 create table transaction(
     transaction_id serial PRIMARY KEY,
     account_id_fk INT REFERENCES account(account_id),
-    toy_name text UNIQUE NOT NULL,
+    toy_name text NOT NULL,
     toy_id_fk INT REFERENCES toy(toy_id));
