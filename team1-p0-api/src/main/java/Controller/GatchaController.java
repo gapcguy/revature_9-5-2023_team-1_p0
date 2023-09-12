@@ -129,7 +129,7 @@ public class GatchaController {
             try {
                 int newBalance = accountService.deposit(account, amount);
                 ctx.status(200); // HTTP(OK)
-                ctx.result("New Balance:" + Integer.toString(newBalance));
+                ctx.result("New Balance:" + newBalance);
             } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
         }
     }
