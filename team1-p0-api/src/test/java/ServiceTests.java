@@ -34,7 +34,7 @@ public class ServiceTests {
     }
 
     @Test
-    public void testCheckGetUserAccount(){
+    public void testCheckGetUserAccount() throws Exception{
         AccountService as = new AccountService();
         Account a = new Account("user1", "dallas");
         Account b = as.getUserAccount(a);
@@ -99,12 +99,11 @@ public class ServiceTests {
     }
 
     @Test
-    public void testDeleteUser(){
+    public void testDeleteUser() throws Exception{
         AccountService as = new AccountService();
         Account a = as.getUserAccount(new Account("user1", "dallas"));
         as.deleteAccount(a.getUsername());
-        a = as.getUserAccount(a);
-        assert(a==null);
+        assertThrows(Exception.class,()->as.getUserAccount(a));
     }
 
     @Test

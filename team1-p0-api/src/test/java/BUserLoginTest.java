@@ -45,7 +45,7 @@ public class BUserLoginTest {
     //  Status Code: 200
     //  Response Body: JSON representation of a user object.
     @Test
-    public void loginSuccessful() throws IOException, InterruptedException {
+    public void loginSuccessful() throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/account/login"))
                 .POST(HttpRequest.BodyPublishers.ofString("{" +
@@ -82,7 +82,7 @@ public class BUserLoginTest {
         int status = response.statusCode();
 
         Assert.assertEquals(401, status);
-        Assert.assertEquals("", response.body().toString());
+        Assert.assertEquals("account not found", response.body().toString());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class BUserLoginTest {
         int status = response.statusCode();
         System.out.println(response.body().toString());
         Assert.assertEquals(401, status);
-        Assert.assertEquals("", response.body().toString());
+        Assert.assertEquals("account not found", response.body().toString());
 
     }
 }

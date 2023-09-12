@@ -55,21 +55,21 @@ public class GatchaController {
         Account      account = mapper.readValue( ctx.body(), Account.class );
 
         try {
+            Account loginAccount = accountService.getUserAccount(account);
+            ses = ctx.req().getSession();
+            ses.setAttribute("account_id", loginAccount.getAccount_id());
+            ses.setAttribute("username", loginAccount.getUsername());
+            ses.setAttribute("password", loginAccount.getPassword());
 
-            Account loginAccount = accountService.getUserAccount( account );
-
-            if(loginAccount != null) {
-                ses = ctx.req().getSession();
-
-                ses.setAttribute( "account_id", loginAccount.getAccount_id() );
-                ses.setAttribute( "username",   loginAccount.getUsername()   );
-                ses.setAttribute( "password",   loginAccount.getPassword()   );
-
-                ctx.json  ( mapper.writeValueAsString( loginAccount ) );
-                ctx.status( 200 );
-            } else { ctx.status( 401 ); }
-
-        } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status( 401 ); }
+            /*
+            ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
+            ctx.status(200); */
+            ctx.json(mapper.writeValueAsString(loginAccount));ctx.status(200);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.result(e.getMessage());
+            ctx.status(401);
+        }
     }
 
     public void registrationHandler(Context ctx) throws Exception {
@@ -77,38 +77,17 @@ public class GatchaController {
         Account      account = mapper.readValue( ctx.body(), Account.class );
 
         try {
-
-            Account addedAccount = accountService.createAccount( account );
-
-            if(addedAccount == null) { throw new Exception( "account couldn't be created" ); }
-            else {
-                ses = ctx.req().getSession();
-                ses.setAttribute("account_id", addedAccount.getAccount_id() );
-                ses.setAttribute("username",   addedAccount.getUsername()   );
-                ses.setAttribute("password",   addedAccount.getPassword()   );
-
-                ctx.json  ( mapper.writeValueAsString(addedAccount)    );
-                ctx.status( 200 );
-            }
-
-        } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
-    }
-
-    public void pullHandler( Context ctx ) {
-        if (ses == null) { ctx.status( 403 ); }
-        else {
-
-            Account account = new Account(
-                    (int)    ses.getAttribute("account_id"),
-                    (String) ses.getAttribute("username"),
-                    (String) ses.getAttribute("password")  );
-
-            try {
-                Transaction transaction = transactionService.pull(account);			                                    // Check if the account has sufficient balance and perform the pull
-
-                ctx.status( 200 ); 									                                                    // HTTP(OK) if we can pull, then
-                ctx.json  ( transaction ); 									                                            // return the transaction object as a JSON response.
-            } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
+            Account addedAccount = accountService.createAccount(account);
+            ses = ctx.req().getSession();
+            ses.setAttribute("account_id", addedAccount.getAccount_id());
+            ses.setAttribute("username", addedAccount.getUsername());
+            ses.setAttribute("password", addedAccount.getPassword());
+            ctx.json(mapper.writeValueAsString(addedAccount));
+            ctx.status(200);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.result(e.getMessage());
+            ctx.status(400);
         }
     }
 

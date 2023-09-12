@@ -20,8 +20,17 @@ public class AccountService {
         else                { throw new Exception("account couldn't be created"); }
     }
 
-    public Account getUserAccount(Account account) { return accountDAO.getUserAccount(account); }
+    //covered
+    public Account getUserAccount(Account account) throws Exception {
 
+        Account daoValue =  accountDAO.getUserAccount(account);
+        if (daoValue == null) throw new Exception("account not found");
+        return daoValue;
+    }
+
+    public boolean userExists(String username){return accountDAO.checkUser(username);}
+
+    //covered
     public int deposit(Account account, int amountToAdd) throws Exception {
         if(amountToAdd<0) { throw new Exception("Cannot deposit negative amount"); }
 

@@ -29,6 +29,21 @@ public class AccountDAO {
         return null;
     }
 
+    public boolean checkUser(String username){
+
+        try(Connection connection = ConnectionUtil.getConnection()) {
+            String sql = "SELECT * FROM Account where username = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public Account getUserAccount(Account account) {
         try( Connection connection = ConnectionUtil.getConnection() ) {
             PreparedStatement ps = connection.prepareStatement(
@@ -39,6 +54,7 @@ public class AccountDAO {
             ps.setString(2, account.getPassword());
 
             ResultSet rs = ps.executeQuery();
+
 
             if (rs.next()) {
                 int    accountId    = rs.getInt   ("account_id"  );
