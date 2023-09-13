@@ -93,6 +93,7 @@ public class GatchaController {
 
     public void pullHandler( Context ctx ) {
         if (ses == null) {
+            ctx.result("Must Login Before Pulling");
             ctx.status(403);
         } else {
 
@@ -115,7 +116,10 @@ public class GatchaController {
     }
 
     public void viewUserToyboxHandler( Context ctx ) {
-        if ( ses == null ) { ctx.status( 403 ); }
+        if ( ses == null ) {
+            ctx.result("Must Login Before Viewing Your Toys");
+            ctx.status( 403 );
+        }
         else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
@@ -127,19 +131,19 @@ public class GatchaController {
     }
 
     public void viewToyboxHandler( Context ctx ) {
-        if   (ses == null) { ctx.status( 403 ); }
-        else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 List<Toy>    toys   = toyService.getAvailableToys();
                 ctx.status( 200 );
                 ctx.json  ( mapper.writeValueAsString( toys ) );
             } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
-        }
     }
 
     public void depositHandler( Context ctx ) throws JsonProcessingException {
-        if (ses == null) { ctx.status( 403 ); }
+        if (ses == null) {
+            ctx.result("Must Login Before Changing Balance");
+            ctx.status( 403 );
+        }
         else {
             ObjectMapper mapper  = new ObjectMapper();
             Integer      amount  = mapper.readValue( ctx.body(), Integer.class );
@@ -159,7 +163,10 @@ public class GatchaController {
     }
 
     public void deleteUserHandler(Context ctx) {
-        if (ses == null) { ctx.status(403); }
+        if (ses == null) {
+            ctx.result("Must Login Before Deleting User");
+            ctx.status(403);
+        }
         else {
             try {
                 ObjectMapper mapper         = new ObjectMapper();
@@ -172,15 +179,12 @@ public class GatchaController {
     }
 
     public void getUsersHandler(Context ctx) {
-        if (ses == null) {
-            ctx.status(403);
-        } else {
             try {
                 ObjectMapper  mapper = new ObjectMapper();
                 List<Account> al     = accountService.getAllAccounts();
                 ctx.status(200);
                 ctx.json(mapper.writeValueAsString(al));
             } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
-        }
+
     }
 }
