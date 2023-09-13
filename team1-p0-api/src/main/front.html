@@ -1,6 +1,6 @@
 
 <h2>Login :</h2>
-<form method="post" action="http://localhost:8080/account/login">
+<form method="post" action="">
     <body>
     Enter name
     <input type="text" key = "username" name="username">
@@ -10,21 +10,13 @@
     <input type="text" key = "password" name ="password">
     </input>
     <br>
-    <button>login</button>
-    </body>
-</form>
-<h2>Register :</h2>
-<form method="post" action="http://localhost:8080/account/register">
-    <body>
-    Enter name
-    <input type="text" key = "username" name="username">
-    </input>
-    <br>
-    Enter password
-    <input type="text" key = "password" name ="password">
-    </input>
-    <br>
-    <button>register</button>
+    <button type="submit" formaction="http://localhost:8080/account/login">
+        login
+    </button>
+
+    <button type="submit" formaction="http://localhost:8080/account/register">
+        register
+    </button>
     </body>
 </form>
 
