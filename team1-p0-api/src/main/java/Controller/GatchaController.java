@@ -17,7 +17,26 @@ import jakarta.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.javalin.Javalin;
+import io.javalin.http.Context;
+/*
+public class Main {
+    public static void main(String[] args) {
+        Javalin app = Javalin.create().start(7000);
 
+        // Define a route to handle the form submission
+        app.post("/submit", ctx -> {
+            // Extract the input data from the form
+            String inputText = ctx.formParam("inputText");
+
+            // Do something with the input data (e.g., print it)
+            System.out.println("Received input: " + inputText);
+
+            // You can also respond with a message or redirect the user
+            ctx.result("Received input: " + inputText);
+        });
+    }
+}*/
 public class GatchaController {
     // Object Service instances
     ToyService         toyService;
@@ -40,19 +59,36 @@ public class GatchaController {
         app.get   ( "/toybox", 		  this::viewToyboxHandler     ); //View available toys
         app.delete( "/account", 	      this::deleteUserHandler     ); //Delete account
         app.patch ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
+        app.post ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
         app.post  ( "/account/login", 	  this::loginHandler	      ); //Login start a session
         app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler ); //view toys for logged in account
         app.patch ( "/account/deposit",  this::depositHandler	      ); //Deposit additional currency into your account
+        app.post ( "/account/deposit",  this::depositHandler	      ); //Deposit additional currency into your account
         app.post  ( "/account/register", this::registrationHandler   ); //Register a new account
         app.get   ( "/account/allUsers", this::getUsersHandler	      ); //Retrieve a list of all users.
 
         return app;
     }
-
+    public boolean isValid(String json) {
+        try {
+            new ObjectMapper().readValue(json, Object.class);
+        } catch (JsonProcessingException e) {
+            return false;
+        }
+        return true;
+    }
     // Handlers
     public void loginHandler( Context ctx ) throws JsonProcessingException {
         ObjectMapper mapper  = new ObjectMapper();
-        Account      account = mapper.readValue( ctx.body(), Account.class );
+        Account account = null;
+        System.out.println(ctx.formParamMap().toString());
+        if(isValid(ctx.body())) {
+            account = mapper.readValue( ctx.body(), Account.class );
+        } else {
+             account = new Account(ctx.formParamMap().get("username").get(0), ctx.formParamMap().get("password").get(0));
+            System.out.println(account.toString());
+        }
+
 
         try {
             Account loginAccount = accountService.getUserAccount(account);
@@ -74,8 +110,13 @@ public class GatchaController {
 
     public void registrationHandler(Context ctx) throws Exception {
         ObjectMapper mapper  = new ObjectMapper();
-        Account      account = mapper.readValue( ctx.body(), Account.class );
-
+        Account account = null;
+        if(isValid(ctx.body())) {
+            account = mapper.readValue( ctx.body(), Account.class );
+        } else {
+            account = new Account(ctx.formParamMap().get("username").get(0), ctx.formParamMap().get("password").get(0));
+            System.out.println(account.toString());
+        }
         try {
             Account addedAccount = accountService.createAccount(account);
             ses = ctx.req().getSession();
@@ -146,7 +187,13 @@ public class GatchaController {
         }
         else {
             ObjectMapper mapper  = new ObjectMapper();
-            Integer      amount  = mapper.readValue( ctx.body(), Integer.class );
+            Integer amount = 0;
+            System.out.println(ctx.formParamMap().toString());
+            if(isValid(ctx.body())) {
+                amount = mapper.readValue( ctx.body(), Integer.class );
+            } else {
+                amount = Integer.parseInt(ctx.formParamMap().get("amount").get(0));
+            }
             Account      account = new Account(
                     (int)    ses.getAttribute("account_id"),
                     (String) ses.getAttribute("username"  ),
