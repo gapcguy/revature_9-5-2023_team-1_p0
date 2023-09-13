@@ -1,25 +1,33 @@
 
 <h2>Login :</h2>
 <form method="post" action="http://localhost:8080/account/login">
-    <body type = "json">
+    <body>
     Enter name
-    <input type="text" key = "username" name="username" id="username">
+    <input type="text" key = "username" name="username">
     </input>
     <br>
     Enter password
-    <input type="text" key = "password" name ="password" id="password">
+    <input type="text" key = "password" name ="password">
     </input>
     <br>
-    <button>Submit</button>
+    <button>login</button>
+    </body>
+</form>
+<h2>Register :</h2>
+<form method="post" action="http://localhost:8080/account/register">
+    <body>
+    Enter name
+    <input type="text" key = "username" name="username">
+    </input>
+    <br>
+    Enter password
+    <input type="text" key = "password" name ="password">
+    </input>
+    <br>
+    <button>register</button>
     </body>
 </form>
 
-<h2>View toybox :</h2>
-<form method="Get" action="http://localhost:8080/toybox">
-    <body>
-    <button>Submit</button>
-    </body>
-</form>
 
 <h2>Add Currency:</h2>
 <form method="post" action="http://localhost:8080/account/deposit">
@@ -28,15 +36,27 @@
     <button>Submit</button>
     </body>
 </form>
-<h2>Pull Toy:</h2>
+
+<h2>Actions:</h2>
 <form method="post" action="http://localhost:8080/toyboy/pull">
     <body>
-    <button>Submit</button>
+    <button>Pull</button>
     </body>
 </form>
-<h2>View my toys :</h2>
+
 <form method="Get" action="http://localhost:8080/toybox/myToys">
     <body>
-    <button>Submit</button>
+    <button>View my toys</button>
+    </body>
+</form>
+
+<form method="Get" action="http://localhost:8080/toybox">
+    <body>
+    <button>View available toys</button>
+    </body>
+</form>
+<form method="post" action="http://localhost:8080/account/delete">
+    <body>
+    <button>Delete Account</button>
     </body>
 </form>

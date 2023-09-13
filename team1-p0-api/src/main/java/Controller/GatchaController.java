@@ -123,7 +123,7 @@ public class GatchaController {
             ses.setAttribute("account_id", addedAccount.getAccount_id());
             ses.setAttribute("username", addedAccount.getUsername());
             ses.setAttribute("password", addedAccount.getPassword());
-            ctx.json(mapper.writeValueAsString(addedAccount));
+            ctx.json(mapper.writeValueAsString(accountService.getUserAccount(addedAccount)));
             ctx.status(200);
         } catch (Exception e) {
             e.printStackTrace();
