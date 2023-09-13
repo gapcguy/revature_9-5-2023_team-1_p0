@@ -58,6 +58,7 @@ public class GatchaController {
         // routes
         app.get   ( "/toybox", 		  this::viewToyboxHandler     ); //View available toys
         app.delete( "/account", 	      this::deleteUserHandler     ); //Delete account
+        app.post( "/account/delete", 	      this::deleteUserHandler     ); //Delete account
         app.patch ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
         app.post ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
         app.post  ( "/account/login", 	  this::loginHandler	      ); //Login start a session
