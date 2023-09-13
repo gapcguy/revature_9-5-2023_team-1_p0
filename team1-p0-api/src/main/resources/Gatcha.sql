@@ -8,9 +8,7 @@ CREATE TABLE account(
     account_id serial PRIMARY KEY,
     username text UNIQUE NOT NULL,
     password text NOT NULL,
-    coin_balance int DEFAULT 50 NOT NULL,
-    coin_income int DEFAULT 50 NOT NULL,
-    coin_outcome int DEFAULT 0 NOT NULL);
+    coin_balance int DEFAULT 50 NOT NULL);
 
 CREATE TABLE toy(
     toy_id serial PRIMARY KEY,
@@ -27,10 +25,10 @@ VALUES ('user1', 'dallas'),
        ('user6', 'tampa');
 
 INSERT INTO toy (name, quantity)
-VALUES ('barbie', 10),
+VALUES ('barbie', 25),
        ('spongebob', 25),
-       ('fidget spinner', 4),
-       ('gamecube', 100);
+       ('fidget spinner', 15),
+       ('gamecube', 10);
 
 create table transaction(
     transaction_id serial PRIMARY KEY,

@@ -37,14 +37,14 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.get   ( "/toybox", 		  this::viewToyboxHandler     );
-        app.delete( "/account", 	      this::deleteUserHandler     );
-        app.patch ( "/toyboy/pull", 	  this::pullHandler	          );
-        app.post  ( "/account/login", 	  this::loginHandler	      );
-        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler );
-        app.patch ( "/account/deposit",  this::depositHandler	      );
-        app.post  ( "/account/register", this::registrationHandler   );
-        app.get   ( "/account/allUsers", this::getUsersHandler	      );
+        app.get   ( "/toybox", 		  this::viewToyboxHandler     ); //View available toys
+        app.delete( "/account", 	      this::deleteUserHandler     ); //Delete account
+        app.patch ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
+        app.post  ( "/account/login", 	  this::loginHandler	      ); //Login start a session
+        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler ); //view toys for logged in account
+        app.patch ( "/account/deposit",  this::depositHandler	      ); //Deposit additional currency into your account
+        app.post  ( "/account/register", this::registrationHandler   ); //Register a new account
+        app.get   ( "/account/allUsers", this::getUsersHandler	      ); //Retrieve a list of all users.
 
         return app;
     }
@@ -152,7 +152,8 @@ public class GatchaController {
             try {
                 int newBalance = accountService.deposit(account, amount);
                 ctx.status(200); // HTTP(OK)
-                ctx.result("New Balance:" + Integer.toString(newBalance));
+                account = accountService.getUserAccount(account);
+                ctx.result("New Balance:" + Integer.toString(account.getCoinBalance()));
             } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
         }
     }

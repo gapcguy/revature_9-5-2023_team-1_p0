@@ -121,7 +121,5 @@ public class ServiceTests {
             ts.pull(a);
         }
         assertThrows(Exception.class, ()->ts.pull(a));
-
-
     }
 }

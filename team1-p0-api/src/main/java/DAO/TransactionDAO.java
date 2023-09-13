@@ -52,7 +52,7 @@ public class TransactionDAO {
         try {
             Connection               connection = ConnectionUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT toy_name, COUNT(transaction_id) " +
+                    "SELECT toy_name, COUNT(*) " +
                         "FROM transaction " +
                         "WHERE account_id_fk = ? " +
                         "GROUP BY toy_name");
@@ -76,22 +76,19 @@ public class TransactionDAO {
         List<Toy> Ts = new ArrayList<Toy>();
         try {
             Connection connection = ConnectionUtil.getConnection();
-            String sql = "SELECT t.toy_id_fk, COUNT(t.transaction_id) AS transaction_count, toys.name, " +
-                    "toys.cost, toys.quantity " +
-                    "FROM transaction AS t " +
-                    "JOIN toy AS toys " +
-                    "ON t.toy_id_fk = toys.toy_id WHERE " +
-                    "t.account_id_fk = ? " +
-                    "GROUP BY t.toy_id_fk, toys.name, toys.quantity, toys.cost;";
+            String sql = "SELECT toy_name, COUNT(toy_id_fk), toy_id_fk " +
+                    "FROM transaction " +
+                    "WHERE account_id_fk = ? " +
+                    "GROUP BY toy_name, toy_id_fk;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Toy t = new Toy(
-                        rs.getInt   ("toy_id_fk"),
-                        rs.getString("name"     ),
-                        rs.getInt   ("quantity" ),
-                        rs.getInt   ("cost"     )
+                        rs.getInt("toy_id_fk"),
+                        rs.getString("toy_name" ),
+                        rs.getInt   ("COUNT" ),
+                        100
                 );
                 Ts.add(t);
             }
