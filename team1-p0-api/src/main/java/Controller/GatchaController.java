@@ -9,7 +9,13 @@ import Service.ToyService;
 import Service.AccountService;
 import Service.TransactionService;
 
+import java.lang.Class;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -19,6 +25,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.revature.Main;
+import Utils.Resources;
+
+
 /*
 public class Main {
     public static void main(String[] args) {
@@ -56,15 +66,17 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
+        app.get   ("/", this::indexHandler);
         app.get   ( "/toybox", 		  this::viewToyboxHandler     ); //View available toys
         app.delete( "/account", 	      this::deleteUserHandler     ); //Delete account
-        app.post( "/account/delete", 	      this::deleteUserHandler     ); //Delete account
+        app.post  ( "/account/delete",   this::deleteUserHandler     ); //Delete account
         app.patch ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
-        app.post ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
+        app.post  ( "/toyboy/pull", 	  this::pullHandler	          ); //Pull a random toy
         app.post  ( "/account/login", 	  this::loginHandler	      ); //Login start a session
+        app.get   ( "/account/login",    this::viewLoginHandler      ); //View Login page
         app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler ); //view toys for logged in account
         app.patch ( "/account/deposit",  this::depositHandler	      ); //Deposit additional currency into your account
-        app.post ( "/account/deposit",  this::depositHandler	      ); //Deposit additional currency into your account
+        app.post  ( "/account/deposit",  this::depositHandler	      ); //Deposit additional currency into your account
         app.post  ( "/account/register", this::registrationHandler   ); //Register a new account
         app.get   ( "/account/allUsers", this::getUsersHandler	      ); //Retrieve a list of all users.
 
@@ -79,6 +91,16 @@ public class GatchaController {
         return true;
     }
     // Handlers
+    public void indexHandler(Context ctx) {
+        ctx.result(Resources.getFile("index.html"));
+        ctx.contentType("text/html");
+    }
+
+    public void viewLoginHandler(Context ctx) {
+        ctx.result(Resources.getFile("login.html"));
+        ctx.contentType("text/html");
+    }
+
     public void loginHandler( Context ctx ) throws JsonProcessingException {
         ObjectMapper mapper  = new ObjectMapper();
         Account account = null;

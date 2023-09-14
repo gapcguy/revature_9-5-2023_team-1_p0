@@ -1,54 +1,44 @@
-
+<html lang="en">
+<head><title>Gatcha Nose!</title></head>
+<body>
 <h2>Login :</h2>
 <form method="post" action="">
-    <body>
-    Enter name
-    <input type="text" key = "username" name="username">
-    </input>
+
+    Enter name:
+    <input type="text" key = "username" name="username" />
     <br>
-    Enter password
-    <input type="text" key = "password" name ="password">
-    </input>
+    Enter password:
+    <input type="text" key = "password" name ="password" />
     <br>
     <button type="submit" formaction="http://localhost:8080/account/login">
-        login
+        Login
     </button>
-
     <button type="submit" formaction="http://localhost:8080/account/register">
-        register
+        Register
     </button>
-    </body>
 </form>
 
 
 <h2>Add Currency:</h2>
 <form method="post" action="http://localhost:8080/account/deposit">
-    <body>
     <input type="number" key = "amount" name ="amount" id="amount">
     <button>Submit</button>
-    </body>
 </form>
 
 <h2>Actions:</h2>
 <form method="post" action="http://localhost:8080/toyboy/pull">
-    <body>
     <button>Pull</button>
-    </body>
 </form>
 
 <form method="Get" action="http://localhost:8080/toybox/myToys">
-    <body>
     <button>View my toys</button>
-    </body>
 </form>
 
 <form method="Get" action="http://localhost:8080/toybox">
-    <body>
     <button>View available toys</button>
-    </body>
 </form>
 <form method="post" action="http://localhost:8080/account/delete">
-    <body>
     <button>Delete Account</button>
-    </body>
 </form>
+</body>
+</html>

@@ -2,9 +2,9 @@ package Utils;
 
 import Service.AccountService;
 import org.h2.tools.RunScript;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import org.revature.Main;
+
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 
 //This Class is where we manage and establish our database connection
 public class ConnectionUtil {
@@ -71,7 +72,26 @@ public class ConnectionUtil {
             e.printStackTrace();                                                                                        // IOException covers a slightly more broad scope of errors, and
         }                                                                                                               // is necessary to close the file.
     }
+/* here's another way we could do it.
+ This implementation is intended to use getResourceAsStream to read Gatcha.sql, as getResourceAsStream
+ directly maps to the resources folder.
 
+    public static void resetTestDatabase() throws SQLException {
+
+        if (connection == null) { getConnection(); }
+
+        try {
+            String sqlScript = Resources.readResource("Gatcha.sql", Main.class.getClassLoader());
+            StringReader stringReader = new StringReader(sqlScript);
+            RunScript.execute(connection, stringReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+*/
+
+/*
     public static void testLogin(HttpClient httpClient, String username, String password) throws IOException, InterruptedException {
         AccountService as = new AccountService();
         if (as.userExists(username)){
@@ -98,4 +118,6 @@ public class ConnectionUtil {
 
 
     }
+ */
+
 }
