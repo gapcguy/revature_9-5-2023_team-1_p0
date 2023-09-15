@@ -108,6 +108,7 @@ public class GatchaController {
 
     public void viewDashboard(Context ctx) {
         ctx.result(Resources.getFile("dashboard.html"));
+        ctx.contentType("text/html");
     }
 
     public void viewRegistrationSuccess(Context ctx) {
