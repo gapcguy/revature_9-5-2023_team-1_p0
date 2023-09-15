@@ -123,14 +123,12 @@ public class GatchaController {
     public void loginHandler( Context ctx ) throws JsonProcessingException {
         ObjectMapper mapper  = new ObjectMapper();
         Account account = null;
-        System.out.println(ctx.formParamMap().toString());
         if(isValid(ctx.body())) {
             account = mapper.readValue( ctx.body(), Account.class );
         } else {
              account = new Account(ctx.formParamMap().get("username").get(0), ctx.formParamMap().get("password").get(0));
-            System.out.println(account.toString());
         }
-        ctx.redirect("/loginredirect");
+
 
 
         try {
@@ -144,6 +142,7 @@ public class GatchaController {
             ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
             ctx.status(200); */
             ctx.json(mapper.writeValueAsString(loginAccount));ctx.status(200);
+            ctx.redirect("/loginredirect");
         } catch (Exception e) {
             e.printStackTrace();
             ctx.result(e.getMessage());
