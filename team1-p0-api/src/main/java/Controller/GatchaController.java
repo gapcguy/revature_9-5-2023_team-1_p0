@@ -67,19 +67,22 @@ public class GatchaController {
 
         // routes
         app.get   ("/", this::indexHandler);
-        app.get   ( "/toybox", 		  this::viewToyboxHandler     ); // View available toys
-        app.delete( "/account", 	      this::deleteUserHandler     ); // Delete account
-        app.post  ( "/account/delete",   this::deleteUserHandler     ); // Delete account
-        app.patch ( "/toybox/pull", 	  this::pullHandler	          ); // Pull a random toy
-        app.post  ( "/toybox/pull", 	  this::pullHandler	          ); // Pull a random toy
-        app.get   ( "/toybox/pull",      this::pullHandler           ); // View the toy just pulled.
-        app.post  ( "/account/login", 	  this::loginHandler	      ); // Login start a session
-        app.get   ( "/account/login",    this::viewLoginHandler      ); // View Login page
-        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler ); // View toys for logged in account
-        app.patch ( "/account/deposit",  this::depositHandler	      ); // Deposit additional currency into your account
-        app.post  ( "/account/deposit",  this::depositHandler	      ); // Deposit additional currency into your account
-        app.post  ( "/account/register", this::registrationHandler   ); // Register a new account
-        app.get   ( "/account/allUsers", this::getUsersHandler	      ); // Retrieve a list of all users.
+        app.get   ( "/toybox", 		  this::viewToyboxHandler       ); // View available toys
+        app.delete( "/account", 	      this::deleteUserHandler       ); // Delete account
+        app.post  ( "/account/delete",   this::deleteUserHandler       ); // Delete account
+        app.patch ( "/toybox/pull", 	  this::pullHandler	            ); // Pull a random toy
+        app.post  ( "/toybox/pull", 	  this::pullHandler	            ); // Pull a random toy
+        app.get   ( "/toybox/pull",      this::pullHandler             ); // View the toy just pulled.
+        app.post  ( "/account/login", 	  this::loginHandler	        ); // Login start a session
+        app.get   ( "/account/login",    this::viewLoginHandler        ); // View Login page
+        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler   ); // View toys for logged in account
+        app.patch ( "/account/deposit",  this::depositHandler	        ); // Deposit additional currency into your account
+        app.post  ( "/account/deposit",  this::depositHandler	        ); // Deposit additional currency into your account
+        app.get   ( "/account/register", this::viewRegistrationHandler ); // View registration page
+        app.post  ( "/account/register", this::registrationHandler     ); // Register a new account
+        app.get   ( "/account/allUsers", this::getUsersHandler	        ); // Retrieve a list of all users.
+        app.get   ( "/regredirect",      this::viewRegistrationSuccess   ); // post-registration
+        app.get   ( "/loginredirect",    this::viewLoginSuccess   ); // post-registration
 
         return app;
     }
@@ -102,6 +105,20 @@ public class GatchaController {
         ctx.contentType("text/html");
     }
 
+    public void viewRegistrationSuccess(Context ctx) {
+        ctx.result(Resources.getFile("regredirect.html"));
+        ctx.contentType("text/html");
+    }
+
+    public void viewLoginSuccess(Context ctx) {
+        ctx.result(Resources.getFile("loginredirect.html"));
+        ctx.contentType("text/html");
+    }
+
+    public void viewRegistrationHandler(Context ctx) {
+        ctx.result(Resources.getFile("register.html"));
+        ctx.contentType("text/html");
+    }
 
     public void loginHandler( Context ctx ) throws JsonProcessingException {
         ObjectMapper mapper  = new ObjectMapper();
@@ -150,6 +167,7 @@ public class GatchaController {
             ses.setAttribute("password", addedAccount.getPassword());
             ctx.json(mapper.writeValueAsString(accountService.getUserAccount(addedAccount)));
             ctx.status(200);
+            ctx.redirect("/regredirect");
         } catch (Exception e) {
             e.printStackTrace();
             ctx.result(e.getMessage());
