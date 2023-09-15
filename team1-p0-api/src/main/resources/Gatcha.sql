@@ -38,7 +38,7 @@ create table transaction(
     toy_id_fk INT REFERENCES toy(toy_id));
 
 
-INSERT INTO transaction (transaction_id,account_id_fk,toy_name,toy_id_fk)
-VALUES (1,1,'barbie',1),
-       (2,2,'spongebob',2),
-       (3,3,'fidget spinner',3);
+INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk)
+VALUES (1,'barbie',1),
+       (2,'spongebob',2),
+       (3,'fidget spinner',3);
