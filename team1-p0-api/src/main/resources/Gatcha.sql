@@ -14,6 +14,7 @@ CREATE TABLE toy(
     toy_id serial PRIMARY KEY,
     name text UNIQUE NOT NULL,
     quantity int NOT NULL,
+    image text NOT NULL,
     cost int NOT NULL DEFAULT 50);
 
 INSERT INTO account (username, password)
@@ -24,11 +25,11 @@ VALUES ('user1', 'dallas'),
        ('user5', 'dallas'),
        ('user6', 'tampa');
 
-INSERT INTO toy (name, quantity)
-VALUES ('barbie', 25),
-       ('spongebob', 25),
-       ('fidget spinner', 15),
-       ('gamecube', 10);
+INSERT INTO toy (name, quantity, image)
+VALUES ('barbie', 25, 'https://revature.michaelwarner.info/img/barbie.png'),
+       ('spongebob', 25, 'https://revature.michaelwarner.info/img/spongebob.png'),
+       ('fidget spinner', 15, 'https://revature.michaelwarner.info/img/fidget-spinner.png'),
+       ('gamecube', 10, 'https://revature.michaelwarner.info/img/GameCube-Set.png');
 
 create table transaction(
     transaction_id serial PRIMARY KEY,

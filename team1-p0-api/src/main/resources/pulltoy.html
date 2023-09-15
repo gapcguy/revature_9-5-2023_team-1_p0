@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gatcha Nose!</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+          crossorigin="anonymous"></script>
+  <style>
+        body { background-color: #20202a; }
+    </style>
+
+</head>
+<body>
+<div class="container">
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <div class="row">
+      <div class="col-xs-12">
+        <p>You pulled a <span id="toyName"></span>!</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <img id="toyImage" src="">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="http://localhost:8080/toybox/pull" class="btn btn-primary"
+           style="padding-left: 40px; padding-right: 40px" role="button">
+          Pull again?
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://revature.michaelwarner.info/js/toypull-from-json.js"></script>
+</body>
+</html>
