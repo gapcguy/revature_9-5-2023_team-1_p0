@@ -33,9 +33,9 @@ VALUES ('barbie', 25, 'https://revature.michaelwarner.info/img/barbie.png'),
 
 create table transaction(
     transaction_id serial PRIMARY KEY,
-    account_id_fk INT REFERENCES account(account_id),
+    account_id_fk INT REFERENCES account(account_id) ON DELETE CASCADE,
     toy_name text NOT NULL,
-    toy_id_fk INT REFERENCES toy(toy_id));
+    toy_id_fk INT REFERENCES toy(toy_id) ON DELETE CASCADE);
 
 
 INSERT INTO transaction (account_id_fk,toy_name,toy_id_fk)

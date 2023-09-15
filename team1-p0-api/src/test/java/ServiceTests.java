@@ -84,7 +84,7 @@ public class ServiceTests {
 
         int beforeSize = 0;
         try {
-            beforeSize = transactionService.getToysForAccount(b).size();
+            beforeSize = transactionService.getNumberOfToysForAccountID(b.getAccount_id());
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -93,7 +93,7 @@ public class ServiceTests {
         Transaction trans = transactionService.pull(b);
 
         int afterBal = as.getUserAccount(a).getCoinBalance();
-        int afterSize = transactionService.getToysForAccount(b).size();
+        int afterSize = transactionService.getNumberOfToysForAccountID(b.getAccount_id());
 
         assert(afterBal<beforBal);
         assert(afterSize>beforeSize);
@@ -111,9 +111,7 @@ public class ServiceTests {
     public void testGetToys() throws Exception {
         AccountService as = new AccountService();
         TransactionService ts = new TransactionService();
-        int testSize = 0;
-        assertThrows(Exception.class, ()->ts.getToysForAccountID(1));
-        assert(testSize == 0);
+        assertThrows(Exception.class, ()->ts.getToysForAccountID(4));
         Account a = as.getUserAccount(new Account("user5", "dallas"));
         ts.pull(a);
         assert(ts.getToysForAccountID(a.getAccount_id()).size()>0);

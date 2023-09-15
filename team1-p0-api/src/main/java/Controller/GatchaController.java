@@ -134,9 +134,6 @@ public class GatchaController {
         } else {
              account = new Account(ctx.formParamMap().get("username").get(0), ctx.formParamMap().get("password").get(0));
         }
-
-
-
         try {
             Account loginAccount = accountService.getUserAccount(account);
             ses = ctx.req().getSession();

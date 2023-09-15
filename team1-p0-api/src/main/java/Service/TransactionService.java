@@ -58,4 +58,16 @@ public class TransactionService {
         if (toys == null || toys.isEmpty()) throw new Exception("No toys found");
         return toys;
     }
+
+    public int getNumberOfToysForAccountID(int id) throws Exception {
+        List<Toy> toys = getToysForAccountID(id);
+        if(toys.isEmpty()){
+            return 0;
+        }
+        int total = 0;
+        for(int i = 0; i < toys.size(); i++){
+            total += toys.get(i).getQuantity();
+        }
+        return total;
+    }
 }
