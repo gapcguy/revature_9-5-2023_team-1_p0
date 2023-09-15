@@ -126,6 +126,7 @@ public class GatchaController {
         System.out.println(ctx.formParamMap().toString());
         if(isValid(ctx.body())) {
             account = mapper.readValue( ctx.body(), Account.class );
+            ctx.redirect("/loginredirect");
         } else {
              account = new Account(ctx.formParamMap().get("username").get(0), ctx.formParamMap().get("password").get(0));
             System.out.println(account.toString());
