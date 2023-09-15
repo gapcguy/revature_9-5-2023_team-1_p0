@@ -67,22 +67,23 @@ public class GatchaController {
 
         // routes
         app.get   ("/", this::indexHandler);
-        app.get   ( "/toybox", 		  this::viewToyboxHandler       ); // View available toys
-        app.delete( "/account", 	      this::deleteUserHandler       ); // Delete account
-        app.post  ( "/account/delete",   this::deleteUserHandler       ); // Delete account
-        app.patch ( "/toybox/pull", 	  this::pullHandler	            ); // Pull a random toy
-        app.post  ( "/toybox/pull", 	  this::pullHandler	            ); // Pull a random toy
-        app.get   ( "/toybox/pull",      this::pullHandler             ); // View the toy just pulled.
-        app.post  ( "/account/login", 	  this::loginHandler	        ); // Login start a session
-        app.get   ( "/account/login",    this::viewLoginHandler        ); // View Login page
-        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler   ); // View toys for logged in account
-        app.patch ( "/account/deposit",  this::depositHandler	        ); // Deposit additional currency into your account
-        app.post  ( "/account/deposit",  this::depositHandler	        ); // Deposit additional currency into your account
-        app.get   ( "/account/register", this::viewRegistrationHandler ); // View registration page
-        app.post  ( "/account/register", this::registrationHandler     ); // Register a new account
-        app.get   ( "/account/allUsers", this::getUsersHandler	        ); // Retrieve a list of all users.
-        app.get   ( "/regredirect",      this::viewRegistrationSuccess   ); // post-registration
-        app.get   ( "/loginredirect",    this::viewLoginSuccess   ); // post-registration
+        app.get   ( "/toybox", 		  this::viewToyboxHandler        ); // View available toys
+        app.delete( "/account", 	      this::deleteUserHandler        ); // Delete account
+        app.post  ( "/account/delete",   this::deleteUserHandler        ); // Delete account
+        app.patch ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
+        app.post  ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
+        app.get   ( "/toybox/pull",      this::pullHandler              ); // View the toy just pulled.
+        app.post  ( "/account/login", 	  this::loginHandler	         ); // Login start a session
+        app.get   ( "/account/login",    this::viewLoginHandler         ); // View Login page
+        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler    ); // View toys for logged in account
+        app.patch ( "/account/deposit",  this::depositHandler	         ); // Deposit additional currency into your account
+        app.post  ( "/account/deposit",  this::depositHandler	         ); // Deposit additional currency into your account
+        app.get   ( "/account/register", this::viewRegistrationHandler  ); // View registration page
+        app.post  ( "/account/register", this::registrationHandler      ); // Register a new account
+        app.get   ( "/account/allUsers", this::getUsersHandler          ); // Retrieve a list of all users.
+        app.get   ( "/regredirect",      this::viewRegistrationSuccess  ); // post-registration
+        app.get   ( "/loginredirect",    this::viewLoginSuccess         ); // post-registration
+        app.get   ( "/dashboard",             this::viewDashboard            );
 
         return app;
     }
@@ -103,6 +104,10 @@ public class GatchaController {
     public void viewLoginHandler(Context ctx) {
         ctx.result(Resources.getFile("login.html"));
         ctx.contentType("text/html");
+    }
+
+    public void viewDashboard(Context ctx) {
+        ctx.result(Resources.getFile("dashboard.html"));
     }
 
     public void viewRegistrationSuccess(Context ctx) {
@@ -141,7 +146,8 @@ public class GatchaController {
             /*
             ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
             ctx.status(200); */
-            ctx.json(mapper.writeValueAsString(loginAccount));ctx.status(200);
+            ctx.json(mapper.writeValueAsString(loginAccount));
+            ctx.status(200);
             ctx.redirect("/loginredirect");
         } catch (Exception e) {
             e.printStackTrace();
