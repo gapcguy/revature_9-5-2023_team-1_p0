@@ -1,0 +1,6 @@
+.item-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Adjust this property for alignment as needed */
+    gap: 20px; /* Adjust the gap between boxes as needed */
+}
