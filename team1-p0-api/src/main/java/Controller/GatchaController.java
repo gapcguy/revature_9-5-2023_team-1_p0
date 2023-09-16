@@ -68,9 +68,9 @@ public class GatchaController {
         // routes
         app.get   ("/", this::indexHandler);
         app.get   ( "/toybox", 		  this::viewToyboxHandler        ); // query for available toys
-        app.get   ( "/toybox/view",           this::viewAllToys              ); // view all available toys
+        app.get   ( "/toybox/view",      this::viewAllToys              ); // view all available toys
         app.delete( "/account", 	      this::deleteUserHandler        ); // Delete account
-        app.post  ( "/account/delete",   this::deleteUserHandler        ); // Delete account
+        app.get   ( "/account/delete",   this::viewDeleteUserPrompt     ); // Confirm Account Deletion request
         app.patch ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
         app.post  ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
         app.get   ( "/toybox/pull",      this::pullHandler              ); // View the toy just pulled.
@@ -84,7 +84,9 @@ public class GatchaController {
         app.get   ( "/account/allUsers", this::getUsersHandler          ); // Retrieve a list of all users.
         app.get   ( "/regredirect",      this::viewRegistrationSuccess  ); // post-registration
         app.get   ( "/loginredirect",    this::viewLoginSuccess         ); // post-registration
-        app.get   ( "/dashboard",             this::viewDashboard            );
+        app.get   ( "/dashboard",        this::viewDashboard            ); // dashboard front end endpoint
+        app.get   ( "/logout",           this::logoutHandler            ); // handles the invalidation of user a session.
+        app.get   ( "/logoutRedirect",   this::logoutRedirect           ); // provides visual feedback to the user. redirects logouts to "/".
 
         return app;
     }
@@ -97,11 +99,30 @@ public class GatchaController {
         return true;
     }
     // Handlers
-    public void indexHandler(Context ctx) {
+    public void logoutHandler(Context ctx) {
         HttpSession session = ctx.req().getSession(false);
         if (session != null) {
-            ctx.redirect("/dashboard");
+            session.invalidate();
+            ctx.redirect("/logoutRedirect");
         } else {
+            ctx.redirect("/");
+        }
+    }
+
+    public void viewDeleteUserPrompt(Context ctx) {
+        ctx.result(Resources.getFile("DeleteUserAccountPrompt.html"));
+        ctx.contentType("text/html");
+    }
+
+    public void logoutRedirect(Context ctx) {
+        ctx.result(Resources.getFile("logoutRedirect.html"));
+        ctx.contentType("text/html");
+    }
+
+    public void indexHandler(Context ctx) {
+        HttpSession session = ctx.req().getSession(false);
+        if (session != null) { ctx.redirect("/dashboard"); }
+        else {
             ctx.result(Resources.getFile("index.html"));
             ctx.contentType("text/html");
         }
@@ -283,6 +304,7 @@ public class GatchaController {
                 Account      deletedAccount = accountService.deleteAccount(memberName);
                 ctx.status( 200 );
                 ctx.json( mapper.writeValueAsString( deletedAccount ) );
+                ctx.redirect("/logout");
             } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
         }
     }
