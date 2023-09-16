@@ -66,27 +66,28 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.get   ("/", this::indexHandler);
-        app.get   ( "/toybox", 		  this::viewToyboxHandler        ); // query for available toys
-        app.get   ( "/toybox/view",      this::viewAllToys              ); // view all available toys
-        app.delete( "/account", 	      this::deleteUserHandler        ); // Delete account
-        app.get   ( "/account/delete",   this::viewDeleteUserPrompt     ); // Confirm Account Deletion request
-        app.patch ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
-        app.post  ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
-        app.get   ( "/toybox/pull",      this::pullHandler              ); // View the toy just pulled.
-        app.post  ( "/account/login", 	  this::loginHandler	         ); // Login start a session
-        app.get   ( "/account/login",    this::viewLoginHandler         ); // View Login page
-        app.get   ( "/toybox/myToys", 	  this::viewUserToyboxHandler    ); // View toys for logged in account
-        app.patch ( "/account/deposit",  this::depositHandler	         ); // Deposit additional currency into your account
-        app.post  ( "/account/deposit",  this::depositHandler	         ); // Deposit additional currency into your account
-        app.get   ( "/account/register", this::viewRegistrationHandler  ); // View registration page
-        app.post  ( "/account/register", this::registrationHandler      ); // Register a new account
-        app.get   ( "/account/allUsers", this::getUsersHandler          ); // Retrieve a list of all users.
-        app.get   ( "/regredirect",      this::viewRegistrationSuccess  ); // post-registration
-        app.get   ( "/loginredirect",    this::viewLoginSuccess         ); // post-registration
-        app.get   ( "/dashboard",        this::viewDashboard            ); // dashboard front end endpoint
-        app.get   ( "/logout",           this::logoutHandler            ); // handles the invalidation of user a session.
-        app.get   ( "/logoutRedirect",   this::logoutRedirect           ); // provides visual feedback to the user. redirects logouts to "/".
+        app.get   ("/",                         this::indexHandler             ); // Index
+        app.get   ( "/toybox", 		         this::viewToyboxHandler        ); // query for available toys
+        app.get   ( "/toybox/view",             this::viewAllToys              ); // view all available toys
+        app.delete( "/account", 	             this::deleteUserHandler        ); // Delete account
+        app.get   ( "/account/confirmDelete",   this::viewDeleteUserPrompt     ); // Confirm Account Deletion request
+        app.patch ( "/toybox/pull", 	         this::pullHandler	            ); // Pull a random toy
+        app.post  ( "/toybox/pull", 	         this::pullHandler	            ); // Pull a random toy
+        app.get   ( "/toybox/pull",             this::pullHandler              ); // View the toy just pulled.
+        app.post  ( "/account/login", 	         this::loginHandler	            ); // Login start a session
+        app.get   ( "/account/login",           this::viewLoginHandler         ); // View Login page
+        app.get   ( "/toybox/myToys", 	         this::viewUserToyboxHandler    ); // View toys for logged in account
+        app.patch ( "/account/deposit",         this::depositHandler	        ); // Deposit additional currency into your account
+        app.post  ( "/account/deposit",         this::depositHandler	        ); // Deposit additional currency into your account
+        app.get   ( "/account/register",        this::viewRegistrationHandler  ); // View registration page
+        app.post  ( "/account/register",        this::registrationHandler      ); // Register a new account
+        app.get   ( "/account/allUsers",        this::getUsersHandler          ); // Retrieve a list of all users.
+        app.get   ( "/regredirect",             this::viewRegistrationSuccess  ); // post-registration
+        app.get   ( "/loginredirect",           this::viewLoginSuccess         ); // post-registration
+        app.get   ( "/dashboard",               this::viewDashboard            ); // dashboard front end endpoint
+        app.get   ( "/logout",                  this::logoutHandler            ); // handles the invalidation of user a session.
+        app.get   ( "/logoutRedirect",          this::logoutRedirect           ); // provides visual feedback to the user. redirects logouts to "/".
+        app.get   ("/deleteRedirect", this::deleteRedirect);
 
         return app;
     }
@@ -116,6 +117,11 @@ public class GatchaController {
 
     public void logoutRedirect(Context ctx) {
         ctx.result(Resources.getFile("logoutRedirect.html"));
+        ctx.contentType("text/html");
+    }
+
+    public void deleteRedirect(Context ctx) {
+        ctx.result(Resources.getFile("deleteRedirect.html"));
         ctx.contentType("text/html");
     }
 
@@ -304,7 +310,6 @@ public class GatchaController {
                 Account      deletedAccount = accountService.deleteAccount(memberName);
                 ctx.status( 200 );
                 ctx.json( mapper.writeValueAsString( deletedAccount ) );
-                ctx.redirect("/logout");
             } catch (Exception e) { e.printStackTrace(); ctx.result( e.getMessage() ); ctx.status( 400 ); }
         }
     }
