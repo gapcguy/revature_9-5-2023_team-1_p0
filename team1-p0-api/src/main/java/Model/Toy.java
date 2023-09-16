@@ -4,7 +4,7 @@ public class Toy {
     /* ------------------------------------------------
         privately-scoped variables.
        ------------------------------------------------ */
-    private      String toyName;
+    private      String toyName, toyImage;
     private      int    quantity, cost, toy_id;
 
     static final int    def_cost = 50;
@@ -38,6 +38,13 @@ public class Toy {
         this.cost     = cost;
     }
 
+    public Toy(int toy_id, String toyName, int quantity, String toyImage) {
+        this.toy_id = toy_id;
+        this.toyName = toyName;
+        this.quantity = quantity;
+        this.toyImage = toyImage;
+
+    }
     /* ------------------------------------------------
         Getters
        ------------------------------------------------ */

@@ -21,7 +21,8 @@ public class ToyDAO {
                 Toy toy = new Toy(
                         rs.getInt   ("toy_id"  ),
                         rs.getString("name"    ),
-                        rs.getInt   ("quantity")
+                        rs.getInt   ("quantity"),
+                        rs.getString( "toyImage")
                 );
                 toys.add(toy);
             }

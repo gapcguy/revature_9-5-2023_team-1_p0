@@ -67,7 +67,8 @@ public class GatchaController {
 
         // routes
         app.get   ("/", this::indexHandler);
-        app.get   ( "/toybox", 		  this::viewToyboxHandler        ); // View available toys
+        app.get   ( "/toybox", 		  this::viewToyboxHandler        ); // query for available toys
+        app.get   ( "/toybox/view",           this::viewAllToys              ); // view all available toys
         app.delete( "/account", 	      this::deleteUserHandler        ); // Delete account
         app.post  ( "/account/delete",   this::deleteUserHandler        ); // Delete account
         app.patch ( "/toybox/pull", 	  this::pullHandler	             ); // Pull a random toy
@@ -97,18 +98,32 @@ public class GatchaController {
     }
     // Handlers
     public void indexHandler(Context ctx) {
-        ctx.result(Resources.getFile("index.html"));
-        ctx.contentType("text/html");
+        HttpSession session = ctx.req().getSession(false);
+        if (session != null) {
+            ctx.redirect("/dashboard");
+        } else {
+            ctx.result(Resources.getFile("index.html"));
+            ctx.contentType("text/html");
+        }
     }
 
+    public void viewAllToys(Context ctx) {
+        ctx.result(Resources.getFile("viewAllToys.html"));
+        ctx.contentType("text/html");
+    }
     public void viewLoginHandler(Context ctx) {
         ctx.result(Resources.getFile("login.html"));
         ctx.contentType("text/html");
     }
 
     public void viewDashboard(Context ctx) {
-        ctx.result(Resources.getFile("dashboard.html"));
-        ctx.contentType("text/html");
+        HttpSession session = ctx.req().getSession(false);
+        if (session != null) {
+            ctx.result(Resources.getFile("dashboard.html"));
+            ctx.contentType("text/html");
+        } else {
+            ctx.redirect("/");
+        }
     }
 
     public void viewRegistrationSuccess(Context ctx) {
