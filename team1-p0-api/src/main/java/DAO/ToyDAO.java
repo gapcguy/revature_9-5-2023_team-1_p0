@@ -22,7 +22,7 @@ public class ToyDAO {
                         rs.getInt   ("toy_id"  ),
                         rs.getString("name"    ),
                         rs.getInt   ("quantity"),
-                        rs.getString( "toyImage")
+                        rs.getString("image")
                 );
                 toys.add(toy);
             }

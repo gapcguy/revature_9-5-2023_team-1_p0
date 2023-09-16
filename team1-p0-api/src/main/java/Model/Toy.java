@@ -55,6 +55,7 @@ public class Toy {
         return toy_id;
     }
     public String getToyName () { return toyName; }
+    public String getToyImage () {return toyImage; }
     //public int  getCost    () { return cost;    }
 
     /* ------------------------------------------------
