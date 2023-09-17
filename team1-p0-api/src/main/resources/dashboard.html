@@ -27,21 +27,18 @@
 </nav>
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-
-        </div>
-        <div class="col-sm-4">
-
-        </div>
-        <div class="col-sm-4">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <h3 style="margin: 5px;padding-top:30px;color:#ffffff">Toy List</h3>
+    <div class="row" style="color:#ffffff;">
+        <div class="col-sm-6">
+            <h3 style="margin: 5px;padding-top:30px;">Toy List</h3>
             <div id="toyList"></div>
+        </div>
+        <div class="col-sm-6">
+            <h3 style="margin: 5px;padding-top:30px;">Your current balance is <strong><span id="balance"></span></strong> coins</h3>
+            <p>Add Currency:</p>
+            <form method="post" id="depositForm" action="http://localhost:8080/account/deposit">
+                <input type="number" key="amount" name="amount" id="amount">
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
 </div>

@@ -1,9 +1,12 @@
-function getSessionData() {
+function getUsername() {
     fetch("/session-data")
         .then(response => response.json())
         .then(jsonData => {
             const userNameElement = document.getElementById("username");
-            userNameElement.textContent = jsonData;
+            userNameElement.textContent = jsonData.username;
+        })
+        .catch(error => {
+            console.error("Error fetching username:", error);
         });
 }
 
@@ -40,6 +43,53 @@ fetch("/toybox/myToys")
         console.error("Error fetching data:", error);
     });
 }
+function getBalance() {
+    fetch("/session-data")
+        .then(response => response.json())
+        .then(jsonData => {
+            const userBalance = document.getElementById("balance");
+            userBalance.textContent = jsonData.coin_balance;
+        })
+        .catch(error => {
+            console.error("Error fetching balance:", error);
+        });
+}
+
+function updateBalanceOnDashboard(newBalance) {
+    const currencyDisplay = document.getElementById("balance");
+    currencyDisplay.textContent = `${newBalance}`;
+}
+
+function increaseBalance(event) {
+    //event.preventDefault(); -- This prevents updating of the database.
+
+    const form = event.target;
+    const amountInput = form.querySelector("#amount");
+
+    fetch("/account/deposit", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: amountInput.value }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            updateBalanceOnDashboard(data.newBalance);
+        })
+        .catch((error) => {
+            console.error("Error depositing funds:", error);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const depositForm = document.getElementById("depositForm");
+    if (depositForm) {
+        depositForm.addEventListener("submit", increaseBalance); // Use the increaseBalance function as the event handler
+    } else {
+        console.error("Element with ID 'depositForm' not found.");
+    }
+
     // Call the function when the page loads
-    getSessionData();
+    getUsername();
+    getBalance();
     getToys();
+});

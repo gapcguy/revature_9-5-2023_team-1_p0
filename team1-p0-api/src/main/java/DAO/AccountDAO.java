@@ -114,7 +114,7 @@ public class AccountDAO {
         try(Connection c = ConnectionUtil.getConnection()){
             PreparedStatement ps = c.prepareStatement("SELECT * FROM account");
             ResultSet rs = ps.executeQuery();
-            ArrayList<Account> al = new ArrayList<Account>();
+            ArrayList<Account> al = new ArrayList<>();
             while(rs.next()) {
                 al.add(
                         new Account(

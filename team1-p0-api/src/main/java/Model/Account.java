@@ -72,7 +72,9 @@ public class Account {
     // Overrides the default toString() method to allow for a string representation of the Accounts class.
     @Override
     public String toString() {
-        return "Account{" + "account_id=" + account_id + ", username='" + username + '\'' + ", password='" + password + '\'' + '}';
+        return "Account{" + "account_id=" + account_id +
+                ", username='" + username + '\'' + ", password='" + password + '\'' +
+                ", coin_balance='" + coin_balance + "}";
     }
 
 }

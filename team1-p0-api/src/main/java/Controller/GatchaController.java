@@ -14,9 +14,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +31,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.h2.util.json.JSONObject;
 import org.revature.Main;
 import Utils.Resources;
 
@@ -66,28 +73,29 @@ public class GatchaController {
         Javalin app = Javalin.create();
 
         // routes
-        app.get   ("/",                         this::indexHandler             ); // Index
-        app.get   ( "/toybox", 		         this::viewToyboxHandler        ); // query for available toys
-        app.get   ( "/toybox/view",             this::viewAllToys              ); // view all available toys
-        app.delete( "/account", 	             this::deleteUserHandler        ); // Delete account
-        app.get   ( "/account/confirmDelete",   this::viewDeleteUserPrompt     ); // Confirm Account Deletion request
-        app.patch ( "/toybox/pull", 	         this::pullHandler	            ); // Pull a random toy
-        app.post  ( "/toybox/pull", 	         this::pullHandler	            ); // Pull a random toy
-        app.get   ( "/toybox/pull",             this::pullHandler              ); // View the toy just pulled.
-        app.post  ( "/account/login", 	         this::loginHandler	            ); // Login start a session
-        app.get   ( "/account/login",           this::viewLoginHandler         ); // View Login page
-        app.get   ( "/toybox/myToys", 	         this::viewUserToyboxHandler    ); // View toys for logged in account
-        app.patch ( "/account/deposit",         this::depositHandler	        ); // Deposit additional currency into your account
-        app.post  ( "/account/deposit",         this::depositHandler	        ); // Deposit additional currency into your account
-        app.get   ( "/account/register",        this::viewRegistrationHandler  ); // View registration page
-        app.post  ( "/account/register",        this::registrationHandler      ); // Register a new account
-        app.get   ( "/account/allUsers",        this::getUsersHandler          ); // Retrieve a list of all users.
-        app.get   ( "/regredirect",             this::viewRegistrationSuccess  ); // post-registration
-        app.get   ( "/loginredirect",           this::viewLoginSuccess         ); // post-registration
-        app.get   ( "/dashboard",               this::viewDashboard            ); // dashboard front end endpoint
-        app.get   ( "/logout",                  this::logoutHandler            ); // handles the invalidation of user a session.
-        app.get   ( "/logoutRedirect",          this::logoutRedirect           ); // provides visual feedback to the user. redirects logouts to "/".
-        app.get   ("/deleteRedirect", this::deleteRedirect);
+        app.get   ( "/",                        this::indexHandler              ); // Index
+        app.get   ( "/toybox", 		         this::viewToyboxHandler         ); // query for available toys
+        app.get   ( "/toybox/view",             this::viewAllToys               ); // view all available toys
+        app.delete( "/account", 	             this::deleteUserHandler         ); // Delete account
+        app.get   ( "/account/confirmDelete",   this::viewDeleteUserPrompt      ); // Confirm Account Deletion request
+        app.patch ( "/toybox/pull", 	         this::pullHandler	             ); // Pull a random toy
+        app.post  ( "/toybox/pull", 	         this::pullHandler	             ); // Pull a random toy
+        app.get   ( "/toybox/pull",             this::pullHandler               ); // View the toy just pulled.
+        app.post  ( "/account/login", 	         this::loginHandler	             ); // Login start a session
+        app.get   ( "/account/login",           this::viewLoginHandler          ); // View Login page
+        app.get   ( "/toybox/myToys", 	         this::viewUserToyboxHandler     ); // View toys for logged in account
+        app.patch ( "/account/deposit",         this::dashDepositHandler	     ); // Deposit additional currency into your account
+        app.post  ( "/account/deposit",         this::depositHandler	         ); // Deposit additional currency into your account
+        app.get   ( "/account/register",        this::viewRegistrationHandler   ); // View registration page
+        app.post  ( "/account/register",        this::registrationHandler       ); // Register a new account
+        app.get   ( "/account/allUsers",        this::getUsersHandler           ); // Retrieve a list of all users.
+        app.get   ( "/regredirect",             this::viewRegistrationSuccess   ); // post-registration
+        app.get   ( "/loginredirect",           this::viewLoginSuccess          ); // post-registration
+        app.get   ( "/dashboard",               this::viewDashboard             ); // dashboard front end endpoint
+        app.get   ( "/logout",                  this::logoutHandler             ); // handles the invalidation of user a session.
+        app.get   ( "/logoutRedirect",          this::logoutRedirect            ); // provides visual feedback to the user. redirects logouts to "/".
+        app.get   ( "/deleteRedirect",          this::deleteRedirect            ); // provides visual feedback to the user. Redirects account deletion
+        app.get   ( "/session-data",            this::getSessionData            ); // Provides session data.
 
         return app;
     }
@@ -153,6 +161,26 @@ public class GatchaController {
         }
     }
 
+    public void getSessionData(Context ctx) {
+        HttpSession session = ctx.req().getSession(false);
+        JsonObject sessionData = new JsonObject();
+        if (session != null) {
+            // get session data
+            Enumeration<String> attributes = session.getAttributeNames();
+
+            while (attributes.hasMoreElements()) {
+                String attributeName = attributes.nextElement();
+                Object attributeVal  = session.getAttribute(attributeName);
+
+                sessionData.addProperty(attributeName, attributeVal.toString());
+            }
+            ctx.res().setContentType("application/json");
+        } else {
+            // No Session
+        }
+        ctx.result(sessionData.toString());
+    }
+
     public void viewRegistrationSuccess(Context ctx) {
         ctx.result(Resources.getFile("regredirect.html"));
         ctx.contentType("text/html");
@@ -182,6 +210,7 @@ public class GatchaController {
             ses.setAttribute("account_id", loginAccount.getAccount_id());
             ses.setAttribute("username", loginAccount.getUsername());
             ses.setAttribute("password", loginAccount.getPassword());
+            ses.setAttribute("coin_balance", loginAccount.getCoinBalance());
 
             /*
             ctx.result("Welcome" + loginAccount.getUsername() + "\n Your new balance is: " + loginAccount.getCoinBalance());
@@ -267,6 +296,39 @@ public class GatchaController {
                 ctx.status( 200 );
                 ctx.json  ( mapper.writeValueAsString( toys ) );
             } catch (Exception e) { e.printStackTrace(); ctx.result(e.getMessage()); ctx.status(400); }
+    }
+
+    public void dashDepositHandler(Context ctx) throws JsonProcessingException {
+        if (ses == null) {
+            ctx.result("Must Login Before Changing Balance");
+            ctx.status(403);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            Integer amount = 0;
+            System.out.println(ctx.formParamMap().toString());
+            if (isValid(ctx.body())) {
+                amount = mapper.readValue(ctx.body(), Integer.class);
+            } else {
+                amount = Integer.parseInt(ctx.formParamMap().get("amount").get(0));
+            }
+            Account account = new Account(
+                    (int) ses.getAttribute("account_id"),
+                    (String) ses.getAttribute("username"),
+                    (String) ses.getAttribute("password")
+            );
+
+            try {
+                int newBalance = accountService.deposit(account, amount);
+                account = accountService.getUserAccount(account);
+                Map<String, Object> response = new HashMap<>();
+                response.put("newBalance", newBalance);
+                ctx.json(response); // Return JSON data
+            } catch (Exception e) {
+                e.printStackTrace();
+                ctx.result(e.getMessage());
+                ctx.status(400);
+            }
+        }
     }
 
     public void depositHandler( Context ctx ) throws JsonProcessingException {
