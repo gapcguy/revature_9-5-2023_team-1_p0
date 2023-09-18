@@ -59,6 +59,8 @@ public class ConnectionUtil {
     }
 
     public static void resetTestDatabase() throws SQLException {
+        System.out.println("ConnectionUtil Working Directory: " + System.getProperty("user.dir"));
+
         // If no connection exists, use the getConnection method to set it up.
         if (connection == null) {
             getConnection();

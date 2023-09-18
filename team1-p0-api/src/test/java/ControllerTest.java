@@ -27,6 +27,8 @@ public class ControllerTest {
     ObjectMapper objectMapper;
     Javalin app;
     @Before  public void setUp() throws InterruptedException, SQLException {
+        System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
+
         ConnectionUtil.resetTestDatabase();
         gatchaController = new GatchaController();
         app = gatchaController.startAPI();

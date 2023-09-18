@@ -35,6 +35,7 @@ public class TransactionService {
         boolean working = toyDAO.decrementQuantity(newToy);
 
         if(!working){
+            AccountDAO.increaseCoinBalance(account, newToy.getCost());
             throw new Exception("not able to pull toy :(");
         }
 
