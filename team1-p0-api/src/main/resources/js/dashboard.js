@@ -85,6 +85,8 @@ function pullToy() {
         .then((response) => {
             console.log('Post Response.status: ', response.status);
             if (response.status !== 204) {
+                getBalance();
+                getToys();
                 return response.json();
             } else {
                 return response.statusText;
@@ -93,8 +95,7 @@ function pullToy() {
         .catch((error) => {
             console.error("An error occurred:", error);
         });
-        getBalance();
-        getToys();
+
 }
 
 
@@ -123,6 +124,7 @@ function increaseBalance() {
     .then((response) => {
         console.log('PATCH Response.status: ', response.status);
         if (response.status !== 204) {
+            getBalance();
             return response.json();
         } else {
             return response.statusText;
@@ -131,7 +133,6 @@ function increaseBalance() {
     .catch((error) => {
         console.error("An error occurred:", error);
     });
-    updateBalanceOnDashboard();
 }
 
 
