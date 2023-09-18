@@ -93,7 +93,7 @@ function pullToy() {
         .catch((error) => {
             console.error("An error occurred:", error);
         });
-        updateBalanceOnDashboard();
+        getBalance();
         getToys();
 }
 
