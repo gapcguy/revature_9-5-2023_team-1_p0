@@ -207,6 +207,20 @@ public class GatchaController {
     }
 
     public void getSessionData(Context ctx) {
+        ObjectMapper mapper  = new ObjectMapper();
+        Account account = new Account((String)ses.getAttribute("username"), (String) ses.getAttribute("password"));
+        try {
+            Account loginAccount = accountService.getUserAccount(account);
+            ses = ctx.req().getSession();
+            ses.setAttribute("account_id", loginAccount.getAccount_id());
+            ses.setAttribute("username", loginAccount.getUsername());
+            ses.setAttribute("password", loginAccount.getPassword());
+            ses.setAttribute("coin_balance", loginAccount.getCoinBalance());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.result(e.getMessage());
+            ctx.status(401);
+        }
         HttpSession session = ctx.req().getSession(false);
         JsonObject sessionData = new JsonObject();
         if (session != null) {
