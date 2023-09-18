@@ -62,6 +62,12 @@ public class AccountDAO {
                 String password     = rs.getString("password"    );
                 int    coin_balance = rs.getInt   ("coin_balance");
 
+                System.out.println("Retrieved User Account Data:");
+                System.out.println("Account ID: " + accountId);
+                System.out.println("Username: " + username);
+                System.out.println("Password: " + password);
+                System.out.println("Coin Balance: " + coin_balance);
+
                 return new Account(accountId, username, password, coin_balance);
             }
         } catch (SQLException e) { e.printStackTrace(); }

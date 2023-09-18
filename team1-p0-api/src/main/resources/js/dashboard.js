@@ -55,30 +55,60 @@ function getBalance() {
         });
 }
 
-function updateBalanceOnDashboard(newBalance) {
-    const currencyDisplay = document.getElementById("balance");
-    currencyDisplay.textContent = `${newBalance}`;
+function updateBalanceOnDashboard() {
+    // Get the values of the HTML elements that store the current balance and what we are looking to add to it.
+    const currentBalance = document.getElementById("balance");
+    const addToBalance = document.getElementById("amount").value;
+
+    // Ensure they're integers
+    const currentBalanceValue = parseInt(currentBalance.textContent, 10);
+    const addToBalanceValue = parseInt(addToBalance, 10);
+
+    // Add the two and store it in newBalance.
+    const newBalance = currentBalanceValue + addToBalanceValue;
+
+    // Display it.
+    currentBalance.textContent = newBalance;
+
+
 }
 
-function increaseBalance(event) {
-    //event.preventDefault(); -- This prevents updating of the database.
+function increaseBalance() {
+    const amountInput = document.getElementById("amount");
+    const amount = parseInt(amountInput.value);
 
-    const form = event.target;
-    const amountInput = form.querySelector("#amount");
+    // Validate the input
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid positive number.");
+        return;
+    }
 
-    fetch("/account/deposit", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: amountInput.value }),
+    const content = {
+        amount: amount
+    };
+
+    fetch("http://localhost:8080/account/deposit", {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(content)
     })
-        .then((response) => response.json())
-        .then((data) => {
-            updateBalanceOnDashboard(data.newBalance);
-        })
-        .catch((error) => {
-            console.error("Error depositing funds:", error);
-        });
+    .then((response) => {
+        console.log('PATCH Response.status: ', response.status);
+        if (response.status !== 204) {
+            return response.json();
+        } else {
+            return response.statusText;
+        }
+    })
+    .catch((error) => {
+        console.error("An error occurred:", error);
+    });
+    updateBalanceOnDashboard();
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const depositForm = document.getElementById("depositForm");
@@ -88,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Element with ID 'depositForm' not found.");
     }
 
-    // Call the function when the page loads
+    // Call the functions on page loads
     getUsername();
     getBalance();
     getToys();

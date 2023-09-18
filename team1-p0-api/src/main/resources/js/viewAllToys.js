@@ -1,9 +1,12 @@
-function getSessionData() {
+function getUsername() {
     fetch("/session-data")
         .then(response => response.json())
         .then(jsonData => {
             const userNameElement = document.getElementById("username");
-            userNameElement.textContent = jsonData;
+            userNameElement.textContent = jsonData.username;
+        })
+        .catch(error => {
+            console.error("Error fetching username:", error);
         });
 }
 
@@ -49,5 +52,5 @@ function getToys() {
         });
 }
     // Call the function when the page loads
-    getSessionData();
+    getUsername();
     getToys();

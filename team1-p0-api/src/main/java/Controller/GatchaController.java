@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -80,7 +82,7 @@ public class GatchaController {
         app.get   ( "/account/confirmDelete",   this::viewDeleteUserPrompt      ); // Confirm Account Deletion request
         app.patch ( "/toybox/pull", 	         this::pullHandler	             ); // Pull a random toy
         app.post  ( "/toybox/pull", 	         this::pullHandler	             ); // Pull a random toy
-        app.get   ( "/toybox/pull",             this::pullHandler               ); // View the toy just pulled.
+        app.get   ( "/toybox/Pull",             this::viewPullHandler           ); // View the toy just pulled.
         app.post  ( "/account/login", 	         this::loginHandler	             ); // Login start a session
         app.get   ( "/account/login",           this::viewLoginHandler          ); // View Login page
         app.get   ( "/toybox/myToys", 	         this::viewUserToyboxHandler     ); // View toys for logged in account
@@ -91,6 +93,7 @@ public class GatchaController {
         app.get   ( "/account/allUsers",        this::getUsersHandler           ); // Retrieve a list of all users.
         app.get   ( "/regredirect",             this::viewRegistrationSuccess   ); // post-registration
         app.get   ( "/loginredirect",           this::viewLoginSuccess          ); // post-registration
+        app.get   ( "/account/viewBalance",     this::viewBalanceHandler        ); // view an account balance.
         app.get   ( "/dashboard",               this::viewDashboard             ); // dashboard front end endpoint
         app.get   ( "/logout",                  this::logoutHandler             ); // handles the invalidation of user a session.
         app.get   ( "/logoutRedirect",          this::logoutRedirect            ); // provides visual feedback to the user. redirects logouts to "/".
@@ -117,6 +120,48 @@ public class GatchaController {
             ctx.redirect("/");
         }
     }
+
+    public void viewPullHandler(Context ctx) {
+        HttpSession session = ctx.req().getSession(false);
+        if (session != null) {
+            ctx.result(Resources.getFile("pulltoy.html"));
+            ctx.contentType("text/html");
+        }
+    }
+
+    public void viewBalanceHandler(Context ctx) {
+        // Parse the request data to get the account information (replace with your logic)
+        String username = ctx.queryParam("username");
+        String password = ctx.queryParam("password");
+
+        // Log the session data
+        System.out.println("Username from Session: " + username);
+        System.out.println("Password from Session: " + password);
+
+        try {
+            // Create an Account object with the parsed data (replace with your logic)
+            Account account = new Account(username, password);
+
+            // Call the getBalance method to retrieve the balance
+            int balance = AccountService.getBalance(account);
+
+            // Construct a JSON response
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode jsonResponse = objectMapper.createObjectNode();
+            jsonResponse.put("balance", balance);
+
+            // Set the content type to JSON
+            ctx.contentType("application/json");
+
+            // Return the JSON response
+            ctx.result(jsonResponse.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Error: " + e.getMessage());
+        }
+    }
+
+
 
     public void viewDeleteUserPrompt(Context ctx) {
         ctx.result(Resources.getFile("DeleteUserAccountPrompt.html"));
@@ -304,9 +349,43 @@ public class GatchaController {
             ctx.status(403);
         } else {
             ObjectMapper mapper = new ObjectMapper();
-            Integer amount = 0;
-            System.out.println(ctx.formParamMap().toString());
+            int amount = 0;
+
+            // Refactored 9/17/2023. New code accepts JSON input from the dashboard without throwing a 500 server
+            // error.
+            try {
+                JsonNode jsonNode = mapper.readTree(ctx.body());
+                amount = jsonNode.get("amount").asInt();
+            } catch (IOException e) {
+                e.printStackTrace();
+                ctx.result("Invalid JSON data");
+                ctx.status(400);
+                return;
+            }
+
+            Account account = new Account(
+                    (int) ses.getAttribute("account_id"),
+                    (String) ses.getAttribute("username"),
+                    (String) ses.getAttribute("password")
+            );
+
+            try {
+                int newBalance = accountService.deposit(account, amount);
+                account = accountService.getUserAccount(account);
+                Map<String, Object> response = new HashMap<>();
+                response.put("newBalance", newBalance);
+                ctx.json(response); // Returns JSON data
+            } catch (Exception e) {
+                e.printStackTrace();
+                ctx.result(e.getMessage());
+                ctx.status(400);
+            }
+        }
+    }
+    // Previous code.
+/*            System.out.println(ctx.formParamMap().toString());
             if (isValid(ctx.body())) {
+
                 amount = mapper.readValue(ctx.body(), Integer.class);
             } else {
                 amount = Integer.parseInt(ctx.formParamMap().get("amount").get(0));
@@ -330,7 +409,7 @@ public class GatchaController {
             }
         }
     }
-
+*/
     public void depositHandler( Context ctx ) throws JsonProcessingException {
         if (ses == null) {
             ctx.result("Must Login Before Changing Balance");

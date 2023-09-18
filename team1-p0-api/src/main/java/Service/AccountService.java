@@ -7,7 +7,7 @@ import java.util.List;
 
 public class AccountService {
     public final static int minLength = 4;
-    AccountDAO accountDAO;
+    static AccountDAO accountDAO;
     public AccountService() { accountDAO = new AccountDAO(); }
 
     public Account createAccount(Account account) throws Exception {
@@ -35,11 +35,23 @@ public class AccountService {
         if(amountToAdd<0) { throw new Exception("Cannot deposit negative amount"); }
 
         Account userAccount = new Account(account.getUsername(), account.getPassword());
-        boolean success     = accountDAO.increaseCoinBalance(userAccount, amountToAdd);
+        boolean success     = AccountDAO.increaseCoinBalance(userAccount, amountToAdd);
 
         if(!success) { throw new Exception("Transaction Unable to Complete"); }
 
         return account.getCoinBalance() + amountToAdd;
+    }
+
+    public static int getBalance(Account account) throws Exception {
+        Account userAccount = new Account(account.getUsername(), account.getPassword());
+        userAccount = accountDAO.getUserAccount(userAccount);
+
+        if (userAccount != null) {
+            return userAccount.getCoinBalance();
+        } else {
+            throw new Exception("No user");
+        }
+
     }
 
     public Account deleteAccount(String username){ return accountDAO.deleteAccountByName(username); }
