@@ -78,8 +78,7 @@ function pullToy() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            body: JSON.stringify(content)
+            }
         })
         .then((response) => {
             console.log('Post Response.status: ', response.status);
@@ -116,7 +115,8 @@ function increaseBalance() {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        }
+        },
+        body: JSON.stringify(content)
     })
     .then((response) => {
         console.log('PATCH Response.status: ', response.status);
