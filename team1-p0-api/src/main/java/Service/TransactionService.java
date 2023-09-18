@@ -21,17 +21,17 @@ public class TransactionService {
 
     public Transaction pull(Account account) throws Exception {
         AccountService as = new AccountService();
-        if(as.getUserAccount(account).getCoinBalance() < Transaction.getPullCost() ) {
+        Toy     newToy  = toyDAO.chooseRandomToy();
+        if(as.getUserAccount(account).getCoinBalance() < newToy.getCost() ) {
             throw new Exception("insufficient funds");
         }
 
-        boolean decr = accountDAO.decreaseCoinBalance(account, Transaction.getPullCost());
+        boolean decr = accountDAO.decreaseCoinBalance(account, newToy.getCost());
 
         if(!decr) {
             throw new Exception("unable to withdraw");
         }
 
-        Toy     newToy  = toyDAO.chooseRandomToy();
         boolean working = toyDAO.decrementQuantity(newToy);
 
         if(!working){

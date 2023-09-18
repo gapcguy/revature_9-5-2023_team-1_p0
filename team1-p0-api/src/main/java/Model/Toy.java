@@ -43,7 +43,15 @@ public class Toy {
         this.toyName = toyName;
         this.quantity = quantity;
         this.toyImage = toyImage;
+        this.cost = def_cost;
+    }
 
+    public Toy(int toy_id, String toyName, int quantity, int cost, String toyImage){
+        this.toy_id = toy_id;
+        this.toyName = toyName;
+        this.quantity = quantity;
+        this.toyImage = toyImage;
+        this.cost = cost;
     }
     /* ------------------------------------------------
         Getters
@@ -56,7 +64,7 @@ public class Toy {
     }
     public String getToyName () { return toyName; }
     public String getToyImage () {return toyImage; }
-    //public int  getCost    () { return cost;    }
+    public int  getCost    () { return cost;    }
 
     /* ------------------------------------------------
         Setters - Commented out due to lack of use.

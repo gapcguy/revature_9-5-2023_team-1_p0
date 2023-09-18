@@ -72,6 +72,28 @@ function updateBalanceOnDashboard() {
 
 
 }
+function pullToy() {
+    fetch("http://localhost:8080/toybox/pull", {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(content)
+        })
+        .then((response) => {
+            console.log('Post Response.status: ', response.status);
+            if (response.status !== 204) {
+                return response.json();
+            } else {
+                return response.statusText;
+            }
+        })
+        .catch((error) => {
+            console.error("An error occurred:", error);
+        });
+}
+
 
 function increaseBalance() {
     const amountInput = document.getElementById("amount");
