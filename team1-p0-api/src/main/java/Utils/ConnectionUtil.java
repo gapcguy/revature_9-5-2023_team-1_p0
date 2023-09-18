@@ -2,9 +2,8 @@ package Utils;
 
 import Service.AccountService;
 import org.h2.tools.RunScript;
-import org.revature.Main;
-
-import java.io.*;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,17 +12,24 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 //This Class is where we manage and establish our database connection
 public class ConnectionUtil {
 
-    // URL to RDS connection
-    private static final String url = "jdbc:postgresql://p0demodatabase.ccn4nz832krl.us-east-2.rds.amazonaws.com:5432/postgres";
+    // Connection information for VPS.
+    private static final String url = "jdbc:mariadb://revature.michaelwarner.info/revature_p0";
 
     // RDS credentials
     private static final String username = "team1";
-    private static final String password = "password";
+    private static final String password = "u~96db0M2";
 
+    /*
+        // URL to RDS connection
+        private static final String url = "jdbc:postgresql://p0demodatabase.ccn4nz832krl.us-east-2.rds.amazonaws.com:5432/postgres";
+
+        // RDS credentials
+        private static final String username = "team1";
+        private static final String password = "password";
+    */
     // Static object which represents the connection to RDS. Since this is static, any DAO interacting with this
     // connection object refers back to here.
     private static Connection connection = null;
@@ -34,7 +40,8 @@ public class ConnectionUtil {
         //For compatibility with other technologies/frameworks, we'll need to register our PostgreSQL driver
         //This process makes the application aware of what Driver class we're using
         try {
-            Class.forName("org.postgresql.Driver"); //searching for the postgres driver, which we have as a dependency
+            //Class.forName("org.postgresql.Driver"); //searching for the postgres driver, which we have as a dependency
+            Class.forName("org.mariadb.jdbc.Driver"); // Updated from PostgreSQL to MariaDB for VPS compatibility
         } catch (ClassNotFoundException e) {
             e.printStackTrace(); //This tells in the console us what went wrong
             System.out.println("problem occurred locating driver");
@@ -59,8 +66,6 @@ public class ConnectionUtil {
     }
 
     public static void resetTestDatabase() throws SQLException {
-        System.out.println("ConnectionUtil Working Directory: " + System.getProperty("user.dir"));
-
         // If no connection exists, use the getConnection method to set it up.
         if (connection == null) {
             getConnection();
@@ -74,26 +79,7 @@ public class ConnectionUtil {
             e.printStackTrace();                                                                                        // IOException covers a slightly more broad scope of errors, and
         }                                                                                                               // is necessary to close the file.
     }
-/* here's another way we could do it.
- This implementation is intended to use getResourceAsStream to read Gatcha.sql, as getResourceAsStream
- directly maps to the resources folder.
 
-    public static void resetTestDatabase() throws SQLException {
-
-        if (connection == null) { getConnection(); }
-
-        try {
-            String sqlScript = Resources.readResource("Gatcha.sql", Main.class.getClassLoader());
-            StringReader stringReader = new StringReader(sqlScript);
-            RunScript.execute(connection, stringReader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-*/
-
-/*
     public static void testLogin(HttpClient httpClient, String username, String password) throws IOException, InterruptedException {
         AccountService as = new AccountService();
         if (as.userExists(username)){
@@ -120,6 +106,4 @@ public class ConnectionUtil {
 
 
     }
- */
-
 }

@@ -75,6 +75,7 @@ function updateBalanceOnDashboard() {
 
 }
 function pullToy() {
+
     fetch("http://localhost:8080/toybox/pull", {
             method: 'post',
             headers: {
