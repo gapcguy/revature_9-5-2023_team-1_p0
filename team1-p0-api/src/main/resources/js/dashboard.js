@@ -15,7 +15,7 @@ fetch("/toybox/myToys")
     .then(response => response.json())
     .then(jsonData => {
         const toyListContainer = document.getElementById("toyList");
-
+        document.replaceChildren("toyList");
         for (const item of jsonData) {
             // Create a list item (<li>) for each item in the JSON data
             const listItem = document.createElement("li");
