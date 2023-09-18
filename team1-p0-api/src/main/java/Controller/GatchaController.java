@@ -82,7 +82,7 @@ public class GatchaController {
         app.get   ( "/account/confirmDelete",   this::viewDeleteUserPrompt      ); // Confirm Account Deletion request
         app.patch ( "/toybox/pull", 	         this::pullHandler	             ); // Pull a random toy
         app.post  ( "/toybox/pull", 	         this::pullHandler	             ); // Pull a random toy
-        app.get   ( "/toybox/Pull",             this::viewPullHandler           ); // View the toy just pulled.
+        app.get   ( "/toybox/pull",             this::viewPullHandler           ); // View the toy just pulled.
         app.post  ( "/account/login", 	         this::loginHandler	             ); // Login start a session
         app.get   ( "/account/login",           this::viewLoginHandler          ); // View Login page
         app.get   ( "/toybox/myToys", 	         this::viewUserToyboxHandler     ); // View toys for logged in account

@@ -1,10 +1,34 @@
 /* toypull-from-json:
     Extends HTML to implement JSON decoding associated with the pull handler defined in GatchaController.java.
  */
-
+function pull() {
+const content = {};
 // Fetch data from the server.
 // Initiate an HTTP GET request to the toybox/pull endpoint. It expects to receive JSON data in response.
-fetch('/toybox/pull')
+fetch('/toybox/pull', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    },
+    body: JSON.stringify(content)
+})
+.then((response) => {
+    console.log('POST Response.status: ', response.status);
+
+    if (response.status === 200) {
+        return response.json();
+    } else {
+        throw new Error('Request failed with status: ' + response.status);
+    }
+})
+.then((jsonData) => {
+    // Handle successful JSON response here
+})
+.catch((error) => {
+    console.error("An error occurred:", error);
+});
+/*
     // Handle the response. '.then()' is used to handle the response from the server.
     // When the response is received, it performs the following steps:
     // 1. Convert the response to a the JSON format by way of 'response.json()'.
@@ -34,3 +58,5 @@ fetch('/toybox/pull')
     // Handles errors that may occur during an HTTP request or JSON parsing. If an error occurs, an error message is
     // logged to the browser console.
     .catch(error => console.error("Error fetching JSON data:", error));
+*/
+}
